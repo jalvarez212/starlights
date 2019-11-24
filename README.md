@@ -1,5 +1,5 @@
 # Christmas Starlights
-# Phase 1 - Scene Development		Status
+# Phase 1 - Scene Development		
 
 Skybox/Spherical texture:		Ready for Review ✅
 
@@ -11,7 +11,7 @@ Mobile: drag/trackball controller:	Ready for Review ✅
 
 Layer of stars with specific position: 	Ready for Review ✅
 	
-# Phase 2 - Animation Development		Status
+# Phase 2 - Animation Development		
 
 Load models & animations:		In Progress 🚧
 
