@@ -1,0 +1,10 @@
+{
+    "constellation": {
+		"stars": [
+			{"x":0, "y":0, "z":50, "connected":1, "labelposition":"b", "label":"HAVE"},
+			{"x":50, "y":50, "z":0, "connected":1, "labelposition":"t", "label":"A"},
+			{"x":100, "y":0, "z":50, "connected":1, "labelposition":"l", "label":"NICE"},
+			{"x":150, "y":50, "z":0, "connected":1, "labelposition":"r", "label":"DAY!"}
+	    ]        
+    }
+}
