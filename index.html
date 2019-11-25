@@ -12,6 +12,7 @@
 <script src='https://threejs.org/build/three.min.js'></script>
 <script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/animejs@3.0.0/lib/anime.min.js'></script>
+<script src='js/LegacyJSONLoader.js'></script>
 
 
 
@@ -89,10 +90,24 @@
 
 	}
 
-		// points
-	var points = ( new THREE.PlaneGeometry( 5, 20, 32 ) ).vertices;
 
-		// geometry
+
+	var figure = new THREE.Geometry();
+
+	figure.vertices.push(
+		new THREE.Vector3( 0,  0, 50 ),
+		new THREE.Vector3( 50, 50, 0 ),
+		new THREE.Vector3( 100, 0, 50 ),
+		new THREE.Vector3( 150, 50, 0 ),
+	);
+
+	geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
+
+	figure.computeBoundingSphere();
+
+	
+
+	var points = figure.vertices;
 	var geometry = new THREE.BufferGeometry();
 	var fraction = 0;
 	var lineLength;
