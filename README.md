@@ -5,9 +5,9 @@ Skybox/Spherical texture:		Ready for Review ✅
 
 Layer of stars with random position:	Ready for Review ✅
 
-Desktop: drag/trackball controller:	In Progress 🚧
+Desktop: drag/trackball controller:	On Hold 🛑
 
-Mobile: drag/trackball controller:	In Progress 🚧
+Mobile: drag/trackball controller:	On Hold 🛑
 
 Layer of stars with specific position: 	Ready for Review ✅
 	
@@ -15,6 +15,6 @@ Layer of stars with specific position: 	Ready for Review ✅
 
 Load models & animations:		In Progress 🚧
 
-Animation trigger events:		n/a
+Animation trigger events:		In Progress 🚧
 
 Navigation trigger events:		n/a
