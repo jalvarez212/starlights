@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  staging:
+    name: Deploy to Laravel Forge
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deployment Trigger URL
+      run: wget https://forge.laravel.com/servers/271852/sites/896920/deploy/http?token=WjBdEF9XMr191rs31y2hlVDUJifmc4ECIIfVTFFS
