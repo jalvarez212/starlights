@@ -13,7 +13,7 @@
 <script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/animejs@3.0.0/lib/anime.min.js'></script>
 <script src='js/LegacyJSONLoader.js'></script>
-
+<script src='js/Stats.js'></script>
 
 
 <script type="text/javascript">
@@ -174,22 +174,38 @@
 		camera.updateProjectionMatrix();
 	});	
 
+	//
+	// STATS
+	var stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		stats.domElement.style.zIndex = 100;
+	
+	document.body.appendChild( stats.domElement );	
 
 
 
 
-
+	//
+	// ANIMATION LOOP
 	function animate() {
-		requestAnimationFrame( animate );
-		controls.update();
+		requestAnimationFrame(animate);
 		fraction = ( fraction + 0.001 ) % 1;
 		line.material.dashSize = fraction * lineLength;
+		render();		
+		update();
+	}
+	function update() {
+		controls.update();
+		stats.update();
+	}
+	
+	function render() {
 		renderer.render( scene, camera );
-
 	}
 
-
 	animate();
+	
 
 </script>
 
