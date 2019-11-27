@@ -371,9 +371,11 @@
 		stats.domElement.style.top = '0px';
 		stats.domElement.style.zIndex = 100;
 	
-	document.body.appendChild( stats.domElement );	
-
-
+	document.body.appendChild( stats.domElement );
+	
+	//
+	// AXIS Helper
+	scene.add( new THREE.AxesHelper( 20 ) );
 
 
 	//
