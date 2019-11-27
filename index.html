@@ -6,11 +6,18 @@
   		<style>
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
+			.label {
+				color: #F00;
+				font-family: sans-serif;
+				padding: 2px;
+				background: rgba( 0, 0, 0, .6 );
+			}
 		</style>
 </head>
 <body>
 <script src='https://threejs.org/build/three.min.js'></script>
 <script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js'></script>
+<script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/renderers/CSS2DRenderer.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/animejs@3.0.0/lib/anime.min.js'></script>
 <script src='js/Stats.js'></script>
 
@@ -19,12 +26,22 @@
 	var scene = new THREE.Scene();
 	var camera = new THREE.PerspectiveCamera( 85, window.innerWidth/window.innerHeight, 1, 2000);
 
+	//
+	// WebGL Renderer
 	var renderer = new THREE.WebGLRenderer();
-	renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
-
-
-	//Lights
+	
+	//
+	// CSS 2D Renderer
+	var labelRenderer = new THREE.CSS2DRenderer();
+		labelRenderer.setSize( window.innerWidth, window.innerHeight );
+		labelRenderer.domElement.style.position = 'absolute';
+		labelRenderer.domElement.style.top = 0;
+	document.body.appendChild( labelRenderer.domElement );
+	
+	//
+	// Lights
 	var light = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
 	scene.add( light );
 	// var ambientLight = new THREE.AmbientLight(0xf1f1f1);
@@ -51,7 +68,7 @@
 	scene.add(starField);
 
 
-	var controls = new THREE.OrbitControls( camera, renderer.domElement );
+	var controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
 	controls.maxDistance = 500;
 
 	controls.update();
@@ -100,11 +117,16 @@
 	var json = {
 	    "constellation": {
 			"stars": [
-				{"x":0, "y":0, "z":50, "connected":1, "labelposition":"b", "label":"HAVE"},
-				{"x":50, "y":50, "z":0, "connected":1, "labelposition":"t", "label":"A"},
-				{"x":100, "y":0, "z":50, "connected":1, "labelposition":"l", "label":"NICE"},
-				{"x":150, "y":50, "z":0, "connected":1, "labelposition":"r", "label":"DAY!"},
-				{"x":150, "y":50, "z":150, "connected":1, "labelposition":"r", "label":"PROFESSOR FALKEN!"}
+				{"x":0, "y":0, "z":50, "connected":1, "labelposition":"b", "label":"GREETINGS"},
+				{"x":50, "y":50, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
+				{"x":100, "y":0, "z":50, "connected":0, "labelposition":"l", "label":"FALKEN!"},
+				{"x":150, "y":50, "z":0, "connected":1, "labelposition":"r", "label":"HOW"},
+				{"x":-50, "y":50, "z":150, "connected":1, "labelposition":"r", "label":"ABOUT"},
+				{"x":-150, "y":0, "z":250, "connected":1, "labelposition":"r", "label":"A"},
+				{"x":-200, "y":100, "z":450, "connected":1, "labelposition":"r", "label":"NICE"},
+				{"x":0, "y":150, "z":550, "connected":1, "labelposition":"r", "label":"GAME"},
+				{"x":50, "y":-50, "z":750, "connected":1, "labelposition":"r", "label":"OF"},
+				{"x":150, "y":0, "z":850, "connected":1, "labelposition":"r", "label":"CHESS?"}
 		    ]        
 	    }
 	}
@@ -116,7 +138,35 @@
 		console.log(obj.label);
 			
 		var vector = new THREE.Vector3(obj.x, obj.y, obj.z);
-		figure.vertices.push(vector);								
+		figure.vertices.push(vector);
+		
+		var label_div = document.createElement( 'div' );
+			label_div.className = 'label';
+			label_div.textContent = obj.label;
+			label_div.style.marginTop = '-1em';
+			
+		var label_2d = new THREE.CSS2DObject( label_div );
+			label_2d.position.set( 0, 5, 0 );
+			
+		var geometry = new THREE.SphereGeometry( 0.0001, 1, 1 );
+		var material = new THREE.MeshBasicMaterial( {color: 0x000000, transparent:true, opacity:0} );
+		var sphere = new THREE.Mesh( geometry, material );
+			sphere.position.x = obj.x;
+			sphere.position.y = obj.y;
+			sphere.position.z = obj.z;	
+			sphere.add( label_2d );
+		
+		scene.add(sphere);		
+		
+		
+				
+		//
+		// BASIC STAR SPRITES
+		var point_material = new THREE.PointsMaterial( { size: 3, color:0xff0000, depthTest: false, transparent: true } );
+		var anchor = new THREE.Points(figure, point_material);
+		scene.add(anchor);		
+			
+						
 		
 	}
 
@@ -202,6 +252,7 @@
 	
 	function render() {
 		renderer.render( scene, camera );
+		labelRenderer.render( scene, camera );
 	}
 
 	animate();
