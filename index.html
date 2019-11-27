@@ -12,6 +12,18 @@
 				padding: 2px;
 				background: rgba( 0, 0, 0, .6 );
 			}
+			.top {
+				margin-top: -2em;
+			}
+			.bottom {
+				margin-top: 2em;
+			}
+			.left {
+				margin-left: -2em;
+			}
+			.right {
+				margin-left: 2em;
+			}
 		</style>
 </head>
 <body>
@@ -141,12 +153,27 @@
 		figure.vertices.push(vector);
 		
 		var label_div = document.createElement( 'div' );
-			label_div.className = 'label';
 			label_div.textContent = obj.label;
-			label_div.style.marginTop = '-1em';
+			
+		switch(obj.labelposition) {
+			case 'l':
+			label_div.className = 'label left';
+			break;
+			case 'r':
+			label_div.className = 'label right';
+			break;
+			case 't':
+			label_div.className = 'label top';
+			break;
+			case 'b':
+			label_div.className = 'label bottom';
+			break;
+		}		
 			
 		var label_2d = new THREE.CSS2DObject( label_div );
-			label_2d.position.set( 0, 5, 0 );
+			label_2d.position.set( 0, 0, 0 );
+		
+		
 			
 		var geometry = new THREE.SphereGeometry( 0.0001, 1, 1 );
 		var material = new THREE.MeshBasicMaterial( {color: 0x000000, transparent:true, opacity:0} );
