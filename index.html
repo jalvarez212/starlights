@@ -48,7 +48,8 @@
 			text-align: center;
 		}
 		#overlay > div > button {
-			height: 20px;
+			height:50px;
+			padding:20px;
 			background: transparent;
 			color: #ffffff;
 			outline: 1px solid #ffffff;
@@ -66,7 +67,7 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start Demo</button>
+			<button id="startButton">Start v3.0</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>	
@@ -146,9 +147,9 @@
 	console.log("====================");
 	
 	
-	if (md.mobile()) {
-		var startButton = document.getElementById( 'startButton' );
-		startButton.addEventListener( 'click', function () {
+	if (!md.mobile()) {
+		document.getElementById('startButton').addEventListener( 'click', function () {
+			console.log('clicking');
 			init();
 			animate();
 			document.getElementById('overlay').remove();
