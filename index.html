@@ -61,14 +61,18 @@
 
 <script type="text/javascript">
 	var scene = new THREE.Scene();
+	
+	//
+	// CAMERA
 	var camera = new THREE.PerspectiveCamera( 85, window.innerWidth/window.innerHeight, 1, 2000);
+		camera.position.z = 50
 
 	//
 	// WebGL Renderer
 	var renderer = new THREE.WebGLRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
-	
+		
 	//
 	// CSS 2D Renderer
 	var labelRenderer = new THREE.CSS2DRenderer();
@@ -76,6 +80,27 @@
 		labelRenderer.domElement.style.position = 'absolute';
 		labelRenderer.domElement.style.top = 0;
 	document.body.appendChild( labelRenderer.domElement );
+	
+	//
+	// FRUSTUM
+	var frustum = new THREE.Frustum();
+	var cameraViewProjectionMatrix = new THREE.Matrix4();
+	var animation_target;
+	var animation_trigger = false;
+	
+	//
+	// CONTROLS
+	var controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
+	//var controls = new PointerLockControls( camera, document.body );
+		controls.maxDistance = 500;
+		controls.update();
+	
+	
+	
+	
+	
+	
+	
 	
 	//
 	// Lights
@@ -88,7 +113,6 @@
 	// scene.add(spotLight);
 
 
-	camera.position.z = 50; //is orginial cameria setting.
 	//see screenshots for overview position reference
 	      //Lights
 
@@ -106,9 +130,6 @@
 	scene.add(starField);
 
 
-	var controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
-	controls.maxDistance = 500;
-	controls.update();
 	
 	
 	//
@@ -142,6 +163,16 @@
 	for (var i = 0; i < blueCount; i++) {
 		scene.add(createSphericStar(0x23e57a3));
 	}
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -282,8 +313,6 @@
 		var label_2d = new THREE.CSS2DObject( label_div );
 			label_2d.position.set( 0, 0, 0 );
 		
-		
-			
 		var geometry = new THREE.SphereGeometry( 0.0001, 1, 1 );
 		var material = new THREE.MeshBasicMaterial( {color: 0x000000, transparent:true, opacity:0} );
 		var sphere = new THREE.Mesh( geometry, material );
@@ -294,19 +323,15 @@
 		
 		scene.add(sphere);		
 		
-		
-				
 		//
 		// BASIC STAR SPRITES
 		var point_material = new THREE.PointsMaterial( { size:32, map:sprite, blending:THREE.NormalBlending, depthTest:false, transparent:true, opacity:0.5 } );
-		
-
-		
-		
 		var anchor = new THREE.Points(figure, point_material);
 		scene.add(anchor);		
-			
-						
+		
+		if (i==0) {
+			animation_target = sphere;
+		}
 		
 	}
 
@@ -355,6 +380,13 @@
 	scene.add( line );
 
 
+
+
+
+
+
+
+
 	//
 	// WINDOW RESIZE
 	window.addEventListener('resize', function () {
@@ -380,14 +412,38 @@
 	// ANIMATION LOOP
 	function animate() {
 		requestAnimationFrame(animate);
-		fraction = ( fraction + 0.001 ) % 100;
-		line.material.dashSize = fraction * lineLength;
+		
+		
+		if (animation_trigger) {
+			fraction = ( fraction + 0.001 ) % 100;
+			line.material.dashSize = fraction * lineLength;
+		}
+		
+		
+		
 		render();		
 		update();
 	}
 	function update() {
 		controls.update();
 		stats.update();
+		
+		// 
+		// FRUSTUM
+		camera.updateMatrixWorld(); // make sure the camera matrix is updated
+		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
+		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
+		frustum.setFromMatrix( cameraViewProjectionMatrix );
+		
+		if (animation_trigger == false) {
+			console.log( frustum.intersectsObject( animation_target ) );
+			if (frustum.intersectsObject(animation_target)) {
+				console.log('animation triggered');
+				animation_trigger = true;
+			}
+		}
+		
+		
 	}
 	
 	function render() {
@@ -399,7 +455,7 @@
 		var sizes = particles_geometry.attributes.size.array;
 	
 		for ( var i = 0; i < particles; i ++ ) {
-		sizes[ i ] = 5 * ( 1 + Math.sin( 0.1 * i + time ) );
+			sizes[ i ] = 5 * ( 1 + Math.sin( 0.1 * i + time ) );
 		}
 		particles_geometry.attributes.size.needsUpdate = true;		
 	
