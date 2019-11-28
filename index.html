@@ -67,7 +67,7 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v3.0</button>
+			<button id="startButton">Start v4.0</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>	
@@ -147,7 +147,7 @@
 	console.log("====================");
 	
 	
-	if (!md.mobile()) {
+	if (md.mobile()) {
 		document.getElementById('startButton').addEventListener( 'click', function () {
 			console.log('clicking');
 			init();
