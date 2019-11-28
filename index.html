@@ -27,8 +27,8 @@
 			margin-left: 2em;
 		}
 		
-		.desktop #overlay {
-			display: none;
+		.mobile #overlay {
+			display: flex;
 		}
 		#overlay {
 			position: absolute;
@@ -37,7 +37,7 @@
 			left: 0;
 			width: 100%;
 			height:100%;
-			display: flex;
+			display: none;
 			align-items: center;
 			justify-content: center;
 			opacity: 1;
@@ -151,10 +151,13 @@
 		startButton.addEventListener( 'click', function () {
 			init();
 			animate();
-		}, false );		
+			document.getElementById('overlay').remove();
+		}, false );
+		document.body.classList.add("mobile");
 	} else {
 		init();
 		animate();
+		document.body.classList.add("desktop");
 	}
 
 	
@@ -197,12 +200,10 @@
 		// CONTROLS
 		if (md.mobile()) {
 			controls = new DeviceOrientationControls( camera );
-			document.body.classList.add("mobile");
 		} else {
 			controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
 			controls.maxDistance = 500;
 			controls.update();
-			document.body.classList.add("desktop");
 		}
 		
 		//
