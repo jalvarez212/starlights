@@ -67,7 +67,7 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.0</button>
+			<button id="startButton">Start v4.01</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>	
@@ -200,7 +200,7 @@
 		//
 		// CONTROLS
 		if (md.mobile()) {
-			controls = new DeviceOrientationControls( camera );
+			controls = new THREE.DeviceOrientationControls(camera);
 		} else {
 			controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
 			controls.maxDistance = 500;
