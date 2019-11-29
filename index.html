@@ -184,7 +184,7 @@
 		
 		//
 		// CAMERA
-		camera = new THREE.PerspectiveCamera( 85, window.innerWidth/window.innerHeight, 1, 2000);
+		camera = new THREE.PerspectiveCamera(85, window.innerWidth/window.innerHeight, 1, 2000);
 		camera.target = new THREE.Vector3( 0, 0, 0 );
 		//camera.position.z = 0
 	
@@ -235,12 +235,12 @@
 		
 		//
 		// AXIS Helper
-		scene.add( new THREE.AxesHelper( 700 ) );
+		//scene.add( new THREE.AxesHelper( 700 ) );
 		
 		//
 		// Lights
 		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
-		lights = new THREE.HemisphereLight( 0x23e57a3, 0x23e57a3, 2 );
+		lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
 
 		
 		scene.add(lights);
@@ -251,10 +251,14 @@
 		var starMaterial = new THREE.MeshPhongMaterial({
 			//color: 0x000,
 			map: new THREE.ImageUtils.loadTexture("/textures/starmap.jpg"),
-			side: THREE.DoubleSide,
+			side: THREE.BackSide,
 			shininess: 0
 		});
 		starField = new THREE.Mesh(starGeometry, starMaterial);
+		starField.scale.set( - 1, 1, 1 );
+		starField.rotation.x = 1.1938052083641222 ;
+		starField.rotation.y = -0.9738937226128364;
+		starField.rotation.z = 0.3141592653589793;
 		scene.add(starField);
 	
 		//
@@ -530,7 +534,7 @@
 				break;
 		}
 		d1 = Math.random() < 0.5 ? -d1 : d1;
-		d2 = Math.random() < 0.5 ? -d2 : d2;
+		//d2 = Math.random() < 0.5 ? -d2 : d2;
 		d3 = Math.random() < 0.5 ? -d3 : d3;
 		return [d1, d2, d3];
 	}	
@@ -587,7 +591,7 @@
 		frustum.setFromMatrix( cameraViewProjectionMatrix );
 		
 		if (animation_trigger == false) {
-			console.log( frustum.intersectsObject( animation_target ) );
+			//console.log( frustum.intersectsObject( animation_target ) );
 			if (frustum.intersectsObject(animation_target)) {
 				console.log('animation triggered');
 				animation_trigger = true;
@@ -636,6 +640,33 @@
             camera.fov += event.deltaY * 0.05;
             camera.updateProjectionMatrix();
         }
+
+		var factor = 1;
+		document.addEventListener("keydown", onDocumentKeyDown, false);
+		function onDocumentKeyDown(event) {
+			var keyCode = event.which;
+			var rot = starField.rotation;
+			var inc = Math.PI/100*factor;
+			if (keyCode == 88) {
+				// x
+				rot.x += inc;
+			} else if (keyCode == 89) {
+				// y
+				rot.y += inc;
+			} else if (keyCode == 90) {
+				// z
+				rot.z += inc;
+			} else if (keyCode == 82) {
+				// reset
+				rot.x = rot.y = rot.z = 0;
+			} else if (keyCode == 16) {
+				// reset
+				factor = -1*factor;
+			}
+			console.log(keyCode, rot.x, rot.y, rot.z)
+		};
+
+
 
 
 
