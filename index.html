@@ -91,15 +91,8 @@
 <script type="x-shader/x-vertex" id="vertexshader">
 	attribute float size;
 	varying vec3 vColor;
-	attribute float perlin;
-	varying float vPerlin;
 	void main() {
-		vPerlin = perlin;
-		if (true) {    
-			vColor = vec3(0.24, 0.34, 0.64);
-		} else {
-			vColor = vec3(abs(vPerlin), vPerlin - 1.0, 1.0);
-		}
+		vColor = color;
 		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 		gl_PointSize = size * ( 500.0 / -mvPosition.z );
 		gl_Position = projectionMatrix * mvPosition;
@@ -135,10 +128,17 @@
 	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, animation_target, animation_trigger, controls, lights, stats, starField, textureLoader , sprite, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
 	var vertices, positions, colors, sizes = [];
 
-		
+	var radius = 500;	
+	var min_radius = 200;	
 		
 
-
+	//
+ 	// MOUSE VARS
+ 	var isUserInteracting = false,
+    onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+    lon = 170, onMouseDownLon = 0,
+    lat = 0, onMouseDownLat = 0,
+    phi = 0, theta = 0;
 
 
 
@@ -239,15 +239,18 @@
 		
 		//
 		// Lights
-		lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
+		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
+		lights = new THREE.HemisphereLight( 0x23e57a3, 0x23e57a3, 2 );
+
+		
 		scene.add(lights);
 	
 		//
 		// Starfield Sphere
-		var starGeometry = new THREE.SphereGeometry(1000, 50, 50);
+		var starGeometry = new THREE.SphereGeometry((radius+min_radius)*2, 50, 50);
 		var starMaterial = new THREE.MeshPhongMaterial({
-			color: 0x000,
-			//map: new THREE.ImageUtils.loadTexture("/textures/starmap.jpg"),
+			//color: 0x000,
+			map: new THREE.ImageUtils.loadTexture("/textures/starmap.jpg"),
 			side: THREE.DoubleSide,
 			shininess: 0
 		});
@@ -316,23 +319,18 @@
 		
 		//
 		// RANDOM PARTICLES, PULSATING
-		var uniforms = {
-			pointTexture: {value: spark}
-		};	
 		
 		var shaderMaterial = new THREE.ShaderMaterial( {
-			uniforms: uniforms,
+			uniforms: { pointTexture: {value: spark} },
 			vertexShader: document.getElementById( 'vertexshader' ).textContent,
 			fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-	
 			blending: THREE.AdditiveBlending,
 			depthTest: false,
 			transparent: true,
 			vertexColors: true
 		} );	
 	
-		random_particles_count = 20000;
-		var radius = 500;
+		random_particles_count = 25000;
 	
 		particles_geometry = new THREE.BufferGeometry();
 	
@@ -343,11 +341,16 @@
 		var color = new THREE.Color();
 	
 		for ( var i = 0; i < random_particles_count; i ++ ) {
-			positions.push( ( Math.random() * 2 - 1 ) * radius );
-			positions.push( ( Math.random() * 2 - 1 ) * radius );
-			positions.push( ( Math.random() * 2 - 1 ) * radius );
-			//color.setHSL( i / random_particles_count, 1.0, 0.5 );
-			//colors.push( color.r, color.g, color.b );
+			var random_position = randomPosition();
+			positions.push( random_position[0] );
+			positions.push( random_position[1] );
+			positions.push( random_position[2] );
+			if (Math.floor(Math.random()*4) == 0) {
+				color.setHSL( 0.6, 0.6, 0.6 ); // blue
+			} else {
+				color.setHSL( 0, 0, Math.random() ); // white
+			}
+			colors.push( color.r, color.g, color.b );
 			sizes.push(20);
 		}
 		particles_geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
@@ -368,8 +371,8 @@
 		var json = {
 		    "constellation": {
 				"stars": [
-					{"x":0, "y":0, "z":50, "connected":1, "labelposition":"b", "label":"GREETINGS"},
-					{"x":50, "y":50, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
+					{"x":0, "y":0, "z":150, "connected":1, "labelposition":"b", "label":"GREETINGS"},
+					{"x":150, "y":50, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
 					{"x":100, "y":0, "z":50, "connected":0, "labelposition":"l", "label":"FALKEN!"},
 					{"x":150, "y":50, "z":0, "connected":1, "labelposition":"r", "label":"HOW"},
 					{"x":-50, "y":50, "z":150, "connected":1, "labelposition":"r", "label":"ABOUT"},
@@ -509,8 +512,32 @@
 	}
 	*/
 
-
-
+	//
+	// RANDOM POSITION WITH MINIMUM RADIUS
+	function randomPosition() {
+		var d1 = Math.random() * radius;
+		var d2 = Math.random() * radius;
+		var d3 = Math.random() * radius;
+		switch((Math.floor(Math.random()*3)+1)) {
+			case 1:
+				d1 += min_radius;
+				break;
+			case 2:
+				d2 += min_radius;
+				break;
+			case 3:
+				d3 += min_radius;
+				break;
+		}
+		d1 = Math.random() < 0.5 ? -d1 : d1;
+		d2 = Math.random() < 0.5 ? -d2 : d2;
+		d3 = Math.random() < 0.5 ? -d3 : d3;
+		return [d1, d2, d3];
+	}	
+	
+	
+	
+	
 
 
 
@@ -570,7 +597,7 @@
 	
 	function render() {
 		
-		var time = Date.now() * 0.005;
+		var time = Date.now() * 0.003;
 		
 		var sizes = particles_geometry.attributes.size.array;
 	
