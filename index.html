@@ -14,10 +14,9 @@
 			height: 100% 
 		}
 		.label {
-			color: #F00;
+			color: #f8f8e0;
 			font-family: sans-serif;
 			padding: 2px;
-			background: rgba( 0, 0, 0, .6 );
 		}
 		.top {
 			margin-top: -2em;
@@ -65,7 +64,6 @@
 			color: #777777;
 			font-size: 12px;
 		}		
-		
 	</style>
 </head>
 <body>
@@ -77,6 +75,8 @@
 		</div>
 	</div>	
 	
+
+
 	
 <script src="https://threejs.org/build/three.min.js"></script>
 <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/WebGL.js"></script>
@@ -125,8 +125,13 @@
 	
 	//
 	// VARS
-	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, animation_target, animation_trigger, controls, lights, stats, starField, textureLoader , sprite, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
+	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, 
+	animation_target, animation_trigger, controls, lights, stats, starField, textureLoader, 
+	starCampaign, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
 	var vertices, positions, colors, sizes = [];
+
+	var displayList = [];
+
 
 	var radius = 500;	
 	var min_radius = 200;	
@@ -173,7 +178,8 @@
 		document.body.classList.add("desktop");
 	}
 
-	
+
+
 	
 	function init () {
 				
@@ -264,23 +270,11 @@
 		//
 		// TEXTURE LOADING FOR ANIMATION TARGET
 		textureLoader = new THREE.TextureLoader();
-		sprite = textureLoader.load( 'textures/sprites/star-01.png' );
+		starCampaign = textureLoader.load( 'textures/sprites/star-campaign.png' );
+		starEvent = textureLoader.load( 'textures/sprites/star-event.png' );
 		spark = textureLoader.load( 'textures/sprites/spark1.png' );
 		
-		//
-		// Spheric stars
-		/*
-		starCount = 0;
-		for (var i = 0; i < starCount; i++) {
-			scene.add(createSphericStar(0xffffff));
-		}
 	
-		blueCount = 0;
-		for (var i = 0; i < blueCount; i++) {
-			scene.add(createSphericStar(0x23e57a3));
-		}
-		*/
-		
 		
 		
 	
@@ -294,30 +288,7 @@
 		
 		
 		
-		
-		//
-		// RANDOM SPRITES
-		/*
-		var random_sprites_vertices = [];
-		var random_sprites_geometry = new THREE.BufferGeometry();
-		for ( var i = 0; i < 1000; i ++ ) {
-			var x = Math.random() * 500 - 250;
-			var y = Math.random() * 500 - 250;
-			var z = Math.random() * 500 - 250;
-			random_sprites_vertices.push( x, y, z );
-		}
-		
-		random_sprites_geometry.setAttribute('position', new THREE.Float32BufferAttribute(random_sprites_vertices, 3));
-			
-		var random_sprites_material = new THREE.PointsMaterial( { size: 16, map:spark, blending: THREE.AdditiveBlending, depthTest: false, transparent: true } );
-		var random_sprites_system = new THREE.Points(random_sprites_geometry, random_sprites_material );
-		
-		random_sprites_system.rotation.x = Math.random() * 6;
-		random_sprites_system.rotation.y = Math.random() * 6;
-		random_sprites_system.rotation.z = Math.random() * 6;
-		
-		scene.add( random_sprites_system );
-		*/
+	
 	
 	
 		
@@ -334,7 +305,7 @@
 			vertexColors: true
 		} );	
 	
-		random_particles_count = 25000;
+		random_particles_count = 15000;
 	
 		particles_geometry = new THREE.BufferGeometry();
 	
@@ -364,32 +335,73 @@
 		particleSystem = new THREE.Points( particles_geometry, shaderMaterial );
 	
 		scene.add( particleSystem );
+
+		//showConstellation(false);
 		
-		
-		
-		
-		
-		
-		//
-		// SIMLUATION OF LOADED JSON DATA
-		var json = {
-		    "constellation": {
-				"stars": [
-					{"x":0, "y":0, "z":150, "connected":1, "labelposition":"b", "label":"GREETINGS"},
-					{"x":150, "y":50, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
-					{"x":100, "y":0, "z":50, "connected":0, "labelposition":"l", "label":"FALKEN!"},
-					{"x":150, "y":50, "z":0, "connected":1, "labelposition":"r", "label":"HOW"},
-					{"x":-50, "y":50, "z":150, "connected":1, "labelposition":"r", "label":"ABOUT"},
-					{"x":-150, "y":0, "z":250, "connected":1, "labelposition":"r", "label":"A"},
-					{"x":-200, "y":100, "z":450, "connected":1, "labelposition":"r", "label":"NICE"},
-					{"x":0, "y":150, "z":550, "connected":1, "labelposition":"r", "label":"GAME"},
-					{"x":50, "y":-50, "z":750, "connected":1, "labelposition":"r", "label":"OF"},
-					{"x":150, "y":0, "z":850, "connected":1, "labelposition":"r", "label":"CHESS?"}
-			    ]        
-		    }
+		window.addEventListener('resize', onWindowResize, false);
+
+	} // END init()
+	
+	
+	
+	
+	//
+	// GET CONSTELLATION DATA
+	function getConstellationData(ref) {
+		if (ref) {
+			return {
+				"constellation": {
+					"stars": [
+						{"x":0, "y":200, "z":150, "connected":1, "labelposition":"b", "label":"GREETINGS"},
+						{"x":150, "y":250, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
+						{"x":100, "y":200, "z":50, "connected":0, "labelposition":"l", "label":"FALKEN!"}
+					]        
+				}
+			}		
+		} else {
+			return {
+				"constellation": {
+					"stars": [
+						{"x":150, "y":250, "z":150, "connected":1, "labelposition":"r", "label":"HOW"},
+						{"x":-50, "y":250, "z":150, "connected":1, "labelposition":"r", "label":"ABOUT"},
+						{"x":-150, "y":200, "z":250, "connected":1, "labelposition":"r", "label":"A"},
+						{"x":-200, "y":300, "z":450, "connected":1, "labelposition":"r", "label":"NICE"},
+						{"x":0, "y":350, "z":550, "connected":1, "labelposition":"r", "label":"GAME"},
+						{"x":50, "y":250, "z":750, "connected":1, "labelposition":"r", "label":"OF"},
+						{"x":150, "y":200, "z":850, "connected":1, "labelposition":"r", "label":"CHESS?"}
+					]        
+				}
+			}
 		}
-		
+	}
+
+	
+	//
+	// CLEAN-UP CONSTELLATION
+	function wipeConstellation() {
+		console.log("wipeConstellation");
+		for(var i = 0; i < displayList.length; i++) {
+			var obj = displayList[i];
+			//console.log(obj);
+			scene.remove(obj);
+		}
+		var labels = document.getElementsByClassName('label');
+		while(labels[0]) {
+			labels[0].parentNode.removeChild(labels[0]);
+		}
+		animation_trigger = false;
+		displayList = [];
+	}
+
+	//
+	// SHOW CONSTELLATION
+	function showConstellation(ref) {
+		console.log("showConstellation");
+		wipeConstellation();
+
+		var json = getConstellationData(ref);
 		var figure = new THREE.Geometry();
+		var connected;
 		
 		for(var i = 0; i < json.constellation.stars.length; i++) {
 	    	var obj = json.constellation.stars[i];
@@ -427,94 +439,80 @@
 				sphere.position.z = obj.z;	
 				sphere.add( label_2d );
 			
-			scene.add(sphere);		
+			scene.add(sphere);
+			displayList.push(sphere);
 			
 			//
 			// BASIC STAR SPRITES
-			var point_material = new THREE.PointsMaterial( { size:32, map:sprite, blending:THREE.NormalBlending, depthTest:false, transparent:true, opacity:0.5 } );
+			var point_material = new THREE.PointsMaterial( { size:64, map:starEvent, blending:THREE.NormalBlending, depthTest:false, transparent:true, opacity:0.5 } );
 			var anchor = new THREE.Points(figure, point_material);
 			scene.add(anchor);		
+			displayList.push(anchor);
 			
 			if (i==0) {
 				animation_target = sphere;
 			}
+
+			connected = obj.connected;
 			
 		}
 	
-		figure.computeBoundingSphere();
-		
-		fraction = 0;
-		var points = figure.vertices;
-		var geometry = new THREE.BufferGeometry();
-	
-		// attributes
-		numPoints = points.length;
-		var positions = new Float32Array( numPoints * 3 ); // 3 vertices per point
-		var lineDistances = new Float32Array( numPoints * 1 ); // 1 value per point
-	
-		geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-		geometry.setAttribute( 'lineDistance', new THREE.BufferAttribute( lineDistances, 1 ) );
-	
-		// populate
-	
-		for ( var i = 0, index = 0, l = numPoints; i < l; i ++, index += 3 ) {
-	
-			positions[ index ] = points[ i ].x;
-			positions[ index + 1 ] = points[ i ].y;
-			positions[ index + 2 ] = points[ i ].z;
-	
-			if ( i > 0 ) {
-	
-				lineDistances[ i ] = lineDistances[ i - 1 ] + points[ i - 1 ].distanceTo( points[ i ] );
-	
-			}
-	
-		}
-	
-		lineLength = lineDistances[ numPoints - 1 ];
-	
-		// material
-		var material = new THREE.LineDashedMaterial( {
-	  	dashSize: 3, // to be updated in the render loop
-	  	gapSize: 1e10 // a big number, so only one dash is rendered
-	
-		} );
 	
 		// line
-		line = new THREE.Line( geometry, material );
-		scene.add( line );
+		if (connected) {
+			figure.computeBoundingSphere();
+			fraction = 0;
+			var points = figure.vertices;
+			var geometry = new THREE.BufferGeometry();
 		
-		
-		
-		window.addEventListener('resize', onWindowResize, false);
+			// attributes
+			numPoints = points.length;
+			var positions = new Float32Array( numPoints * 3 ); // 3 vertices per point
+			var lineDistances = new Float32Array( numPoints * 1 ); // 1 value per point
+			geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+			geometry.setAttribute( 'lineDistance', new THREE.BufferAttribute( lineDistances, 1 ) );
+	
+			// populate
+			for ( var i = 0, index = 0, l = numPoints; i < l; i ++, index += 3 ) {
+				positions[ index ] = points[ i ].x;
+				positions[ index + 1 ] = points[ i ].y;
+				positions[ index + 2 ] = points[ i ].z;
+				if ( i > 0 ) {
+					lineDistances[ i ] = lineDistances[ i - 1 ] + points[ i - 1 ].distanceTo( points[ i ] );
+				}
+			}
+			lineLength = lineDistances[ numPoints - 1 ];
+			// material
+			var material = new THREE.LineDashedMaterial( {
+				color: 0xf8f8e0,
+				linewidth: 1,	
+				dashSize: 3, // to be updated in the render loop
+				gapSize: 1e10 // a big number, so only one dash is rendered
+			} );
+			line = new THREE.Line( geometry, material );
+			scene.add(line);
+			displayList.push(line);
+		} else {
+			line = null;
+		}
+	}	
+	
 
-		
-		
-	} // END init()
-	
-	
-	
-	
-	
-	
+
+
+
 	
 	
 	
 
-	//
-	// CREATE SPHERIC STARS
-	/*
-	function createSphericStar(color) {
-		var particleSize = Math.random() * 1 -.3;
-		var geometry = new THREE.SphereGeometry( particleSize, 32, 32 );
-		var material = new THREE.MeshBasicMaterial( {color:color} );
-		var sphere = new THREE.Mesh( geometry, material );
-			sphere.position.x = Math.random() * 500 - 250;
-			sphere.position.y = Math.random() * 500 - 250;
-			sphere.position.z = Math.random() * 500 - 250;		
-		return sphere;
-	}
-	*/
+
+
+
+
+
+
+	
+	
 
 	//
 	// RANDOM POSITION WITH MINIMUM RADIUS
@@ -562,7 +560,7 @@
 	// ANIMATION LOOP
 	function animate() {
 		requestAnimationFrame(animate);
-		if (animation_trigger) {
+		if (animation_trigger && line != null) {
 			fraction = ( fraction + 0.001 ) % 100;
 			line.material.dashSize = fraction * lineLength;
 		}
@@ -590,7 +588,7 @@
 		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
 		frustum.setFromMatrix( cameraViewProjectionMatrix );
 		
-		if (animation_trigger == false) {
+		if (animation_target && animation_trigger == false) {
 			//console.log( frustum.intersectsObject( animation_target ) );
 			if (frustum.intersectsObject(animation_target)) {
 				console.log('animation triggered');
@@ -657,11 +655,20 @@
 				// z
 				rot.z += inc;
 			} else if (keyCode == 82) {
-				// reset
+				// r
 				rot.x = rot.y = rot.z = 0;
+			} else if (keyCode == 83) {
+				// s
+				wipeConstellation();
 			} else if (keyCode == 16) {
 				// reset
 				factor = -1*factor;
+			} else if (keyCode == 49) {
+				// 1
+				showConstellation(true);	
+			} else if (keyCode == 50) {
+				// 2
+				showConstellation(false);
 			}
 			console.log(keyCode, rot.x, rot.y, rot.z)
 		};
