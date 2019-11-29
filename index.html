@@ -185,7 +185,8 @@
 		//
 		// CAMERA
 		camera = new THREE.PerspectiveCamera( 85, window.innerWidth/window.innerHeight, 1, 2000);
-		camera.position.z = 1
+		camera.target = new THREE.Vector3( 0, 0, 0 );
+		//camera.position.z = 0
 	
 		//
 		// WebGL Renderer
@@ -214,9 +215,13 @@
 		if (md.mobile()) {
 			controls = new THREE.DeviceOrientationControls(camera);
 		} else {
-			controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
-			controls.maxDistance = 500;
-			controls.update();
+            document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+            document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+            //document.addEventListener( 'wheel', onDocumentMouseWheel, false );
+			//controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
+			//controls.maxDistance = 500;
+			//controls.update();
 		}
 		
 		//
@@ -534,7 +539,17 @@
 		update();
 	}
 	function update() {
-		controls.update();
+		if(controls) {
+			controls.update();
+		} else {
+			lat = Math.max( - 85, Math.min( 85, lat ) );
+			phi = THREE.Math.degToRad( 90 - lat );
+			theta = THREE.Math.degToRad( lon );
+			camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+			camera.target.y = 500 * Math.cos( phi );
+			camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+			camera.lookAt( camera.target );
+        }
 		stats.update();
 		
 		// 
@@ -567,6 +582,35 @@
 		renderer.render( scene, camera );
 		labelRenderer.render( scene, camera );
 	}
+
+
+
+
+
+   
+        function onDocumentMouseDown( event ) {
+            event.preventDefault();
+            isUserInteracting = true;
+            onPointerDownPointerX = event.clientX;
+            onPointerDownPointerY = event.clientY;
+            onPointerDownLon = lon;
+            onPointerDownLat = lat;
+        }
+        function onDocumentMouseMove( event ) {
+            if ( isUserInteracting === true ) {
+                lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+                lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+            }
+        }
+        function onDocumentMouseUp( event ) {
+            isUserInteracting = false;
+        }
+        function onDocumentMouseWheel( event ) {
+            camera.fov += event.deltaY * 0.05;
+            camera.updateProjectionMatrix();
+        }
+
+
 
 	
 
