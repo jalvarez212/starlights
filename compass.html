@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<title>StarLights</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		body { 
+			margin: 0; 
+			overflow: hidden;
+		}
+		canvas { 
+			width: 100%; 
+			height: 100% 
+		}
+		.label {
+			color: #f8f8e0;
+			font-family: sans-serif;
+			padding: 2px;
+		}
+		.top {
+			margin-top: -2em;
+		}
+		.bottom {
+			margin-top: 2em;
+		}
+		.left {
+			margin-left: -2em;
+		}
+		.right {
+			margin-left: 2em;
+		}
+		
+		.mobile #overlay {
+			display: flex;
+		}
+		#overlay {
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height:100%;
+			display: none;
+			align-items: center;
+			justify-content: center;
+			opacity: 1;
+			background-color: #000000;
+			color: #ffffff;
+		}
+		#overlay > div {
+			text-align: center;
+		}
+		#overlay > div > button {
+			height:50px;
+			padding:20px;
+			background: transparent;
+			color: #ffffff;
+			outline: 1px solid #ffffff;
+			border: 0px;
+			cursor: pointer;
+		}
+		#overlay > div > p {
+			color: #777777;
+			font-size: 12px;
+		}		
+	</style>
+</head>
+<body>
+	
+	<div id="overlay">
+		<div>
+			<button id="startButton">Start v4.01</button>
+			<p>Using device orientation might require a user interaction.</p>
+		</div>
+	</div>	
+	
+
+	
+<script src="https://threejs.org/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/WebGL.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/DeviceOrientationControls.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/renderers/CSS2DRenderer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mobile-detect@1.4.4/mobile-detect.min.js"></script>
+<script src="js/Stats.js"></script>
+
+
+
+<script type="x-shader/x-vertex" id="vertexshader">
+	attribute float size;
+	varying vec3 vColor;
+	void main() {
+		vColor = color;
+		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+		gl_PointSize = size * ( 500.0 / -mvPosition.z );
+		gl_Position = projectionMatrix * mvPosition;
+	}
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+	uniform sampler2D pointTexture;
+	varying vec3 vColor;
+	void main() {
+		gl_FragColor = vec4( vColor, 1.0 );
+		gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
+	}
+</script>
+
+
+
+
+
+<script type="text/javascript">
+	
+	/*
+	if ( WEBGL.isWebGLAvailable() ) {
+		//animate();
+	} else {
+		//var warning = WEBGL.getWebGLErrorMessage();
+		//document.getElementById( 'container' ).appendChild( warning );
+	}
+	*/
+	
+	//
+	// VARS
+	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, 
+	animation_target, animation_trigger, controls, lights, stats, starField, textureLoader, 
+	starCampaign, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
+	var vertices, positions, colors, sizes = [];
+
+	var displayList = [];
+
+
+	var radius = 1000;	
+	var min_radius = 200;	
+	var universe_radius = radius+min_radius;
+		
+
+	//
+ 	// MOUSE VARS
+ 	var isUserInteracting = false,
+    onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+    lon = 170, onMouseDownLon = 0,
+    lat = 0, onMouseDownLat = 0,
+    phi = 0, theta = 0;
+
+
+
+
+	
+	//
+	// MOBILE DETECT
+	var md = new MobileDetect(window.navigator.userAgent);
+	console.log("=== MobileDetect ===");
+	console.log(md.mobile());          			// 'Sony'
+	console.log(md.phone());           			// 'Sony'
+	console.log(md.tablet());          			// null
+	console.log(md.userAgent());       			// 'Safari'
+	console.log(md.os());              			// 'AndroidOS'
+	console.log(md.is('iPhone'));      			// false
+	console.log(md.version('Webkit'));      	// 534.3
+	console.log(md.versionStr('Build'));    	// '4.1.A.0.562'
+	console.log("====================");
+	
+	
+	if (md.mobile()) {
+		document.getElementById('startButton').addEventListener( 'click', function () {
+			console.log('clicking');
+			init();
+			animate();
+			document.getElementById('overlay').remove();
+		}, false );
+		document.body.classList.add("mobile");
+	} else {
+		init();
+		animate();
+		document.body.classList.add("desktop");
+	}
+
+
+
+	
+	function init () {
+				
+		//
+		// SCENE
+		scene = new THREE.Scene();
+		
+		
+		//
+		// CAMERA
+		camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, universe_radius);
+		camera.target = new THREE.Vector3( 0, 0, 0 );
+		//camera.position.z = 0
+	
+		//
+		// WebGL Renderer
+		renderer = new THREE.WebGLRenderer();
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+			
+		//
+		// CSS 2D Renderer
+		labelRenderer = new THREE.CSS2DRenderer();
+		labelRenderer.setSize( window.innerWidth, window.innerHeight );
+		labelRenderer.domElement.style.position = 'absolute';
+		labelRenderer.domElement.style.top = 0;
+		document.body.appendChild( labelRenderer.domElement );
+		
+		//
+		// FRUSTUM
+		frustum = new THREE.Frustum();
+		cameraViewProjectionMatrix = new THREE.Matrix4();
+		animation_target;
+		animation_trigger = false;
+		
+		//
+		// CONTROLS
+		if (md.mobile()) {
+			controls = new THREE.DeviceOrientationControls(camera);
+		} else {
+            document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+            document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+            //document.addEventListener( 'wheel', onDocumentMouseWheel, false );
+			//controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
+			//controls.maxDistance = 500;
+			//controls.update();
+		}
+		
+		//
+		// STATS
+		stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		stats.domElement.style.zIndex = 100;
+		
+		document.body.appendChild( stats.domElement );
+		
+		//
+		// AXIS Helper
+		//scene.add( new THREE.AxesHelper( 700 ) );
+		
+		//
+		// Lights
+		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
+		lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
+		scene.add(lights);
+	
+		//
+		// Starfield Sphere
+		var starGeometry = new THREE.SphereGeometry(universe_radius, 50, 50);
+		var starMaterial = new THREE.MeshPhongMaterial({
+			//color: 0x000,
+			map: new THREE.ImageUtils.loadTexture("/textures/starmap.jpg"),
+			side: THREE.BackSide,
+			shininess: 0
+		});
+		starField = new THREE.Mesh(starGeometry, starMaterial);
+		starField.scale.set( - 1, 1, 1 );
+		starField.rotation.x = 1.1938052083641222 ;
+		starField.rotation.y = -0.9738937226128364;
+		starField.rotation.z = 0.3141592653589793;
+		scene.add(starField);
+	
+		//
+		// TEXTURE LOADING FOR ANIMATION TARGET
+		textureLoader = new THREE.TextureLoader();
+		starCampaign = textureLoader.load( 'textures/sprites/star-campaign.png' );
+		starEvent = textureLoader.load( 'textures/sprites/star-event.png' );
+		spark = textureLoader.load( 'textures/sprites/spark1.png' );
+		
+	
+		
+		
+	
+		
+		
+		//
+		// COMPASS
+		var compassTextureMap = textureLoader.load( 'textures/sprites/north.svg' );
+		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
+		var compass = new THREE.Sprite( compassMaterial );
+		compass.scale.set(50, 50, 1);
+		compass.position.set((universe_radius-50), 0, 0);
+
+		scene.add( compass );
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+		
+		//
+		// RANDOM PARTICLES, PULSATING
+		
+		var shaderMaterial = new THREE.ShaderMaterial( {
+			uniforms: { pointTexture: {value: spark} },
+			vertexShader: document.getElementById( 'vertexshader' ).textContent,
+			fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+			blending: THREE.AdditiveBlending,
+			depthTest: false,
+			transparent: true,
+			vertexColors: true
+		} );	
+	
+		random_particles_count = 10000;
+	
+		particles_geometry = new THREE.BufferGeometry();
+	
+		var positions = [];
+		var colors = [];
+		var sizes = [];
+	
+		var color = new THREE.Color();
+	
+		for ( var i = 0; i < random_particles_count; i ++ ) {
+			var random_position = randomPosition();
+			positions.push( random_position[0] );
+			positions.push( random_position[1] );
+			positions.push( random_position[2] );
+			if (Math.floor(Math.random()*4) == 0) {
+				color.setHSL( 0.6, 0.6, 0.6 ); // blue
+			} else {
+				color.setHSL( 0, 0, Math.random() ); // white
+			}
+			colors.push( color.r, color.g, color.b );
+			sizes.push(20);
+		}
+		particles_geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
+		particles_geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+		particles_geometry.setAttribute( 'size', new THREE.Float32BufferAttribute( sizes, 1 ).setUsage( THREE.DynamicDrawUsage ) );
+	
+		particleSystem = new THREE.Points( particles_geometry, shaderMaterial );
+	
+		scene.add( particleSystem );
+
+		//showConstellation(false);
+		
+		window.addEventListener('resize', onWindowResize, false);
+
+		if (window.DeviceOrientationAbsoluteEvent) {
+			window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
+		} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
+			window.addEventListener("deviceorientation", deviceOrientationListener);
+		} else { // Send an alert if the device isn't compatible
+			alert("Sorry, try again on a compatible mobile device!");
+		}
+
+	} // END init()
+	
+	
+	
+	//
+	// deviceOrientationListener
+	function deviceOrientationListener(event) {
+		var alpha    = event.alpha; //z axis rotation [0,360)
+		var beta     = event.beta; //x axis rotation [-180, 180]
+		var gamma    = event.gamma; //y axis rotation [-90, 90]      //Check if absolute values have been sent
+		if (typeof event.webkitCompassHeading !== "undefined") {
+			alpha = event.webkitCompassHeading; //iOS non-standard
+			var heading = alpha
+			document.getElementById("heading").innerHTML = heading.toFixed([0]);
+		} else {
+			alert("Your device is reporting relative alpha values, so this compass won't point north :(");
+			var heading = 360 - alpha; //heading [0, 360)
+			document.getElementById("heading").innerHTML = heading.toFixed([0]);
+		}
+	
+		// Change backgroud colour based on heading
+		// Green for North and South, black otherwise
+		if (heading > 359 || heading < 1) { //Allow +- 1 degree
+			document.body.style.backgroundColor = "green";
+			document.getElementById("heading").innerHTML = "N"; // North
+		} else if (heading > 179 && heading < 181){ //Allow +- 1 degree
+			document.body.style.backgroundColor = "green";
+			document.getElementById("heading").innerHTML = "S"; // South
+		} else { // Otherwise, use near black
+			document.body.style.backgroundColor = "#161616";
+		}
+	}
+
+
+
+
+
+
+	
+	//
+	// GET CONSTELLATION DATA
+	function getConstellationData(ref) {
+		if (ref) {
+			return {
+				"constellation": {
+					"stars": [
+						{"x":0, "y":200, "z":150, "connected":1, "labelposition":"b", "label":"GREETINGS"},
+						{"x":150, "y":250, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
+						{"x":100, "y":200, "z":50, "connected":0, "labelposition":"l", "label":"FALKEN!"}
+					]        
+				}
+			}		
+		} else {
+			return {
+				"constellation": {
+					"stars": [
+						{"x":150, "y":250, "z":150, "connected":1, "labelposition":"r", "label":"HOW"},
+						{"x":-50, "y":250, "z":150, "connected":1, "labelposition":"r", "label":"ABOUT"},
+						{"x":-150, "y":200, "z":250, "connected":1, "labelposition":"r", "label":"A"},
+						{"x":-200, "y":300, "z":450, "connected":1, "labelposition":"r", "label":"NICE"},
+						{"x":0, "y":350, "z":550, "connected":1, "labelposition":"r", "label":"GAME"},
+						{"x":50, "y":250, "z":750, "connected":1, "labelposition":"r", "label":"OF"},
+						{"x":150, "y":200, "z":850, "connected":1, "labelposition":"r", "label":"CHESS?"}
+					]        
+				}
+			}
+		}
+	}
+
+	
+	//
+	// CLEAN-UP CONSTELLATION
+	function wipeConstellation() {
+		console.log("wipeConstellation");
+		for(var i = 0; i < displayList.length; i++) {
+			var obj = displayList[i];
+			//console.log(obj);
+			scene.remove(obj);
+		}
+		var labels = document.getElementsByClassName('label');
+		while(labels[0]) {
+			labels[0].parentNode.removeChild(labels[0]);
+		}
+		animation_trigger = false;
+		displayList = [];
+	}
+
+	//
+	// SHOW CONSTELLATION
+	function showConstellation(ref) {
+		console.log("showConstellation");
+		wipeConstellation();
+
+		var json = getConstellationData(ref);
+		var figure = new THREE.Geometry();
+		var connected;
+		
+		for(var i = 0; i < json.constellation.stars.length; i++) {
+	    	var obj = json.constellation.stars[i];
+			console.log(obj.label);
+				
+			var vector = new THREE.Vector3(obj.x, obj.y, obj.z);
+			figure.vertices.push(vector);
+			
+			var label_div = document.createElement( 'div' );
+				label_div.textContent = obj.label;
+				
+			switch(obj.labelposition) {
+				case 'l':
+				label_div.className = 'label left';
+				break;
+				case 'r':
+				label_div.className = 'label right';
+				break;
+				case 't':
+				label_div.className = 'label top';
+				break;
+				case 'b':
+				label_div.className = 'label bottom';
+				break;
+			}		
+				
+			var label_2d = new THREE.CSS2DObject( label_div );
+				label_2d.position.set( 0, 0, 0 );
+			
+			var geometry = new THREE.SphereGeometry( 0.0001, 1, 1 );
+			var material = new THREE.MeshBasicMaterial( {color: 0x000000, transparent:true, opacity:0} );
+			var sphere = new THREE.Mesh( geometry, material );
+				sphere.position.x = obj.x;
+				sphere.position.y = obj.y;
+				sphere.position.z = obj.z;	
+				sphere.add( label_2d );
+			
+			scene.add(sphere);
+			displayList.push(sphere);
+			
+			//
+			// BASIC STAR SPRITES
+			var point_material = new THREE.PointsMaterial( { size:64, map:starEvent, blending:THREE.NormalBlending, depthTest:false, transparent:true, opacity:0.5 } );
+			var anchor = new THREE.Points(figure, point_material);
+			scene.add(anchor);		
+			displayList.push(anchor);
+			
+			if (i==0) {
+				animation_target = sphere;
+			}
+
+			connected = obj.connected;
+			
+		}
+	
+	
+		// line
+		if (connected) {
+			figure.computeBoundingSphere();
+			fraction = 0;
+			var points = figure.vertices;
+			var geometry = new THREE.BufferGeometry();
+		
+			// attributes
+			numPoints = points.length;
+			var positions = new Float32Array( numPoints * 3 ); // 3 vertices per point
+			var lineDistances = new Float32Array( numPoints * 1 ); // 1 value per point
+			geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+			geometry.setAttribute( 'lineDistance', new THREE.BufferAttribute( lineDistances, 1 ) );
+	
+			// populate
+			for ( var i = 0, index = 0, l = numPoints; i < l; i ++, index += 3 ) {
+				positions[ index ] = points[ i ].x;
+				positions[ index + 1 ] = points[ i ].y;
+				positions[ index + 2 ] = points[ i ].z;
+				if ( i > 0 ) {
+					lineDistances[ i ] = lineDistances[ i - 1 ] + points[ i - 1 ].distanceTo( points[ i ] );
+				}
+			}
+			lineLength = lineDistances[ numPoints - 1 ];
+			// material
+			var material = new THREE.LineDashedMaterial( {
+				color: 0xf8f8e0,
+				linewidth: 1,	
+				dashSize: 3, // to be updated in the render loop
+				gapSize: 1e10 // a big number, so only one dash is rendered
+			} );
+			line = new THREE.Line( geometry, material );
+			scene.add(line);
+			displayList.push(line);
+		} else {
+			line = null;
+		}
+	}	
+	
+
+
+
+
+	
+	
+	
+
+
+
+
+
+
+
+	
+	
+
+	//
+	// RANDOM POSITION WITH MINIMUM RADIUS
+	function randomPosition() {
+		var d1 = Math.random() * radius;
+		var d2 = Math.random() * radius;
+		var d3 = Math.random() * radius;
+		switch((Math.floor(Math.random()*3)+1)) {
+			case 1:
+				d1 += min_radius;
+				break;
+			case 2:
+				d2 += min_radius;
+				break;
+			case 3:
+				d3 += min_radius;
+				break;
+		}
+		d1 = Math.random() < 0.5 ? -d1 : d1;
+		//d2 = Math.random() < 0.5 ? -d2 : d2;
+		d3 = Math.random() < 0.5 ? -d3 : d3;
+		return [d1, d2, d3];
+	}	
+	
+	
+	
+	
+
+
+
+
+
+	//
+	// WINDOW RESIZE
+	function onWindowResize() {
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		labelRenderer.setSize(window.innerWidth, window.innerHeight);
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+	}
+
+
+	//
+	// ANIMATION LOOP
+	function animate() {
+		requestAnimationFrame(animate);
+		if (animation_trigger && line != null) {
+			fraction = ( fraction + 0.001 ) % 100;
+			line.material.dashSize = fraction * lineLength;
+		}
+		render();		
+		update();
+	}
+	function update() {
+		if(controls) {
+			controls.update();
+		} else {
+			lat = Math.max( - 85, Math.min( 85, lat ) );
+			phi = THREE.Math.degToRad( 90 - lat );
+			theta = THREE.Math.degToRad( lon );
+			camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+			camera.target.y = 500 * Math.cos( phi );
+			camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+			camera.lookAt( camera.target );
+        }
+		stats.update();
+		
+		// 
+		// FRUSTUM
+		camera.updateMatrixWorld(); // make sure the camera matrix is updated
+		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
+		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
+		frustum.setFromMatrix( cameraViewProjectionMatrix );
+
+		if (animation_target && animation_trigger == false) {
+			//console.log( frustum.intersectsObject( animation_target ) );
+			if (frustum.intersectsObject(animation_target)) {
+				console.log('animation triggered');
+				animation_trigger = true;
+			}
+		}
+	}
+	
+	function render() {
+		
+		var time = Date.now() * 0.003;
+		
+		var sizes = particles_geometry.attributes.size.array;
+	
+		for ( var i=0; i<random_particles_count; i++ ) {
+			sizes[ i ] = 5 * ( 1 + Math.sin( 0.1 * i + time ) );
+		}
+		particles_geometry.attributes.size.needsUpdate = true;		
+	
+		renderer.render( scene, camera );
+		labelRenderer.render( scene, camera );
+	}
+
+
+
+
+
+   
+	function onDocumentMouseDown( event ) {
+		event.preventDefault();
+		isUserInteracting = true;
+		onPointerDownPointerX = event.clientX;
+		onPointerDownPointerY = event.clientY;
+		onPointerDownLon = lon;
+		onPointerDownLat = lat;
+	}
+	function onDocumentMouseMove( event ) {
+		if ( isUserInteracting === true ) {
+			lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+			lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+		}
+	}
+	function onDocumentMouseUp( event ) {
+		isUserInteracting = false;
+	}
+	function onDocumentMouseWheel( event ) {
+		camera.fov += event.deltaY * 0.05;
+		camera.updateProjectionMatrix();
+	}
+
+	var factor = 1;
+	document.addEventListener("keydown", onDocumentKeyDown, false);
+	function onDocumentKeyDown(event) {
+		var keyCode = event.which;
+		var rot = starField.rotation;
+		var inc = Math.PI/100*factor;
+		if (keyCode == 88) {
+			// x
+			rot.x += inc;
+		} else if (keyCode == 89) {
+			// y
+			rot.y += inc;
+		} else if (keyCode == 90) {
+			// z
+			rot.z += inc;
+		} else if (keyCode == 82) {
+			// r
+			rot.x = rot.y = rot.z = 0;
+		} else if (keyCode == 83) {
+			// s
+			wipeConstellation();
+		} else if (keyCode == 16) {
+			// reset
+			factor = -1*factor;
+		} else if (keyCode == 49) {
+			// 1
+			showConstellation(true);	
+		} else if (keyCode == 50) {
+			// 2
+			showConstellation(false);
+		}
+		console.log(keyCode, rot.x, rot.y, rot.z)
+	};
+
+
+
+
+
+	
+
+</script>
+
+
+<p id="heading" style="text-align:center"></p>
+
+</body>
+</html>
