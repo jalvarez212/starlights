@@ -138,6 +138,7 @@
 	var universe_radius = radius+min_radius;
 		
 	var compass_calibrated = false;
+	var heading_during_calibration;
 
 
 	//
@@ -419,9 +420,10 @@
 		if (!compass_calibrated && heading) {
 			compass_calibrated = true;
 			universe.rotation.y = Math.degToRad(heading);
+			heading_during_calibration = heading;
 		}
 
-		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y);
+		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y+" | "+compass_calibrated+" | "+heading_during_calibration);
 
 	}
 
