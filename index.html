@@ -144,7 +144,7 @@
  	// MOUSE VARS
  	var isUserInteracting = false,
     onMouseDownMouseX = 0, onMouseDownMouseY = 0,
-    lon = 170, onMouseDownLon = 0,
+    lon = 90, onMouseDownLon = 0,
     lat = 0, onMouseDownLat = 0,
     phi = 0, theta = 0;
 
@@ -195,7 +195,9 @@
 		// CAMERA
 		camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, universe_radius);
 		camera.target = new THREE.Vector3( 0, 0, 0 );
-		//camera.position.z = 0
+		camera.position.x = 0
+		camera.position.y = 20
+		camera.position.z = 0
 	
 		//
 		// WebGL Renderer
@@ -244,7 +246,7 @@
 		
 		//
 		// AXIS Helper
-		//scene.add( new THREE.AxesHelper( 700 ) );
+		scene.add( new THREE.AxesHelper( 2000 ) );
 		
 		//
 		// Lights
@@ -266,7 +268,7 @@
 		//universe.rotation.y = -0.9738937226128364;
 		//universe.rotation.z = 0.3141592653589793;
 		scene.add(universe);
-
+		console.log("universe "+universe.rotation.y);
 
 
 	
@@ -304,8 +306,8 @@
 		var compassTextureMap = textureLoader.load( 'textures/sprites/north.svg' );
 		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
 		var compass = new THREE.Sprite( compassMaterial );
-		compass.scale.set(50, 50, 1);
-		compass.position.set(0, 0, -universe_radius+50);
+		compass.scale.set(50, 50, 50);
+		compass.position.set(0, 0, universe_radius-50);
 
 		universe.add( compass );
 		
@@ -671,6 +673,8 @@
         }
 		stats.update();
 		
+		console.log(camera.target.x, camera.target.y, camera.target.z)
+
 		// 
 		// FRUSTUM
 		camera.updateMatrixWorld(); // make sure the camera matrix is updated
