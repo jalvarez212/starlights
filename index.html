@@ -420,12 +420,19 @@
 			document.body.style.backgroundColor = "#161616";
 		}
 
-		var degrees = heading.toFixed([0]);
 		
-		universe.rotation.y = degrees*Math.PI/180;
+
+		var degrees = heading.toFixed([0]);
+
+		if (!compass_calibrated && degrees) {
+			universe.rotation.y = degrees*Math.PI/180;
+			heading_during_calibration = degrees
+		}
+		
+		
 
 
-		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y);
+		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y+" | "+compass_calibrated+" | "+heading_during_calibration);
 
 	}
 
@@ -678,7 +685,7 @@
         }
 		stats.update();
 		
-		console.log(camera.target.x, camera.target.y, camera.target.z)
+		//console.log(camera.target.x, camera.target.y, camera.target.z)
 
 		// 
 		// FRUSTUM
