@@ -422,21 +422,21 @@
 
 		
 
-		var degrees = parseInt(heading.toFixed([0]))+180;
+		var degrees = parseInt(heading.toFixed([0]));
 
-		//if (!compass_calibrated && degrees) {
-		//	compass_calibrated = true;
-		//	offset_degrees = 180+degrees;
-			universe.rotation.y = degrees*Math.PI/180;
-		//	heading_during_calibration = offset_degrees;
-		//	console.log('degrees: '+degrees);
-		//	console.log('offset: '+offset_degrees);
-		//}
+		if (!compass_calibrated && degrees) {
+			compass_calibrated = true;
+			offset_degrees = 180+degrees;
+			universe.rotation.y = offset_degrees*Math.PI/180;
+			heading_during_calibration = offset_degrees;
+			console.log('degrees: '+degrees);
+			console.log('offset: '+offset_degrees);
+		}
 		
 		
 
 
-		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y);
+		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y+" | "+compass_calibrated+" | "+heading_during_calibration);
 
 	}
 
