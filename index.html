@@ -415,8 +415,11 @@
 			document.body.style.backgroundColor = "#161616";
 		}
 
-		if (heading) {
+		if (!compass_calibrated && heading) {
+			compass_calibrated = true;
 			universe.rotation.y = Math.degToRad(heading);
+			document.getElementById("debug").innerHTML = heading.toFixed([0])+" | "+universe.rotation.y; // South
+			
 		}
 
 
@@ -774,6 +777,6 @@
 </script>
 
 <p id="heading" style="text-align:center;color:#ffffff;"></p>
-
+<p id="debug" style="font-size:small;text-align:center;color:#ffffff;"></p>
 </body>
 </html>
