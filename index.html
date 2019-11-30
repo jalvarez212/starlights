@@ -425,8 +425,9 @@
 		var degrees = heading.toFixed([0]);
 
 		if (!compass_calibrated && degrees) {
+			compass_calibrated = true;
 			universe.rotation.y = degrees*Math.PI/180;
-			heading_during_calibration = degrees
+			heading_during_calibration = degrees;
 		}
 		
 		
