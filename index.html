@@ -419,8 +419,8 @@
 
 		if (!compass_calibrated && heading) {
 			compass_calibrated = true;
-			universe.rotation.y = Math.degToRad(heading);
-			heading_during_calibration = heading;
+			universe.rotation.y = Math.degToRad(heading.toFixed([0]));
+			heading_during_calibration = heading.toFixed([0]);
 		}
 
 		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y+" | "+compass_calibrated+" | "+heading_during_calibration);
