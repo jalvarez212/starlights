@@ -137,6 +137,8 @@
 	var min_radius = 200;	
 	var universe_radius = radius+min_radius;
 		
+	var compass_calibrated = false;
+
 
 	//
  	// MOUSE VARS
@@ -303,7 +305,7 @@
 		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
 		var compass = new THREE.Sprite( compassMaterial );
 		compass.scale.set(50, 50, 1);
-		compass.position.set(0, 0, universe_radius-50);
+		compass.position.set(0, 0, -universe_radius+50);
 
 		universe.add( compass );
 		
@@ -412,8 +414,10 @@
 			document.body.style.backgroundColor = "#161616";
 		}
 
-
-
+		if (!compass_calibrated && heading) {
+			compass_calibrated = true;
+			universe.rotation.y = -heading*Math.PI/180;
+		}
 
 
 	}
