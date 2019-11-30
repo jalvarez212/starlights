@@ -415,8 +415,7 @@
 			document.body.style.backgroundColor = "#161616";
 		}
 
-		if (!compass_calibrated && heading) {
-			compass_calibrated = true;
+		if (heading) {
 			universe.rotation.y = Math.degToRad(heading);
 		}
 
