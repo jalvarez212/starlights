@@ -133,8 +133,9 @@
 	var displayList = [];
 
 
-	var radius = 500;	
+	var radius = 1000;	
 	var min_radius = 200;	
+	var universe_radius = radius+min_radius;
 		
 
 	//
@@ -190,7 +191,7 @@
 		
 		//
 		// CAMERA
-		camera = new THREE.PerspectiveCamera(85, window.innerWidth/window.innerHeight, 1, 2000);
+		camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, universe_radius);
 		camera.target = new THREE.Vector3( 0, 0, 0 );
 		//camera.position.z = 0
 	
@@ -247,13 +248,11 @@
 		// Lights
 		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
 		lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
-
-		
 		scene.add(lights);
 	
 		//
 		// Starfield Sphere
-		var starGeometry = new THREE.SphereGeometry((radius+min_radius)*2, 50, 50);
+		var starGeometry = new THREE.SphereGeometry(universe_radius, 50, 50);
 		var starMaterial = new THREE.MeshPhongMaterial({
 			//color: 0x000,
 			map: new THREE.ImageUtils.loadTexture("/textures/starmap.jpg"),
@@ -280,17 +279,15 @@
 	
 		
 		
-		
-		/// COMPASS
-		var spriteMap = new THREE.TextureLoader().load( 'textures/sprites/north.svg' );
+		//
+		// COMPASS
+		var compassTextureMap = textureLoader.load( 'textures/sprites/north.svg' );
+		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
+		var compass = new THREE.Sprite( compassMaterial );
+		compass.scale.set(50, 50, 1);
+		compass.position.set((universe_radius-50), 0, 0);
 
-		var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
-
-		var sprite = new THREE.Sprite( spriteMaterial );
-		sprite.scale.set(50, 50, 1);
-		sprite.position.set(1000, 0, 0);
-
-		scene.add( sprite );
+		scene.add( compass );
 		
 		
 		
@@ -315,7 +312,7 @@
 			vertexColors: true
 		} );	
 	
-		random_particles_count = 15000;
+		random_particles_count = 10000;
 	
 		particles_geometry = new THREE.BufferGeometry();
 	
@@ -597,7 +594,7 @@
 		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
 		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
 		frustum.setFromMatrix( cameraViewProjectionMatrix );
-		
+
 		if (animation_target && animation_trigger == false) {
 			//console.log( frustum.intersectsObject( animation_target ) );
 			if (frustum.intersectsObject(animation_target)) {
@@ -627,61 +624,61 @@
 
 
    
-        function onDocumentMouseDown( event ) {
-            event.preventDefault();
-            isUserInteracting = true;
-            onPointerDownPointerX = event.clientX;
-            onPointerDownPointerY = event.clientY;
-            onPointerDownLon = lon;
-            onPointerDownLat = lat;
-        }
-        function onDocumentMouseMove( event ) {
-            if ( isUserInteracting === true ) {
-                lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
-                lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
-            }
-        }
-        function onDocumentMouseUp( event ) {
-            isUserInteracting = false;
-        }
-        function onDocumentMouseWheel( event ) {
-            camera.fov += event.deltaY * 0.05;
-            camera.updateProjectionMatrix();
-        }
+	function onDocumentMouseDown( event ) {
+		event.preventDefault();
+		isUserInteracting = true;
+		onPointerDownPointerX = event.clientX;
+		onPointerDownPointerY = event.clientY;
+		onPointerDownLon = lon;
+		onPointerDownLat = lat;
+	}
+	function onDocumentMouseMove( event ) {
+		if ( isUserInteracting === true ) {
+			lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
+			lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+		}
+	}
+	function onDocumentMouseUp( event ) {
+		isUserInteracting = false;
+	}
+	function onDocumentMouseWheel( event ) {
+		camera.fov += event.deltaY * 0.05;
+		camera.updateProjectionMatrix();
+	}
 
-		var factor = 1;
-		document.addEventListener("keydown", onDocumentKeyDown, false);
-		function onDocumentKeyDown(event) {
-			var keyCode = event.which;
-			var rot = starField.rotation;
-			var inc = Math.PI/100*factor;
-			if (keyCode == 88) {
-				// x
-				rot.x += inc;
-			} else if (keyCode == 89) {
-				// y
-				rot.y += inc;
-			} else if (keyCode == 90) {
-				// z
-				rot.z += inc;
-			} else if (keyCode == 82) {
-				// r
-				rot.x = rot.y = rot.z = 0;
-			} else if (keyCode == 83) {
-				// s
-				wipeConstellation();
-			} else if (keyCode == 16) {
-				// reset
-				factor = -1*factor;
-			} else if (keyCode == 49) {
-				// 1
-				showConstellation(true);	
-			} else if (keyCode == 50) {
-				// 2
-				showConstellation(false);
-			}
-			console.log(keyCode, rot.x, rot.y, rot.z)
-		};
+	var factor = 1;
+	document.addEventListener("keydown", onDocumentKeyDown, false);
+	function onDocumentKeyDown(event) {
+		var keyCode = event.which;
+		var rot = starField.rotation;
+		var inc = Math.PI/100*factor;
+		if (keyCode == 88) {
+			// x
+			rot.x += inc;
+		} else if (keyCode == 89) {
+			// y
+			rot.y += inc;
+		} else if (keyCode == 90) {
+			// z
+			rot.z += inc;
+		} else if (keyCode == 82) {
+			// r
+			rot.x = rot.y = rot.z = 0;
+		} else if (keyCode == 83) {
+			// s
+			wipeConstellation();
+		} else if (keyCode == 16) {
+			// reset
+			factor = -1*factor;
+		} else if (keyCode == 49) {
+			// 1
+			showConstellation(true);	
+		} else if (keyCode == 50) {
+			// 2
+			showConstellation(false);
+		}
+		console.log(keyCode, rot.x, rot.y, rot.z)
+	};
 
 
 
