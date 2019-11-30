@@ -422,7 +422,7 @@
 
 		
 
-		var degrees = heading.toFixed([0]);
+		var degrees = parseInt(heading.toFixed([0]));
 
 		if (!compass_calibrated && degrees) {
 			compass_calibrated = true;
