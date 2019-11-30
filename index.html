@@ -272,6 +272,9 @@
 		console.log("universe "+universe.rotation.y);
 
 
+		
+
+
 	
 		//
 		// Starfield Sphere
@@ -417,8 +420,9 @@
 			document.body.style.backgroundColor = "#161616";
 		}
 
-
-		universe.rotation.y = Math.degToRad(heading.toFixed([0]));
+		var degrees = heading.toFixed([0]);
+		
+		universe.rotation.y = degrees*Math.PI/180;
 
 
 		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y);
