@@ -126,7 +126,7 @@
 	//
 	// VARS
 	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, 
-	animation_target, animation_trigger, controls, lights, stats, starField, textureLoader, 
+	animation_target, animation_trigger, controls, lights, stats, universe, starField, textureLoader, 
 	starCampaign, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
 	var vertices, positions, colors, sizes = [];
 
@@ -249,6 +249,24 @@
 		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
 		lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
 		scene.add(lights);
+
+
+		//
+		// Universe
+		var universeGeometry = new THREE.SphereGeometry(2*universe_radius, 16, 16);
+		var universeMaterial = new THREE.MeshBasicMaterial({
+			color: 0xff0000,
+			side: THREE.BackSide,
+		});
+		universe = new THREE.Mesh(universeGeometry, universeMaterial);
+		//universe.scale.set( - 1, 1, 1 );
+		//universe.rotation.x = 1.1938052083641222 ;
+		//universe.rotation.y = -0.9738937226128364;
+		//universe.rotation.z = 0.3141592653589793;
+		scene.add(universe);
+
+
+
 	
 		//
 		// Starfield Sphere
@@ -264,7 +282,7 @@
 		starField.rotation.x = 1.1938052083641222 ;
 		starField.rotation.y = -0.9738937226128364;
 		starField.rotation.z = 0.3141592653589793;
-		scene.add(starField);
+		universe.add(starField);
 	
 		//
 		// TEXTURE LOADING FOR ANIMATION TARGET
@@ -285,9 +303,9 @@
 		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
 		var compass = new THREE.Sprite( compassMaterial );
 		compass.scale.set(50, 50, 1);
-		compass.position.set((universe_radius-50), 0, 0);
+		compass.position.set(0, 0, universe_radius-50);
 
-		scene.add( compass );
+		universe.add( compass );
 		
 		
 		
@@ -341,7 +359,7 @@
 	
 		particleSystem = new THREE.Points( particles_geometry, shaderMaterial );
 	
-		scene.add( particleSystem );
+		universe.add( particleSystem );
 
 		//showConstellation(false);
 		
@@ -386,13 +404,18 @@
 		// Green for North and South, black otherwise
 		if (heading > 359 || heading < 1) { //Allow +- 1 degree
 			document.body.style.backgroundColor = "green";
-			document.getElementById("heading").innerHTML = "N"; // North
+			document.getElementById("heading").innerHTML = "NORTH!"; // North
 		} else if (heading > 179 && heading < 181){ //Allow +- 1 degree
 			document.body.style.backgroundColor = "green";
-			document.getElementById("heading").innerHTML = "S"; // South
+			document.getElementById("heading").innerHTML = "SOUTH!"; // South
 		} else { // Otherwise, use near black
 			document.body.style.backgroundColor = "#161616";
 		}
+
+
+
+
+
 	}
 
 
@@ -446,7 +469,7 @@
 		for(var i = 0; i < displayList.length; i++) {
 			var obj = displayList[i];
 			//console.log(obj);
-			scene.remove(obj);
+			universe.remove(obj);
 		}
 		var labels = document.getElementsByClassName('label');
 		while(labels[0]) {
@@ -502,14 +525,14 @@
 				sphere.position.z = obj.z;	
 				sphere.add( label_2d );
 			
-			scene.add(sphere);
+			universe.add(sphere);
 			displayList.push(sphere);
 			
 			//
 			// BASIC STAR SPRITES
 			var point_material = new THREE.PointsMaterial( { size:64, map:starEvent, blending:THREE.NormalBlending, depthTest:false, transparent:true, opacity:0.5 } );
 			var anchor = new THREE.Points(figure, point_material);
-			scene.add(anchor);		
+			universe.add(anchor);		
 			displayList.push(anchor);
 			
 			if (i==0) {
@@ -553,7 +576,7 @@
 				gapSize: 1e10 // a big number, so only one dash is rendered
 			} );
 			line = new THREE.Line( geometry, material );
-			scene.add(line);
+			universe.add(line);
 			displayList.push(line);
 		} else {
 			line = null;
@@ -706,7 +729,7 @@
 	document.addEventListener("keydown", onDocumentKeyDown, false);
 	function onDocumentKeyDown(event) {
 		var keyCode = event.which;
-		var rot = starField.rotation;
+		var rot = universe.rotation;
 		var inc = Math.PI/100*factor;
 		if (keyCode == 88) {
 			// x
