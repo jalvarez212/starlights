@@ -426,7 +426,7 @@
 
 		if (!compass_calibrated && degrees) {
 			compass_calibrated = true;
-			universe.rotation.y = degrees*Math.PI/180;
+			universe.rotation.y = (180+degrees)*Math.PI/180;
 			heading_during_calibration = degrees;
 		}
 		
