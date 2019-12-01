@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<title>StarLights</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		body { 
+			margin: 0; 
+			overflow: hidden;
+			background-color: #000;
+		}
+		canvas { 
+			width: 100%; 
+			height: 100%;
+			position: absolute;
+			top:0;
+		}
+		.App {
+			display: -webkit-box;
+			display: flex;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			flex-direction: column;
+			-webkit-box-align: center;
+			align-items: center;
+			-webkit-box-pack: justify;
+			justify-content: space-between;
+			width: 100vw;
+			height: 100vw;
+			max-height: 100vh;
+			overflow: hidden;
+			background-image: url(https://abanca.stage-preview.com/images/star-lights-bg-mobile.jpg);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		@media (min-width: 769px) {
+			.App {
+				background-image: url(https://abanca.stage-preview.com/images/star-lights-bg-desktop.png);
+			}
+		}
+	</style>
+</head>
+<body>
+
+	<div class="App"></div>
+
+<script src="https://threejs.org/build/three.min.js"></script>
+<script src="js/Stats.js"></script>
+
+<script type="x-shader/x-vertex" id="vertexshader">
+	attribute float size;
+	varying vec3 vColor;
+	void main() {
+		vColor = color;
+		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+		gl_PointSize = size * ( 500.0 / -mvPosition.z );
+		gl_Position = projectionMatrix * mvPosition;
+	}
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+	uniform sampler2D pointTexture;
+	varying vec3 vColor;
+	void main() {
+		gl_FragColor = vec4( vColor, 1.0 );
+		gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
+	}
+</script>
+
+<script type="text/javascript">
+
+	//
+	// VARS
+	var scene, camera, renderer, textureLoader, spark, particles_geometry;
+	var positions, colors, sizes = [];
+
+	var radius = 300;	
+	var min_radius = 200;	
+	var universe_radius = radius+min_radius;
+	var random_particles_count = 2000;
+		
+	init();
+	animate();
+	
+	function init () {
+				
+		//
+		// SCENE
+		scene = new THREE.Scene();
+		
+		//
+		// CAMERA
+		camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, universe_radius);
+		camera.target = new THREE.Vector3( 0, 0, 0 );
+	
+		//
+		// WebGL Renderer
+		renderer = new THREE.WebGLRenderer({alpha: true});
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+
+		//
+		// STATS
+		stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		stats.domElement.style.zIndex = 100;
+		document.body.appendChild( stats.domElement );
+
+		//
+		// TEXTURE LOADING FOR ANIMATION TARGET
+		textureLoader = new THREE.TextureLoader();
+		spark = textureLoader.load( 'textures/sprites/spark1.png' );
+		
+		//
+		// RANDOM PARTICLES, PULSATING
+		var shaderMaterial = new THREE.ShaderMaterial( {
+			uniforms: { pointTexture: {value: spark} },
+			vertexShader: document.getElementById( 'vertexshader' ).textContent,
+			fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+			blending: THREE.AdditiveBlending,
+			depthTest: false,
+			transparent: true,
+			vertexColors: true
+		} );	
+
+		particles_geometry = new THREE.BufferGeometry();
+
+		var positions = [];
+		var colors = [];
+		var sizes = [];
+		var color = new THREE.Color();
+	
+		for ( var i = 0; i < random_particles_count; i ++ ) {
+			var random_position = randomPosition();
+			positions.push( random_position[0] );
+			positions.push( random_position[1] );
+			positions.push( random_position[2] );
+			if (Math.floor(Math.random()*4) == 0) {
+				color.setHSL( 0.6, 0.6, 0.6 ); // blue
+			} else {
+				color.setHSL( 0, 0, Math.random() ); // white
+			}
+			colors.push( color.r, color.g, color.b );
+			sizes.push(20);
+		}
+		particles_geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
+		particles_geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+		particles_geometry.setAttribute( 'size', new THREE.Float32BufferAttribute( sizes, 1 ).setUsage( THREE.DynamicDrawUsage ) );
+		particleSystem = new THREE.Points( particles_geometry, shaderMaterial );
+		scene.add( particleSystem );
+
+		//
+		// EVENT LISTENER
+		window.addEventListener('resize', onWindowResize, false);
+
+	} // END init()
+	
+	//
+	// RANDOM POSITION WITH MINIMUM RADIUS
+	function randomPosition() {
+		var d1 = Math.random() * radius;
+			d1 = Math.random() < 0.5 ? -d1 : d1;
+		var d2 = Math.random() * radius;
+			d2 = Math.random() < 0.5 ? -d2 : d2;
+		var d3 = Math.random() * radius;
+			d3 += min_radius
+			d3 = Math.random() < 0.5 ? -d3 : -d3;
+		return [d1, d2, d3];
+	}	
+
+	//
+	// WINDOW RESIZE
+	function onWindowResize() {
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+	}
+
+	//
+	// ANIMATION LOOP
+	function animate() {
+		requestAnimationFrame(animate);
+		var time = Date.now() * 0.003;
+		var sizes = particles_geometry.attributes.size.array;
+		for ( var i=0; i<random_particles_count; i++ ) {
+			sizes[ i ] = 5 * ( 1 + Math.sin( 0.1 * i + time ) );
+		}
+		particles_geometry.attributes.size.needsUpdate = true;		
+		renderer.render( scene, camera );	
+		stats.update();
+	}
+</script>
+</body>
+</html>
