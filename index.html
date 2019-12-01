@@ -127,13 +127,13 @@
 	// VARS
 	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, 
 	animation_target, animation_trigger, controls, lights, stats, universe, starField, textureLoader, 
-	starCampaign, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
+	starCampaign, starMap, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
 	var vertices, positions, colors, sizes = [];
 
 	var displayList = [];
 
 
-	var radius = 1000;	
+	var radius = 500;	
 	var min_radius = 200;	
 	var universe_radius = radius+min_radius;
 		
@@ -194,7 +194,7 @@
 		
 		//
 		// CAMERA
-		camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, universe_radius);
+		camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 1, universe_radius);
 		camera.target = new THREE.Vector3( 0, 0, 0 );
 		camera.position.x = 0
 		camera.position.y = 0
@@ -252,27 +252,33 @@
 		//
 		// Lights
 		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
-		lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
+		//lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
+		//lights = new THREE.HemisphereLight( 0x000000, 0x132d49, 8 );
+		lights = new THREE.HemisphereLight( 0x000000, 0x214f80, 4 );
 		scene.add(lights);
+
+		
 
 
 		//
 		// Universe
 		var universeGeometry = new THREE.SphereGeometry(2*universe_radius, 16, 16);
 		var universeMaterial = new THREE.MeshBasicMaterial({
-			color: 0xff0000,
+			color: 0x000000,
 			side: THREE.BackSide,
 		});
 		universe = new THREE.Mesh(universeGeometry, universeMaterial);
-		//universe.scale.set( - 1, 1, 1 );
-		//universe.rotation.x = 1.1938052083641222 ;
-		//universe.rotation.y = -0.9738937226128364;
-		//universe.rotation.z = 0.3141592653589793;
 		scene.add(universe);
 		console.log("universe "+universe.rotation.y);
 
 
-		
+		//
+		// TEXTURE LOADING FOR ANIMATION TARGET
+		textureLoader = new THREE.TextureLoader();
+		starMap = textureLoader.load( 'textures/starmap4k.jpg' );
+		starCampaign = textureLoader.load( 'textures/sprites/star-campaign.png' );
+		starEvent = textureLoader.load( 'textures/sprites/star-event.png' );
+		spark = textureLoader.load( 'textures/sprites/spark1.png' );
 
 
 	
@@ -281,23 +287,17 @@
 		var starGeometry = new THREE.SphereGeometry(universe_radius, 50, 50);
 		var starMaterial = new THREE.MeshPhongMaterial({
 			//color: 0x000,
-			map: new THREE.ImageUtils.loadTexture("/textures/starmap.jpg"),
+			map: starMap,
 			side: THREE.BackSide,
 			shininess: 0
 		});
 		starField = new THREE.Mesh(starGeometry, starMaterial);
 		starField.scale.set( - 1, 1, 1 );
-		starField.rotation.x = 1.1938052083641222 ;
+		starField.rotation.x = 1.1938052083641222;
 		starField.rotation.y = -0.9738937226128364;
 		starField.rotation.z = 0.3141592653589793;
 		universe.add(starField);
 	
-		//
-		// TEXTURE LOADING FOR ANIMATION TARGET
-		textureLoader = new THREE.TextureLoader();
-		starCampaign = textureLoader.load( 'textures/sprites/star-campaign.png' );
-		starEvent = textureLoader.load( 'textures/sprites/star-event.png' );
-		spark = textureLoader.load( 'textures/sprites/spark1.png' );
 		
 	
 		
@@ -310,8 +310,8 @@
 		var compassTextureMap = textureLoader.load( 'textures/sprites/north.svg' );
 		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
 		var compass = new THREE.Sprite( compassMaterial );
-			compass.scale.set(50, 50, 50);
-			compass.position.set(0, 0, universe_radius-50);
+			compass.scale.set(20, 20, 20);
+			compass.position.set(0, 0, -universe_radius+50);
 		universe.add( compass );
 		
 		
@@ -354,6 +354,7 @@
 			positions.push( random_position[2] );
 			if (Math.floor(Math.random()*4) == 0) {
 				color.setHSL( 0.6, 0.6, 0.6 ); // blue
+				//color.setHSL( 0.54, 0.59, 0.31 ); // blue
 			} else {
 				color.setHSL( 0, 0, Math.random() ); // white
 			}
@@ -422,11 +423,11 @@
 
 		
 
-		var degrees = parseInt(heading.toFixed([0]));
+		var degrees = Math.round(heading);
 
 		if (!compass_calibrated && degrees) {
 			compass_calibrated = true;
-			offset_degrees = 180+degrees;
+			offset_degrees = degrees;
 			universe.rotation.y = offset_degrees*Math.PI/180;
 			heading_during_calibration = offset_degrees;
 			console.log('degrees: '+degrees);
@@ -436,7 +437,7 @@
 		
 
 
-		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y+" | "+compass_calibrated+" | "+heading_during_calibration);
+		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y.toFixed(2)+" | "+compass_calibrated+" | "+heading_during_calibration);
 
 	}
 
@@ -456,30 +457,42 @@
 	//
 	// GET CONSTELLATION DATA
 	function getConstellationData(ref) {
-		if (ref) {
-			return {
-				"constellation": {
-					"stars": [
-						{"x":0, "y":200, "z":150, "connected":1, "labelposition":"b", "label":"GREETINGS"},
-						{"x":150, "y":250, "z":0, "connected":1, "labelposition":"t", "label":"PROFESSOR"},
-						{"x":100, "y":200, "z":50, "connected":0, "labelposition":"l", "label":"FALKEN!"}
-					]        
-				}
-			}		
-		} else {
-			return {
-				"constellation": {
-					"stars": [
-						{"x":150, "y":250, "z":150, "connected":1, "labelposition":"r", "label":"HOW"},
-						{"x":-50, "y":250, "z":150, "connected":1, "labelposition":"r", "label":"ABOUT"},
-						{"x":-150, "y":200, "z":250, "connected":1, "labelposition":"r", "label":"A"},
-						{"x":-200, "y":300, "z":450, "connected":1, "labelposition":"r", "label":"NICE"},
-						{"x":0, "y":350, "z":550, "connected":1, "labelposition":"r", "label":"GAME"},
-						{"x":50, "y":250, "z":750, "connected":1, "labelposition":"r", "label":"OF"},
-						{"x":150, "y":200, "z":850, "connected":1, "labelposition":"r", "label":"CHESS?"}
-					]        
-				}
-			}
+		switch(ref) {
+			case 1:
+				return {
+					"constellation": {
+						"connected":0,
+						"x":0,
+						"y":0,
+						"z":0,
+						"stars": [
+							{"x":-20, "y":50, "z":-500, "labelposition":"b", "label":"GREETINGS"},
+							{"x":0, "y":-60, "z":-500, "labelposition":"t", "label":"PROFESSOR"},
+							{"x":30, "y":40, "z":-500, "labelposition":"l", "label":"FALKEN!"}
+						]        
+					}
+				}		
+				break;
+			case 2:
+				return {
+					"constellation": {
+						"connected":1,
+						"x":0,
+						"y":0,
+						"z":0,
+						"stars": [
+							{"x":-200, "y":50, "z":-500, "labelposition":"b", "label":"HOW"},
+							{"x":-100, "y":150, "z":-500, "labelposition":"t", "label":"ABOUT"},
+							{"x":-50, "y":0, "z":-500, "labelposition":"b", "label":"A"},
+							{"x":0, "y":130, "z":-500, "labelposition":"t", "label":"NICE"},
+							{"x":50, "y":50, "z":-500, "labelposition":"t", "label":"GAME"},
+							{"x":100, "y":-50, "z":-500, "labelposition":"b", "label":"OF"},
+							{"x":200, "y":20, "z":-500, "labelposition":"b", "label":"CHESS?"}
+						]        
+					}
+				}		
+				break;
+
 		}
 	}
 
@@ -509,7 +522,6 @@
 
 		var json = getConstellationData(ref);
 		var figure = new THREE.Geometry();
-		var connected;
 		
 		for(var i = 0; i < json.constellation.stars.length; i++) {
 	    	var obj = json.constellation.stars[i];
@@ -561,13 +573,13 @@
 				animation_target = sphere;
 			}
 
-			connected = obj.connected;
+	
 			
 		}
 	
 	
 		// line
-		if (connected) {
+		if (json.constellation.connected) {
 			figure.computeBoundingSphere();
 			fraction = 0;
 			var points = figure.vertices;
@@ -682,9 +694,9 @@
 			lat = Math.max( - 85, Math.min( 85, lat ) );
 			phi = THREE.Math.degToRad( 90 - lat );
 			theta = THREE.Math.degToRad( lon );
-			camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+			camera.target.x = -500 * Math.sin( phi ) * Math.cos( theta );
 			camera.target.y = 500 * Math.cos( phi );
-			camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+			camera.target.z = -500 * Math.sin( phi ) * Math.sin( theta );
 			camera.lookAt( camera.target );
         }
 		stats.update();
@@ -775,10 +787,10 @@
 			factor = -1*factor;
 		} else if (keyCode == 49) {
 			// 1
-			showConstellation(true);	
+			showConstellation(1);	
 		} else if (keyCode == 50) {
 			// 2
-			showConstellation(false);
+			showConstellation(2);
 		}
 		console.log(keyCode, rot.x, rot.y, rot.z)
 	};
