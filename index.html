@@ -614,6 +614,7 @@
 		constellation.rotation.set(json.constellation.x*Math.PI/180, json.constellation.y*Math.PI/180, json.constellation.z*Math.PI/180);
 		universe.add(constellation);
 		displayList.push(constellation);
+		navigator.vibrate(1000);
 
 		//
 		// STAR LOOP
