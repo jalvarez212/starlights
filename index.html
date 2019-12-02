@@ -789,6 +789,11 @@
 		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
 		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
 		frustum.setFromMatrix( cameraViewProjectionMatrix );
+		
+		if (camera.matrixWorld.elements[0] < .9996 && camera.matrixWorld.elements[0] > .90 && camera.matrixWorld.elements[2] > -.65 && camera.matrixWorld.elements[2] < .5 && constellation_visible == false)
+			{
+			showConstellation(1);
+			}
 
 
 
@@ -841,10 +846,6 @@
 		onPointerDownLat = lat;
 	}
 	function onDocumentMouseMove( event ) {
-		if (camera.matrixWorld.elements[0] < .9981 && camera.matrixWorld.elements[0] > .90 && camera.matrixWorld.elements[2] < .145 && constellation_visible == false)
-			{
-			showConstellation(1);
-			}
 		if ( isUserInteracting === true ) {
 			lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
 			lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
