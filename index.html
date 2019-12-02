@@ -145,6 +145,8 @@
 		
 	var compass_calibrated = false;
 	var heading_during_calibration;
+	var constellation_visible = false;
+
 
 	var vector_camera = new THREE.Vector3( 0, 0, 0 );
 	var vector_target = new THREE.Vector3( 0, 0, 0 );
@@ -587,6 +589,7 @@
 		displayList = [];
 		starList = [];
 		lineList = [];
+		constellation_visible = false;
 
 	}
 
@@ -595,6 +598,7 @@
 	function showConstellation(ref) {
 		console.log("showConstellation");
 		wipeConstellation();
+		constellation_visible = true;
 
 		var json = getConstellationData(ref);
 		var figure = new THREE.Geometry();
@@ -837,6 +841,10 @@
 		onPointerDownLat = lat;
 	}
 	function onDocumentMouseMove( event ) {
+		if (camera.matrixWorld.elements[0] < .9981 && camera.matrixWorld.elements[0] > .90 && camera.matrixWorld.elements[2] < .145 && constellation_visible == false)
+			{
+			showConstellation(1);
+			}
 		if ( isUserInteracting === true ) {
 			lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
 			lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
