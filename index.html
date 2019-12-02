@@ -131,7 +131,7 @@
 	// VARS
 	var scene, camera, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, 
 	animation_target, animation_trigger, controls, lights, stats, universe, constellation, starField, textureLoader, 
-	starCampaign, starCampaignAlpha, starMap, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
+	starCampaign, starMap, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
 	var vertices, positions, colors, sizes = [];
 
 	var displayList = [];
@@ -206,9 +206,9 @@
 		// CAMERA
 		camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 1, universe_radius);
 		camera.target = new THREE.Vector3( 0, 0, 0 );
-		camera.position.x = 1
-		camera.position.y = 0
-		camera.position.z = 20
+		//camera.position.x = 0;
+		//camera.position.y = 0;
+		//camera.position.z = 0;
 	
 		//
 		// WebGL Renderer
@@ -231,7 +231,7 @@
 		cameraViewProjectionMatrix = new THREE.Matrix4();
 		animation_trigger = false;
 		
-		//
+		//2
 		// CONTROLS
 		if (md.mobile()) {
 			controls = new THREE.DeviceOrientationControls(camera);
@@ -286,7 +286,6 @@
 		textureLoader = new THREE.TextureLoader();
 		starMap = textureLoader.load( 'textures/starmap4k.jpg' );
 		starCampaign = textureLoader.load( 'textures/sprites/star-campaign.png' );
-		starCampaignAlpha = textureLoader.load( 'textures/sprites/star-campaign-alpha.png' );
 		starEvent = textureLoader.load( 'textures/sprites/star-event.png' );
 		spark = textureLoader.load( 'textures/sprites/spark1.png' );
 
@@ -478,13 +477,13 @@
 						"y":0,
 						"z":0,
 						"stars": [
-							{"x":-120, "y":0, "z":-500, "labelposition":"b", "label":"ABANCA"},
-							{"x":-100, "y":100, "z":-700, "labelposition":"t", "label":"TE"},
-							{"x":-10, "y":80, "z":-650, "labelposition":"b", "label":"DESEA"},
-							{"x":50, "y":30, "z":-500, "labelposition":"b", "label":"UNA"},
-							{"x":120, "y":100, "z":-550, "labelposition":"t", "label":"MUY"},
-							{"x":150, "y":40, "z":-550, "labelposition":"b", "label":"FELIZ"},
-							{"x":300, "y":35, "z":-600, "labelposition":"t", "label":"NAVIDAD"}
+							{"x":-120, "y":0, "z":-500, "lblpos":"b", "label":"ABANCA"},
+							{"x":-100, "y":100, "z":-700, "lblpos":"t", "label":"TE"},
+							{"x":-10, "y":80, "z":-650, "lblpos":"b", "label":"DESEA"},
+							{"x":50, "y":30, "z":-500, "lblpos":"b", "label":"UNA"},
+							{"x":120, "y":100, "z":-550, "lblpos":"t", "label":"MUY"},
+							{"x":150, "y":40, "z":-550, "lblpos":"b", "label":"FELIZ"},
+							{"x":300, "y":35, "z":-600, "lblpos":"t", "label":"NAVIDAD"}
 						]        
 					}
 				}		
@@ -497,13 +496,71 @@
 						"y":0,
 						"z":0,
 						"stars": [
-							{"x":-200, "y":50, "z":-500, "labelposition":"b", "label":"HOW"},
-							{"x":-100, "y":150, "z":-500, "labelposition":"t", "label":"ABOUT"},
-							{"x":-50, "y":0, "z":-500, "labelposition":"b", "label":"A"},
-							{"x":0, "y":130, "z":-500, "labelposition":"t", "label":"NICE"},
-							{"x":50, "y":50, "z":-500, "labelposition":"t", "label":"GAME"},
-							{"x":100, "y":-50, "z":-500, "labelposition":"b", "label":"OF"},
-							{"x":200, "y":20, "z":-500, "labelposition":"b", "label":"CHESS?"}
+							{"x":-200, "y":50, "z":-500, "lblpos":"b", "label":"CUANDO"},
+							{"x":-100, "y":150, "z":-500, "lblpos":"t", "label":"ME"},
+							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"ECHES"},
+							{"x":0, "y":130, "z":-500, "lblpos":"t", "label":"DE"},
+							{"x":50, "y":50, "z":-500, "lblpos":"t", "label":"MENOS"},
+							{"x":100, "y":-50, "z":-500, "lblpos":"b", "label":"MIRA"},
+							{"x":150, "y":-50, "z":-500, "lblpos":"b", "label":"AL"},
+							{"x":200, "y":20, "z":-500, "lblpos":"b", "label":"CIELO"}
+						]        
+					}
+				}		
+				break;
+			case 3:
+				return {
+					"constellation": {
+						"connected":1,
+						"x":0,
+						"y":0,
+						"z":0,
+						"stars": [
+							{"x":-200, "y":0, "z":-500, "lblpos":"b", "label":"TODO"},
+							{"x":-100, "y":0, "z":-500, "lblpos":"t", "label":"LO"},
+							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"QUE"},
+							{"x":0, "y":0, "z":-500, "lblpos":"t", "label":"QUIERO"},
+							{"x":50, "y":0, "z":-500, "lblpos":"t", "label":"POR"},
+							{"x":100, "y":0, "z":-500, "lblpos":"b", "label":"NAVIDAD"},
+							{"x":150, "y":0, "z":-500, "lblpos":"b", "label":"ERES"},
+							{"x":200, "y":0, "z":-500, "lblpos":"b", "label":"TÚ"}
+						]        
+					}
+				}		
+				break;
+			case 4:
+				return {
+					"constellation": {
+						"connected":1,
+						"x":0,
+						"y":0,
+						"z":0,
+						"stars": [
+							{"x":-200, "y":0, "z":-500, "lblpos":"b", "label":"BRILLAS"},
+							{"x":-100, "y":0, "z":-500, "lblpos":"t", "label":"MÁS"},
+							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"QUE"},
+							{"x":0, "y":0, "z":-500, "lblpos":"t", "label":"ESTA"},
+							{"x":50, "y":0, "z":-500, "lblpos":"t", "label":"CONSTELACIÓN"}
+						]        
+					}
+				}		
+				break;
+			case 5:
+				return {
+					"constellation": {
+						"connected":1,
+						"x":0,
+						"y":0,
+						"z":0,
+						"stars": [
+							{"x":-200, "y":0, "z":-500, "lblpos":"b", "label":"AUNQUE"},
+							{"x":-100, "y":0, "z":-500, "lblpos":"t", "label":"ESTÉS"},
+							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"LEJOS"},
+							{"x":0, "y":0, "z":-500, "lblpos":"t", "label":"TU"},
+							{"x":50, "y":0, "z":-500, "lblpos":"t", "label":"LUZ"},
+							{"x":100, "y":0, "z":-500, "lblpos":"b", "label":"LLEGA"},
+							{"x":150, "y":0, "z":-500, "lblpos":"b", "label":"HASTA"},
+							{"x":200, "y":0, "z":-500, "lblpos":"b", "label":"MI"}
 						]        
 					}
 				}		
@@ -541,7 +598,21 @@
 
 		var json = getConstellationData(ref);
 		var figure = new THREE.Geometry();
-		
+
+		//
+		// CONSTELLATION WRAPPER
+		var constellationGeometry = new THREE.SphereGeometry(0.1, 1, 1);
+		var constellationMaterial = new THREE.MeshBasicMaterial({
+			color: 0x000000,
+			side: THREE.BackSide,
+		});
+		constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
+		constellation.rotation.set(json.constellation.x*Math.PI/180, json.constellation.y*Math.PI/180, json.constellation.z*Math.PI/180);
+		universe.add(constellation);
+		displayList.push(constellation);
+
+		//
+		// STAR LOOP
 		for(var i = 0; i < json.constellation.stars.length; i++) {
 	    	var obj = json.constellation.stars[i];
 			//console.log(obj.label);
@@ -555,7 +626,7 @@
 				label_span.textContent = obj.label;
 				label_span.id = "span_"+i;
 			
-			switch(obj.labelposition) {
+			switch(obj.lblpos) {
 				case 'l':
 				label_div.className = 'label left';
 				break;
@@ -583,7 +654,7 @@
 				sprite.name = "star"+i;
 				sprite.add( label_2d );
 
-			universe.add(sprite);
+			constellation.add(sprite);
 			displayList.push(sprite);
 			starList.push(sprite);
 			
@@ -610,7 +681,7 @@
 						line.lookAt(to.x, to.y, to.z)
 						line.scale.z = 0;
 
-					universe.add(line);
+					constellation.add(line);
 					displayList.push(line);
 					lineList.push(line);
 				}
@@ -785,30 +856,35 @@
 		var keyCode = event.which;
 		var rot = universe.rotation;
 		var inc = Math.PI/100*factor;
-		if (keyCode == 88) {
-			// x
+
+
+
+
+		if (keyCode == 88) {  		// x
 			rot.x += inc;
-		} else if (keyCode == 89) {
-			// y
+		} else if (keyCode == 89) { // y
 			rot.y += inc;
-		} else if (keyCode == 90) {
-			// z
+		} else if (keyCode == 90) { // z
 			rot.z += inc;
-		} else if (keyCode == 82) {
-			// r
+		} else if (keyCode == 82) { // r
 			rot.x = rot.y = rot.z = 0;
-		} else if (keyCode == 83) {
-			// s
+		} else if (keyCode == 83) {	// s
 			wipeConstellation();
-		} else if (keyCode == 16) {
-			// reset
+		} else if (keyCode == 16) {	// reset
 			factor = -1*factor;
-		} else if (keyCode == 49) {
-			// 1
+		} else if (keyCode == 49) {	// 1
 			showConstellation(1);	
-		} else if (keyCode == 50) {
-			// 2
+		} else if (keyCode == 50) {	// 2
 			showConstellation(2);
+		} else if (keyCode == 51) {	// 3
+			showConstellation(3)
+		} else if (keyCode == 52) {	// 4
+			showConstellation(4);
+		} else if (keyCode == 53) {	// 5
+			showConstellation(5);
+
+
+
 		}
 		console.log(keyCode, rot.x, rot.y, rot.z)
 	};
