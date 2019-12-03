@@ -1,0 +1,1820 @@
+{ "constellation": [
+	{
+		"ref":"es01",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-120, "y":0, "z":-500, "pos":"b", "lbl":"ABANCA"},
+			{"x":-100, "y":100, "z":-700, "pos":"t", "lbl":"TE"},
+			{"x":-10, "y":80, "z":-650, "pos":"b", "lbl":"DESEA"},
+			{"x":50, "y":30, "z":-500, "pos":"b", "lbl":"UNA"},
+			{"x":120, "y":100, "z":-550, "pos":"t", "lbl":"MUY"},
+			{"x":150, "y":40, "z":-550, "pos":"b", "lbl":"FELIZ"},
+			{"x":300, "y":35, "z":-600, "pos":"t", "lbl":"NAVIDAD"}
+		]        
+	},
+	{
+		"ref":"es02",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":50, "z":-500, "pos":"b", "lbl":"CUANDO"},
+			{"x":-100, "y":150, "z":-500, "pos":"t", "lbl":"ME"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"ECHES"},
+			{"x":0, "y":130, "z":-500, "pos":"t", "lbl":"DE"},
+			{"x":50, "y":50, "z":-500, "pos":"t", "lbl":"MENOS"},
+			{"x":100, "y":-50, "z":-500, "pos":"b", "lbl":"MIRA"},
+			{"x":150, "y":-50, "z":-500, "pos":"b", "lbl":"AL"},
+			{"x":200, "y":20, "z":-500, "pos":"b", "lbl":"CIELO"}
+		]        
+	},
+	{
+		"ref":"es03",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"TODO"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"LO"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"QUE"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"QUIERO"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"POR"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"NAVIDAD"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"ERES"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"TÚ"}
+		]        
+	},
+	{
+		"ref":"es04",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"BRILLAS"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"MÁS"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"QUE"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"ESTA"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"CONSTELACIÓN"}
+		]        
+	},
+	{
+		"ref":"es05",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"AUNQUE"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"ESTÉS"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"LEJOS"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"TU"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"LUZ"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"LLEGA"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"HASTA"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"MI"}
+		]        
+	},
+
+
+
+
+
+
+
+	{
+		"ref":"pt01",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"ABANCA"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"DESEJA-LHE"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"UM"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"NATAL"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"MUITO"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"FELIZ"}
+		]        
+	},
+	{
+		"ref":"pt02",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"QUANDO"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"SENTIRES"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"A"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"MINHA"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"OLHA"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"PARA"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"O"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"CÉU"}
+		]        
+	},
+	{
+		"ref":"pt03",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"TUDO"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"O"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"QUE"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"QUERO"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"NO"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"NATAL"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"ÉS"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"TU"}
+		]        
+	},
+	{
+		"ref":"pt04",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"BRILHAS"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"MAIS"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"QUE"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"ESTA"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"CONSTELAÇÃO"}
+		]        
+	},
+	{
+		"ref":"pt05",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"AINDA"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"QUE"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"ESTEJA"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"LONGE"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"A"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"SUA"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"LUZ"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"CHEGA"},
+			{"x":250, "y":0, "z":-500, "pos":"b", "lbl":"ATÉ"},
+			{"x":300, "y":0, "z":-500, "pos":"b", "lbl":"MIM"}
+		]        
+	},
+
+
+
+
+
+
+	{
+		"ref":"gl01",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"ABANCA"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"DESÉXACHE"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"UN"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"BO"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"NADAL"}
+		]        
+	},
+	{
+		"ref":"gl02",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"CANDO"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"ME"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"BOTES"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"DE"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"MENOS"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"MIRA"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"PARA"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"O"},
+			{"x":250, "y":0, "z":-500, "pos":"b", "lbl":"CEO"}
+		]        
+	},
+	{
+		"ref":"gl03",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"TODO"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"O"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"QUE"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"QUERO"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"POLO"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"NADAL"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"ES"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"TI"}
+		]        
+	},
+	{
+		"ref":"gl04",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"BRILLAS"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"MÁIS"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"CA"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"ESTA"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"CONSTELACIÓN"}
+		]        
+	},
+	{
+		"ref":"gl05",
+		"con":1,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-200, "y":0, "z":-500, "pos":"b", "lbl":"AÍNDA"},
+			{"x":-100, "y":0, "z":-500, "pos":"t", "lbl":"QUE"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"ESTEAS"},
+			{"x":0, "y":0, "z":-500, "pos":"t", "lbl":"LONXE"},
+			{"x":50, "y":0, "z":-500, "pos":"t", "lbl":"A"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"TÚA"},
+			{"x":150, "y":0, "z":-500, "pos":"b", "lbl":"LUZ"},
+			{"x":200, "y":0, "z":-500, "pos":"b", "lbl":"CHEGA"},
+			{"x":250, "y":0, "z":-500, "pos":"b", "lbl":"ATA"},
+			{"x":300, "y":0, "z":-500, "pos":"b", "lbl":"MIN"}
+		]        
+	},
+	{
+		"ref":"CGX414051",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-100, "y":0, "z":-500, "pos":"b", "lbl":"Paula"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"Paco"},
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pakito"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Bruno"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"María"}
+		]        
+	},
+	{
+		"ref":"PCF332711",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-100, "y":0, "z":-500, "pos":"b", "lbl":"María Isabel"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"Juan Carlos"},
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carlos Alberto"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Carlos Eduardo"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"Juan Carlos César"}
+		]        
+	},
+	{
+		"ref":"PBF123226",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"María"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Eugenia"}
+		]        
+	},
+	{
+		"ref":"XGK854615",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"Aurora"},
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Michelle"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"César"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"Daniel"}
+		]        
+	},
+	{
+		"ref":"QZF139624",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"Gladys"},
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José Antonio"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Alejandro"}
+		]        
+	},
+	{
+		"ref":"BMV733001",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":-100, "y":0, "z":-500, "pos":"b", "lbl":"Su"},
+			{"x":-50, "y":0, "z":-500, "pos":"b", "lbl":"Fraga"},
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Susana"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Nicolás"},
+			{"x":100, "y":0, "z":-500, "pos":"b", "lbl":"Sofía"}
+		]        
+	},
+	{
+		"ref":"PWX464378",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"César"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Haydee"}
+		]        
+	},
+	{
+		"ref":"KVX150876",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Daniel Bescansa"},
+			{"x":50, "y":0, "z":-500, "pos":"b", "lbl":"Jacobo Bescansa"}
+		]        
+	},
+	{
+		"ref":"VBK847295",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"D. Javier Etcheverría"}
+		]        
+	},
+	{
+		"ref":"YRW653067",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Juan Carlos Escotet"}
+		]        
+	},
+	{
+		"ref":"CYM904993",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Paco Botas"}
+		]        
+	},
+	{
+		"ref":"WHH148844",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pablo Triñanes"}
+		]        
+	},
+	{
+		"ref":"BPZ111732",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Miguel Barcia"}
+		]        
+	},
+	{
+		"ref":"WDW887506",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Roberto Baratta"}
+		]        
+	},
+	{
+		"ref":"BNP131607",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Luis Santa-María"}
+		]        
+	},
+	{
+		"ref":"JFC506712",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Nacho Rodríguez Novoa"}
+		]        
+	},
+	{
+		"ref":"RFX598383",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Eduardo Sánchez"}
+		]        
+	},
+	{
+		"ref":"HXQ034890",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José Ignacio Canle"}
+		]        
+	},
+	{
+		"ref":"ZRK543173",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Julián Serrapio"}
+		]        
+	},
+	{
+		"ref":"PKY536498",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pedro Veiga"}
+		]        
+	},
+	{
+		"ref":"QKK042814",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Juanma Sánchez-Quinzá"}
+		]        
+	},
+	{
+		"ref":"CSL482435",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Manuel Ferro"}
+		]        
+	},
+	{
+		"ref":"CFG401535",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Vicente Llórens"}
+		]        
+	},
+	{
+		"ref":"NCJ290316",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alfonso Vázquez"}
+		]        
+	},
+	{
+		"ref":"MTZ171648",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Jorge Martínez"}
+		]        
+	},
+	{
+		"ref":"HMF042578",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Jesús Suárez"}
+		]        
+	},
+	{
+		"ref":"BXS321450",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Jorge Blanco"}
+		]        
+	},
+	{
+		"ref":"KQF651568",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Constanza Méndez"}
+		]        
+	},
+	{
+		"ref":"QWK277896",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alberto de Francisco"}
+		]        
+	},
+	{
+		"ref":"DYR397757",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Rocío Rodríguez"}
+		]        
+	},
+	{
+		"ref":"DLN898857",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Jesús Robres"}
+		]        
+	},
+	{
+		"ref":"XHK407434",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Hugo Vecchionacce"}
+		]        
+	},
+	{
+		"ref":"DKC916051",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Antonio Gallardo"}
+		]        
+	},
+	{
+		"ref":"NWK699429",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"María Jesús Varela"}
+		]        
+	},
+	{
+		"ref":"LBJ734724",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alberto Aydillo"}
+		]        
+	},
+	{
+		"ref":"NHZ174501",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Javier Carral"}
+		]        
+	},
+	{
+		"ref":"KNY041413",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José Manuel Valiño"}
+		]        
+	},
+	{
+		"ref":"LXT262724",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Rebeca Cores"}
+		]        
+	},
+	{
+		"ref":"LMF370743",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José A. Fernández"}
+		]        
+	},
+	{
+		"ref":"LJR491323",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alberte Rodríguez"}
+		]        
+	},
+	{
+		"ref":"NGC744637",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Eduardo Aldao"}
+		]        
+	},
+	{
+		"ref":"PWD848600",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pablo Mateo"}
+		]        
+	},
+	{
+		"ref":"LGB664718",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carlos G. Jardón"}
+		]        
+	},
+	{
+		"ref":"TTT046291",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"María Camino"}
+		]        
+	},
+	{
+		"ref":"WYZ330343",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Juan Cabado"}
+		]        
+	},
+	{
+		"ref":"WXB174561",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Benito Couceiro"}
+		]        
+	},
+	{
+		"ref":"NGB943377",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Diego Brandido"}
+		]        
+	},
+	{
+		"ref":"VTT474903",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Adriana Lema"}
+		]        
+	},
+	{
+		"ref":"DMF073210",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Luis Lanuza"}
+		]        
+	},
+	{
+		"ref":"ZFX835124",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Antón Cárdenas"}
+		]        
+	},
+	{
+		"ref":"SCT748956",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Ignacio Revuelta"}
+		]        
+	},
+	{
+		"ref":"HRK616354",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Miguel Ángel Escotet"}
+		]        
+	},
+	{
+		"ref":"LJN086976",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pedro Otero"}
+		]        
+	},
+	{
+		"ref":"QDK705202",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pilar Alves"}
+		]        
+	},
+	{
+		"ref":"RLW414695",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Isaac Glez. Toribio"}
+		]        
+	},
+	{
+		"ref":"ZNY515647",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José Luis Vázquez"}
+		]        
+	},
+	{
+		"ref":"GKZ882597",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Antonio Salazar"}
+		]        
+	},
+	{
+		"ref":"SCD734741",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Marco Nieto"}
+		]        
+	},
+	{
+		"ref":"QJN589804",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Marcos Vidal"}
+		]        
+	},
+	{
+		"ref":"MLM186733",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Ricardo González"}
+		]        
+	},
+	{
+		"ref":"NVK685457",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Luis Beraza"}
+		]        
+	},
+	{
+		"ref":"PFJ664922",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Xavi Pérez Valcarce"}
+		]        
+	},
+	{
+		"ref":"WBF452996",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Marcos Oubiña"}
+		]        
+	},
+	{
+		"ref":"NLH081662",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Gabriel Glez. Eiroa"}
+		]        
+	},
+	{
+		"ref":"YCL402408",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Manuel Nogueira"}
+		]        
+	},
+	{
+		"ref":"RQD122344",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Víctor Casal"}
+		]        
+	},
+	{
+		"ref":"QWT320709",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Jorge Mahía"}
+		]        
+	},
+	{
+		"ref":"FRS470817",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Javier Rivero"}
+		]        
+	},
+	{
+		"ref":"KFW868395",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Gerardo Fuertes"}
+		]        
+	},
+	{
+		"ref":"QNR770100",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Javier Soto"}
+		]        
+	},
+	{
+		"ref":"DWY008148",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Juan Carlos Carneiro"}
+		]        
+	},
+	{
+		"ref":"LYW341529",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carmen Fdez. Penas"}
+		]        
+	},
+	{
+		"ref":"FZZ225040",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Rubén Saavedra"}
+		]        
+	},
+	{
+		"ref":"ZMN230086",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Walter Álvarez"}
+		]        
+	},
+	{
+		"ref":"FKG429321",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Marcos Lamas"}
+		]        
+	},
+	{
+		"ref":"XMK101165",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pedro Canales"}
+		]        
+	},
+	{
+		"ref":"SBJ070610",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alfonso Caruana"}
+		]        
+	},
+	{
+		"ref":"RXT337414",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Elías Martínez"}
+		]        
+	},
+	{
+		"ref":"ZZH800517",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alberto Cacharrón"}
+		]        
+	},
+	{
+		"ref":"HJK242627",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alfonso López"}
+		]        
+	},
+	{
+		"ref":"FRX884355",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Mónica Vázquez"}
+		]        
+	},
+	{
+		"ref":"RNT183765",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pedro Pimenta"}
+		]        
+	},
+	{
+		"ref":"PFV245309",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Juan L. Vargas-Zúñiga"}
+		]        
+	},
+	{
+		"ref":"ZPG500120",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carmen Sáez"}
+		]        
+	},
+	{
+		"ref":"WDN890577",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José de Pablo"}
+		]        
+	},
+	{
+		"ref":"NPW498204",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Alberto Librero"}
+		]        
+	},
+	{
+		"ref":"JGX628906",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Kike Castro"}
+		]        
+	},
+	{
+		"ref":"JDZ467024",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Enrique Elósegui"}
+		]        
+	},
+	{
+		"ref":"TGX443149",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Santiago Novoa"}
+		]        
+	},
+	{
+		"ref":"DTX381061",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"David Hornero"}
+		]        
+	},
+	{
+		"ref":"BJQ909108",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Gonzalo Nolte"}
+		]        
+	},
+	{
+		"ref":"XVN514570",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Javier Rivero"}
+		]        
+	},
+	{
+		"ref":"GRF739547",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Manuel López Figueroa"}
+		]        
+	},
+	{
+		"ref":"TGC356807",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Álvaro García Diéguez"}
+		]        
+	},
+	{
+		"ref":"WWF080902",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Sonia Lucio"}
+		]        
+	},
+	{
+		"ref":"XNR929939",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Óscar Paz"}
+		]        
+	},
+	{
+		"ref":"DHT321453",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José Manuel Rúa"}
+		]        
+	},
+	{
+		"ref":"JSB501286",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Gaila Salgueiro"}
+		]        
+	},
+	{
+		"ref":"NHP972755",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Tomás López Fuentes"}
+		]        
+	},
+	{
+		"ref":"VNC543724",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Juan C. Sánchez Penas"}
+		]        
+	},
+	{
+		"ref":"GSW455879",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Eliseo Gómez"}
+		]        
+	},
+	{
+		"ref":"CZN129396",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Sergio Marly"}
+		]        
+	},
+	{
+		"ref":"XZQ706881",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carina Szpilka"}
+		]        
+	},
+	{
+		"ref":"XFT567406",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Eduardo Eraña"}
+		]        
+	},
+	{
+		"ref":"SYK798729",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pedro López Jácome"}
+		]        
+	},
+	{
+		"ref":"GLK392594",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José R. Rodrigo Zarza"}
+		]        
+	},
+	{
+		"ref":"WSG779231",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José García Montalvo"}
+		]        
+	},
+	{
+		"ref":"XSH192893",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Leticia Iglesias"}
+		]        
+	},
+	{
+		"ref":"YSJ744959",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Ana Barros"}
+		]        
+	},
+	{
+		"ref":"SGV514148",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Chelo Borrás"}
+		]        
+	},
+	{
+		"ref":"WFJ340532",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Antonio Rosas"}
+		]        
+	},
+	{
+		"ref":"FFX912883",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José Luis López"}
+		]        
+	},
+	{
+		"ref":"CJQ086340",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"José María Benavent"}
+		]        
+	},
+	{
+		"ref":"PTS702599",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Susana Ortiz"}
+		]        
+	},
+	{
+		"ref":"KHQ275948",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Yolanda Álvarez"}
+		]        
+	},
+	{
+		"ref":"XRQ462201",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Javier Vilariño"}
+		]        
+	},
+	{
+		"ref":"MKC795600",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Sandra Bande"}
+		]        
+	},
+	{
+		"ref":"PDS079244",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"María Rodríguez"}
+		]        
+	},
+	{
+		"ref":"QGF193439",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pilar Mosquera"}
+		]        
+	},
+	{
+		"ref":"SYR010182",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Martín Lage"}
+		]        
+	},
+	{
+		"ref":"DFP932680",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carlos Farreras"}
+		]        
+	},
+	{
+		"ref":"RSZ913224",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Nelson Rivera"}
+		]        
+	},
+	{
+		"ref":"KPK930299",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Michelle Clemente"}
+		]        
+	},
+	{
+		"ref":"ZKJ145614",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"César Clemente"}
+		]        
+	},
+	{
+		"ref":"SDD404815",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Álex Míguez"}
+		]        
+	},
+	{
+		"ref":"GLD945876",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"J.C. Escotet Serrano"}
+		]        
+	},
+	{
+		"ref":"ZDT984421",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Danny Pita"}
+		]        
+	},
+	{
+		"ref":"DDV331625",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Sergio Tarrasón"}
+		]        
+	},
+	{
+		"ref":"TMF322471",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Nuno Leal"}
+		]        
+	},
+	{
+		"ref":"VSG193653",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Cristina Peixoto"}
+		]        
+	},
+	{
+		"ref":"CFD792011",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Claudia Freitas"}
+		]        
+	},
+	{
+		"ref":"VCH636071",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Gonçalo Lopes"}
+		]        
+	},
+	{
+		"ref":"XKN214253",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Antonio Sousa"}
+		]        
+	},
+	{
+		"ref":"YXY663530",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Joao P. Gomes"}
+		]        
+	},
+	{
+		"ref":"MZS299897",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Teresa Portela"}
+		]        
+	},
+	{
+		"ref":"GRK378677",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Susana Gomes"}
+		]        
+	},
+	{
+		"ref":"WJH494531",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Rita Rendeiro"}
+		]        
+	},
+	{
+		"ref":"GNW133872",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Rosendo Rodríguez"}
+		]        
+	},
+	{
+		"ref":"BFJ115643",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Joaquim Filipe"}
+		]        
+	},
+	{
+		"ref":"YKG130422",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Hanne Escotet"}
+		]        
+	},
+	{
+		"ref":"YJY627441",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Ismael Matamoros"}
+		]        
+	},
+	{
+		"ref":"YSK893377",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"César Farreras"}
+		]        
+	},
+	{
+		"ref":"RMT380353",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"María"}
+		]        
+	},
+	{
+		"ref":"HNH018183",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"César Lárez"}
+		]        
+	},
+	{
+		"ref":"DTR041899",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Andrés"}
+		]        
+	},
+	{
+		"ref":"SHZ467305",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Inés Mahía"}
+		]        
+	},
+	{
+		"ref":"SBG460834",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Mandarinas"}
+		]        
+	},
+	{
+		"ref":"QLW110554",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Patricia Uberti"}
+		]        
+	},
+	{
+		"ref":"TVJ890659",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Tony Serrano"}
+		]        
+	},
+	{
+		"ref":"TFV875027",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Pablo Alzugaray"}
+		]        
+	},
+	{
+		"ref":"MPL353136",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Goya"}
+		]        
+	},
+	{
+		"ref":"KFD670962",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"J.E. Álvarez-Naveiro"}
+		]        
+	},
+	{
+		"ref":"DRK172920",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"Carlos Alberto Alviarez"}
+		]        
+	},
+	{
+		"ref":"GPS061296",
+		"con":0,
+		"x":0,
+		"y":0,
+		"z":0,
+		"stars": [
+			{"x":0, "y":0, "z":-500, "pos":"b", "lbl":"#ABANCAsostenible"}
+		]        
+	}
+]}

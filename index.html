@@ -16,7 +16,6 @@
 		.label {
 			color: #FBEFE4;
 			font-family: sans-serif;
-			padding: 2px;
 		}
 		.top {
 			margin-top: -2em;
@@ -86,7 +85,6 @@
 <script src="https://cdn.jsdelivr.net/npm/mobile-detect@1.4.4/mobile-detect.min.js"></script>
 <script src="js/Stats.js"></script>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TimelineLite.min.js"></script>
 
@@ -138,6 +136,8 @@
 	var starList = [];
 	var lineList = [];
 
+	var db;
+	var dbIndex = 0;
 
 	var radius = 550;	
 	var min_radius = 200;	
@@ -150,6 +150,8 @@
 	var vector_target = new THREE.Vector3( 0, 0, 0 );
 
 	var line = null;
+
+	var languange = "es";
 
 	//
  	// MOUSE VARS
@@ -302,9 +304,9 @@
 		});
 		starField = new THREE.Mesh(starGeometry, starMaterial);
 		starField.scale.set( - 1, 1, 1 );
-		starField.rotation.x = 1.1938052083641222;
-		starField.rotation.y = -0.9738937226128364;
-		starField.rotation.z = 0.3141592653589793;
+		//starField.rotation.x = 1.1938052083641222;
+		//starField.rotation.y = -0.9738937226128364;
+		//starField.rotation.z = 0.3141592653589793;
 		universe.add(starField);
 	
 		
@@ -392,6 +394,11 @@
 			alert("Sorry, try again on a compatible mobile device!");
 		}
 
+		loadJSON('json/constellations.json',
+        	function(data) { console.log(data); db = data; },
+        	function(xhr) { console.error(xhr); }
+		);
+		
 
 	} // END init()
 	
@@ -445,9 +452,6 @@
 			console.log('offset: '+offset_degrees);
 		}
 		
-		
-
-
 		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y.toFixed(2)+" | "+compass_calibrated+" | "+heading_during_calibration);
 
 	}
@@ -468,105 +472,38 @@
 	//
 	// GET CONSTELLATION DATA
 	function getConstellationData(ref) {
-		switch(ref) {
-			case 1:
-				return {
-					"constellation": {
-						"connected":1,
-						"x":0,
-						"y":0,
-						"z":0,
-						"stars": [
-							{"x":-120, "y":0, "z":-500, "lblpos":"b", "label":"ABANCA"},
-							{"x":-100, "y":100, "z":-700, "lblpos":"t", "label":"TE"},
-							{"x":-10, "y":80, "z":-650, "lblpos":"b", "label":"DESEA"},
-							{"x":50, "y":30, "z":-500, "lblpos":"b", "label":"UNA"},
-							{"x":120, "y":100, "z":-550, "lblpos":"t", "label":"MUY"},
-							{"x":150, "y":40, "z":-550, "lblpos":"b", "label":"FELIZ"},
-							{"x":300, "y":35, "z":-600, "lblpos":"t", "label":"NAVIDAD"}
-						]        
-					}
-				}		
+		var result = null;
+		for(var i = 0; i < db.constellation.length; i++) {
+			if (ref == db.constellation[i].ref) {
+				result = db.constellation[i];
+				dbIndex = i;
 				break;
-			case 2:
-				return {
-					"constellation": {
-						"connected":1,
-						"x":0,
-						"y":0,
-						"z":0,
-						"stars": [
-							{"x":-200, "y":50, "z":-500, "lblpos":"b", "label":"CUANDO"},
-							{"x":-100, "y":150, "z":-500, "lblpos":"t", "label":"ME"},
-							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"ECHES"},
-							{"x":0, "y":130, "z":-500, "lblpos":"t", "label":"DE"},
-							{"x":50, "y":50, "z":-500, "lblpos":"t", "label":"MENOS"},
-							{"x":100, "y":-50, "z":-500, "lblpos":"b", "label":"MIRA"},
-							{"x":150, "y":-50, "z":-500, "lblpos":"b", "label":"AL"},
-							{"x":200, "y":20, "z":-500, "lblpos":"b", "label":"CIELO"}
-						]        
-					}
-				}		
-				break;
-			case 3:
-				return {
-					"constellation": {
-						"connected":1,
-						"x":0,
-						"y":0,
-						"z":0,
-						"stars": [
-							{"x":-200, "y":0, "z":-500, "lblpos":"b", "label":"TODO"},
-							{"x":-100, "y":0, "z":-500, "lblpos":"t", "label":"LO"},
-							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"QUE"},
-							{"x":0, "y":0, "z":-500, "lblpos":"t", "label":"QUIERO"},
-							{"x":50, "y":0, "z":-500, "lblpos":"t", "label":"POR"},
-							{"x":100, "y":0, "z":-500, "lblpos":"b", "label":"NAVIDAD"},
-							{"x":150, "y":0, "z":-500, "lblpos":"b", "label":"ERES"},
-							{"x":200, "y":0, "z":-500, "lblpos":"b", "label":"TÚ"}
-						]        
-					}
-				}		
-				break;
-			case 4:
-				return {
-					"constellation": {
-						"connected":1,
-						"x":0,
-						"y":0,
-						"z":0,
-						"stars": [
-							{"x":-200, "y":0, "z":-500, "lblpos":"b", "label":"BRILLAS"},
-							{"x":-100, "y":0, "z":-500, "lblpos":"t", "label":"MÁS"},
-							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"QUE"},
-							{"x":0, "y":0, "z":-500, "lblpos":"t", "label":"ESTA"},
-							{"x":50, "y":0, "z":-500, "lblpos":"t", "label":"CONSTELACIÓN"}
-						]        
-					}
-				}		
-				break;
-			case 5:
-				return {
-					"constellation": {
-						"connected":1,
-						"x":0,
-						"y":0,
-						"z":0,
-						"stars": [
-							{"x":-200, "y":0, "z":-500, "lblpos":"b", "label":"AUNQUE"},
-							{"x":-100, "y":0, "z":-500, "lblpos":"t", "label":"ESTÉS"},
-							{"x":-50, "y":0, "z":-500, "lblpos":"b", "label":"LEJOS"},
-							{"x":0, "y":0, "z":-500, "lblpos":"t", "label":"TU"},
-							{"x":50, "y":0, "z":-500, "lblpos":"t", "label":"LUZ"},
-							{"x":100, "y":0, "z":-500, "lblpos":"b", "label":"LLEGA"},
-							{"x":150, "y":0, "z":-500, "lblpos":"b", "label":"HASTA"},
-							{"x":200, "y":0, "z":-500, "lblpos":"b", "label":"MI"}
-						]        
-					}
-				}		
-				break;
-
+			}
 		}
+		return result;
+	}
+	function browseConstellationData(direction) {
+		switch(direction) {
+			case 'next':
+				dbIndex++;
+				if (dbIndex == db.constellation.length) {
+					dbIndex = 0;
+				}
+				break;
+			case 'previous':
+				dbIndex--;
+				if (dbIndex == -1) {
+					dbIndex = db.constellation.length-1;
+				}
+				break;
+			case 'beginning':
+				dbIndex = 0;
+				break;
+			case 'end':
+				dbIndex = db.constellation.length-1;
+				break;
+		}	
+		showConstellation(db.constellation[dbIndex].ref)
 	}
 
 	
@@ -576,7 +513,6 @@
 		console.log("wipeConstellation");
 		for(var i = 0; i < displayList.length; i++) {
 			var obj = displayList[i];
-			//console.log(obj);
 			universe.remove(obj);
 		}
 		var labels = document.getElementsByClassName('label');
@@ -587,7 +523,6 @@
 		displayList = [];
 		starList = [];
 		lineList = [];
-
 	}
 
 	//
@@ -596,104 +531,112 @@
 		console.log("showConstellation");
 		wipeConstellation();
 
-		var json = getConstellationData(ref);
-		var figure = new THREE.Geometry();
+		var constellationData = getConstellationData(ref);
 
-		//
-		// CONSTELLATION WRAPPER
-		var constellationGeometry = new THREE.SphereGeometry(0.1, 1, 1);
-		var constellationMaterial = new THREE.MeshBasicMaterial({
-			color: 0x000000,
-			side: THREE.BackSide,
-		});
-		constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
-		constellation.rotation.set(json.constellation.x*Math.PI/180, json.constellation.y*Math.PI/180, json.constellation.z*Math.PI/180);
-		universe.add(constellation);
-		displayList.push(constellation);
+		if (constellationData != null ) {
 
-		//
-		// STAR LOOP
-		for(var i = 0; i < json.constellation.stars.length; i++) {
-	    	var obj = json.constellation.stars[i];
-			//console.log(obj.label);
-				
-			var vector = new THREE.Vector3(obj.x, obj.y, obj.z);
-			figure.vertices.push(vector);
-			
-			var label_div = document.createElement( 'div' );
-			var label_span = document.createElement( 'span' );
-				label_div.appendChild(label_span);
-				label_span.textContent = obj.label;
-				label_span.id = "span_"+i;
-			
-			switch(obj.lblpos) {
-				case 'l':
-				label_div.className = 'label left';
-				break;
-				case 'r':
-				label_div.className = 'label right';
-				break;
-				case 't':
-				label_div.className = 'label top';
-				break;
-				case 'b':
-				label_div.className = 'label bottom';
-				break;
-			}		
-				
-			var label_2d = new THREE.CSS2DObject( label_div );
-				label_2d.position.set( 0, 0, 0 );
-				
 			//
-			// BASIC STAR SPRITES
-			var sprite_material = new THREE.SpriteMaterial( {color:0xFBEFE4, map:starCampaign, blending: THREE.AdditiveBlending, depthTest:true, transparent:true, opacity:0 } );
+			// 
+			var figure = new THREE.Geometry();
 
-			var sprite = new THREE.Sprite(sprite_material);
-				sprite.position.set(obj.x, obj.y, obj.z);
-				sprite.scale.set(40, 40, 50);
-				sprite.name = "star"+i;
-				sprite.add( label_2d );
-
-			constellation.add(sprite);
-			displayList.push(sprite);
-			starList.push(sprite);
-			
 			//
-			// CONNECTION LINES
-			if (json.constellation.connected) {
-				if (i < (json.constellation.stars.length-1)) {
+			// CONSTELLATION WRAPPER
+			var constellationGeometry = new THREE.SphereGeometry(0.1, 1, 1);
+			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,side: THREE.BackSide});
+			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
+			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
+			universe.add(constellation);
+			displayList.push(constellation);
 
-					var to = json.constellation.stars[i+1];
-					var from_vector = new THREE.Vector3(obj.x, obj.y, obj.z);
-					var to_vector = new THREE.Vector3(to.x, to.y, to.z);
-					var d = from_vector.distanceTo(to_vector);
-					var angle = from_vector.angleTo(to_vector);
-					var r = 2;
+			//
+			// STAR LOOP
+			for(var i = 0; i < constellationData.stars.length; i++) {
+				var obj = constellationData.stars[i];
+				//console.log(obj.label);
+					
+				var vector = new THREE.Vector3(obj.x, obj.y, obj.z);
+				figure.vertices.push(vector);
+				
+				var lblDiv = document.createElement( 'div' );
+				var label_span = document.createElement( 'span' );
+					lblDiv.appendChild(label_span);
+					label_span.textContent = obj.lbl;
+					label_span.id = "span_"+i;
+				
+				switch(obj.pos) {
+					case 'l':
+					lblDiv.className = 'label left';
+					break;
+					case 'r':
+					lblDiv.className = 'label right';
+					break;
+					case 't':
+					lblDiv.className = 'label top';
+					break;
+					case 'b':
+					lblDiv.className = 'label bottom';
+					break;
+				}		
+					
+				var label_2d = new THREE.CSS2DObject(lblDiv);
+					label_2d.position.set( 0, 0, 0 );
+					
+				//
+				// BASIC STAR SPRITES
+				var map = constellationData.con ? starCampaign:starEvent;
+				var sprite_material = new THREE.SpriteMaterial( {color:0xFBEFE4, map:map, blending: THREE.AdditiveBlending, depthTest:true, transparent:true, opacity:0 } );
 
-					var line_geometry = new THREE.BoxGeometry( r, d, r );
-						line_geometry.rotateX( Math.PI / 2 );
-						line_geometry.translate( 0, 0, d/2 ); // optional
+				var sprite = new THREE.Sprite(sprite_material);
+					sprite.position.set(obj.x, obj.y, obj.z);
+					sprite.scale.set(40, 40, 50);
+					sprite.name = "star"+i;
+					sprite.add( label_2d );
 
-					var line_material = new THREE.MeshBasicMaterial( {color: 0xFBEFE4} );
+				constellation.add(sprite);
+				displayList.push(sprite);
+				starList.push(sprite);
+				
+				//
+				// CONNECTION LINES
+				if (constellationData.con) {
+					if (i < (constellationData.stars.length-1)) {
 
-					var line = new THREE.Mesh( line_geometry, line_material );
-						line.position.set(obj.x, obj.y, obj.z);
-						line.lookAt(to.x, to.y, to.z)
-						line.scale.z = 0;
+						var to = constellationData.stars[i+1];
+						var from_vector = new THREE.Vector3(obj.x, obj.y, obj.z);
+						var to_vector = new THREE.Vector3(to.x, to.y, to.z);
+						var d = from_vector.distanceTo(to_vector);
+						var angle = from_vector.angleTo(to_vector);
+						var r = 2;
 
-					constellation.add(line);
-					displayList.push(line);
-					lineList.push(line);
+						var line_geometry = new THREE.BoxGeometry( r, d, r );
+							line_geometry.rotateX( Math.PI / 2 );
+							line_geometry.translate( 0, 0, d/2 ); // optional
+
+						var line_material = new THREE.MeshBasicMaterial( {color: 0xFBEFE4} );
+
+						var line = new THREE.Mesh( line_geometry, line_material );
+							line.position.set(obj.x, obj.y, obj.z);
+							line.lookAt(to.x, to.y, to.z)
+							line.scale.z = 1/1000000;
+
+						constellation.add(line);
+						displayList.push(line);
+						lineList.push(line);
+					}
 				}
+				
+				if (i==0) {
+					animation_target = sprite;
+					vector_target = vector;
+				}
+				
 			}
-			 
-			if (i==0) {
-				animation_target = sprite;
-				vector_target = vector;
-			}
-			
+
+		} else {
+			console.log("ERROR: CONSTELLATION NOT FOUND ("+ref+")")
 		}
-	
+
+
 	}	
 	
 
@@ -725,8 +668,24 @@
 	}	
 	
 	
-	
-	
+	//
+	// LOAD JSON
+	function loadJSON(path, success, error) {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function()	{
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (xhr.status === 200) {
+					if (success)
+						success(JSON.parse(xhr.responseText));
+				} else {
+					if (error)
+						error(xhr);
+				}
+			}
+		};
+		xhr.open("GET", path, true);
+		xhr.send();
+	}
 
 
 
@@ -739,7 +698,6 @@
 		labelRenderer.setSize(window.innerWidth, window.innerHeight);
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
-
 	}
 
 
@@ -797,14 +755,18 @@
 				console.log('animation triggered');
 				animation_trigger = true;
 
+				var duration = 0.3;
+
 				for(var i = 0; i < lineList.length; i++) {
-					TweenMax.to(lineList[i].scale, 1, {z:1, ease:Quad.easeOut, delay:i*1});
+					console.log('tween line');
+					TweenMax.to(lineList[i].scale, duration, {z:1, ease:Quad.easeOut, delay:i*duration});
 				}
 				for(var i = 0; i < starList.length; i++) {
-					TweenMax.to(starList[i].material, 1, {opacity:1, ease:Quad.easeOut, delay:i*1});
+					console.log('tween star');
+					TweenMax.to(starList[i].material, duration, {opacity:1, ease:Quad.easeOut, delay:i*duration});
 
 					var lbl = document.getElementById('span_'+i);
-					TweenMax.from(lbl, 1, {opacity:0, ease:Quad.easeOut, delay:i*1});
+					TweenMax.from(lbl, duration, {opacity:0, ease:Quad.easeOut, delay:i*duration});
 				}
 			}
 		}
@@ -873,19 +835,49 @@
 		} else if (keyCode == 16) {	// reset
 			factor = -1*factor;
 		} else if (keyCode == 49) {	// 1
-			showConstellation(1);	
+			showConstellation(languange+"01");	
 		} else if (keyCode == 50) {	// 2
-			showConstellation(2);
+			showConstellation(languange+"02");	
 		} else if (keyCode == 51) {	// 3
-			showConstellation(3)
+			showConstellation(languange+"03");	
 		} else if (keyCode == 52) {	// 4
-			showConstellation(4);
+			showConstellation(languange+"04");	
 		} else if (keyCode == 53) {	// 5
-			showConstellation(5);
-
-
-
+			showConstellation(languange+"05");	
+		} else if (keyCode == 54) {	// 6
+			showConstellation("WHH148844");	
+		} else if (keyCode == 55) {	// 7
+			showConstellation("CGX414051");	
+		} else if (keyCode == 56) {	// 8
+			showConstellation("PCF332711");	
+		} else if (keyCode == 57) {	// 9
+			showConstellation("DRK172920");	
+		} else if (keyCode == 48) {	// 0
+			showConstellation("GPS061296");	
+		} else if (keyCode == 37) {	// LEFT
+			browseConstellationData("previous");	
+			console.log("LEFT");
+		} else if (keyCode == 39) {	// RIGHT
+			browseConstellationData("next");	
+			console.log("RIGHT");
+		} else if (keyCode == 38) {	// TOP
+			browseConstellationData("beginning");	
+			console.log("TOP");
+		} else if (keyCode == 40) {	// BOTTOM
+			browseConstellationData("end");	
+			console.log("BOTTOM");
+		} else if (keyCode == 69) {	// e ES
+			languange = "es";
+		} else if (keyCode == 80) {	// p PT
+			languange = "pt";
+		} else if (keyCode == 71) {	// g GL
+			languange = "gl";
 		}
+
+
+
+
+
 		console.log(keyCode, rot.x, rot.y, rot.z)
 	};
 
