@@ -96,7 +96,7 @@
 	void main() {
 		vColor = color;
 		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-		gl_PointSize = size * ( 500.0 / -mvPosition.z );
+		gl_PointSize = size * ( 1500.0 / -mvPosition.z );
 		gl_Position = projectionMatrix * mvPosition;
 	}
 </script>
@@ -128,7 +128,7 @@
 	//
 	// VARS
 	var scene, camera, fov, renderer, labelRenderer, frustum, cameraViewProjectionMatrix, 
-	animation_target, animation_trigger, controls, lights, stats, universe, constellation, starField, textureLoader, 
+	animation_target, animation_trigger, controls, lights, stats, universe, celestialSystem, constellation, starField, textureLoader, 
 	starCampaign, starMap, starEvent, spark , starCount, blueCount, particles_geometry, random_particles_count, fraction, lineLength;
 	var vertices, positions, colors, sizes = [];
 
@@ -139,6 +139,8 @@
 	var db;
 	var dbIndex = 0;
 
+	var lookAtTarget;
+
 	var radius = 1500;	
 	var min_radius = 200;	
 	var universe_radius = radius+min_radius;
@@ -147,6 +149,23 @@
 	var heading_during_calibration;
 	var show_all_constellations = false;
 	//var constellation_visible = false;
+
+
+	var deeplinkRef = false ? "es01":null;
+	var deeplinkInterval;
+
+
+	if(window.location.hash) {
+      var hash = window.location.hash.substring(1); 
+	  deeplinkRef = hash;
+	  console.log('deeplink via hash: '+deeplinkRef);
+      // hash found
+  	} else {
+		alert ('mptjomg');
+      // No hash found
+  	}
+
+
 
 	var vector_camera = new THREE.Vector3( 0, 0, 0 );
 	var vector_target = new THREE.Vector3( 0, 0, 0 );
@@ -261,7 +280,7 @@
 		
 		//
 		// AXIS Helper
-		scene.add( new THREE.AxesHelper( 2000 ) );
+		//scene.add( new THREE.AxesHelper( 2000 ) );
 		
 		//
 		// Lights
@@ -284,6 +303,21 @@
 		universe = new THREE.Mesh(universeGeometry, universeMaterial);
 		scene.add(universe);
 		console.log("universe "+universe.rotation.y);
+
+
+		//
+		// celestialSystem
+		var celestialGeometry = new THREE.SphereGeometry(2*universe_radius, 16, 16);
+		celestialSystem = new THREE.Mesh(celestialGeometry, universeMaterial);
+		//celestialSystem.rotation.x = 0*Math.PI/180;
+		if (!deeplinkRef) {
+			celestialSystem.rotation.y = -90*Math.PI/180;
+			celestialSystem.rotation.x = 15*Math.PI/180;
+		}
+		scene.add(celestialSystem);
+		
+
+		
 
 
 		//
@@ -310,8 +344,8 @@
 		//starField.rotation.x = 1.1938052083641222;
 		//starField.rotation.y = -0.9738937226128364;
 		//starField.rotation.z = 0.3141592653589793;
-		starField.rotation.y = 2.858849314766709;
-		universe.add(starField);
+		starField.rotation.y = 3.159858849314766709;
+		celestialSystem.add(starField);
 	
 		
 	
@@ -401,8 +435,18 @@
 		loadJSON('json/constellations.json',
         	function(data) { 
 				console.log(data); 
-				db = data; 
-				showConstellation("es01");
+				db = data;
+				if (deeplinkRef) {
+					deeplinkInterval = setInterval( function() { 
+						showConstellation(deeplinkRef);
+						//camera.target.x = lookAtTarget.position.x;
+						//camera.target.y = lookAtTarget.position.y;
+						//camera.target.z = lookAtTarget.position.z;
+						//camera.target = new THREE.Vector3(lookAtTarget.position.x, lookAtTarget.position.y, lookAtTarget.position.z);
+						//camera.lookAt( new THREE.Vector3(lookAtTarget.position.x, lookAtTarget.position.y, lookAtTarget.position.z) );
+						clearInterval(deeplinkInterval);
+					}, 2000);
+				}
 			},
         	function(xhr) { console.error(xhr); }
 		);
@@ -515,13 +559,18 @@
 	}
 
 	
+
+
+	
+
 	//
 	// CLEAN-UP CONSTELLATION
 	function wipeConstellation() {
 		console.log("wipeConstellation");
 		for(var i = 0; i < displayList.length; i++) {
 			var obj = displayList[i];
-			universe.remove(obj);
+			//universe.remove(obj);
+			celestialSystem.remove(obj);
 		}
 		var labels = document.getElementsByClassName('label');
 		while(labels[0]) {
@@ -556,7 +605,7 @@
 			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
 			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
 			//constellation.scale.z = 1.0;
-			universe.add(constellation);
+			celestialSystem.add(constellation);
 			displayList.push(constellation);
 
 			//
@@ -605,7 +654,7 @@
 					sprite.add( label_2d );
 
 				constellation.add(sprite);
-				displayList.push(sprite);
+				//displayList.push(sprite);
 				starList.push(sprite);
 				
 				//
@@ -618,7 +667,7 @@
 						var to_vector = new THREE.Vector3(to.x, to.y, to.z);
 						var d = from_vector.distanceTo(to_vector);
 						var angle = from_vector.angleTo(to_vector);
-						var r = 2;
+						var r = 1;
 
 						var line_geometry = new THREE.BoxGeometry( r, d, r );
 							line_geometry.rotateX( Math.PI / 2 );
@@ -632,14 +681,19 @@
 							line.scale.z = 1/1000000;
 
 						constellation.add(line);
-						displayList.push(line);
+						//displayList.push(line);
 						lineList.push(line);
 					}
 				}
 				
 				if (i==0) {
 					animation_target = sprite;
+					lookAtTarget = sprite;
 					vector_target = vector;
+				}
+
+				if (obj.lookAt) {
+					lookAtTarget = sprite;
 				}
 				
 			}
@@ -836,7 +890,7 @@
 	document.addEventListener("keydown", onDocumentKeyDown, false);
 	function onDocumentKeyDown(event) {
 		var keyCode = event.which;
-		var rot = universe.rotation;
+		var rot = celestialSystem.rotation;
 		var inc = Math.PI/100*factor;
 
 
