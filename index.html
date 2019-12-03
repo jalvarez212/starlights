@@ -145,6 +145,7 @@
 		
 	var compass_calibrated = false;
 	var heading_during_calibration;
+	//var constellation_visible = false;
 
 	var vector_camera = new THREE.Vector3( 0, 0, 0 );
 	var vector_target = new THREE.Vector3( 0, 0, 0 );
@@ -523,6 +524,7 @@
 		displayList = [];
 		starList = [];
 		lineList = [];
+		//constellation_visible = false;
 	}
 
 	//
@@ -530,6 +532,7 @@
 	function showConstellation(ref) {
 		console.log("showConstellation");
 		wipeConstellation();
+		//constellation_visible = true;
 
 		var constellationData = getConstellationData(ref);
 
@@ -562,6 +565,7 @@
 					lblDiv.appendChild(label_span);
 					label_span.textContent = obj.lbl;
 					label_span.id = "span_"+i;
+					label_span.style.opacity = 0;
 				
 				switch(obj.pos) {
 					case 'l':
@@ -766,7 +770,7 @@
 					TweenMax.to(starList[i].material, duration, {opacity:1, ease:Quad.easeOut, delay:i*duration});
 
 					var lbl = document.getElementById('span_'+i);
-					TweenMax.from(lbl, duration, {opacity:0, ease:Quad.easeOut, delay:i*duration});
+					TweenMax.to(lbl, duration, {opacity:1, ease:Quad.easeOut, delay:i*duration});
 				}
 			}
 		}
@@ -799,6 +803,11 @@
 		onPointerDownLat = lat;
 	}
 	function onDocumentMouseMove( event ) {
+		/*
+		if (camera.matrixWorld.elements[0] < .9996 && camera.matrixWorld.elements[0] > .90 && camera.matrixWorld.elements[2] > -.65 && camera.matrixWorld.elements[2] < .5 && constellation_visible == false) {
+			showConstellation(1);
+		}
+		*/
 		if ( isUserInteracting === true ) {
 			lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
 			lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
