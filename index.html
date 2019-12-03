@@ -172,7 +172,7 @@
 	var compass_calibrated = false;
 	var heading_during_calibration;
 
-	var deeplinkRef = false ? "es01":null;
+	var deeplinkRef = true ? "es01":null;
 	var deeplinkInterval;
 	if(window.location.hash) {
       var hash = window.location.hash.substring(1); 
@@ -188,6 +188,9 @@
 	var languange = "es";
 
 	var keyboardIncDirection = 1;
+
+
+	var carrot;
 
 	//
  	// MOUSE VARS
@@ -227,7 +230,7 @@
 		camera.target = new THREE.Vector3(0, 0, 0);
 		//camera.position.x = 20;
 		//camera.position.y = 20;
-		//camera.position.z = 20;
+		camera.position.z = 0.01;
 	
 		//
 		// WebGL Renderer
@@ -250,19 +253,26 @@
 		cameraViewProjectionMatrix = new THREE.Matrix4();
 		animation_trigger = false;
 		
-		//2
+		//
 		// CONTROLS
 		if (md.mobile()) {
 			controls = new THREE.DeviceOrientationControls(camera);
 		} else {
-            document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-            document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-            document.addEventListener( 'wheel', onDocumentMouseWheel, false );
-			//controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
-			//controls.maxDistance = 500;
-			//controls.update();
+			if (false) {
+  				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+            	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+            	document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+            	document.addEventListener( 'wheel', onDocumentMouseWheel, false );
+			} else {
+				controls = new THREE.OrbitControls( camera, labelRenderer.domElement );
+				controls.enableDamping = true;
+				controls.dampingFactor = 0.1;
+				controls.maxDistance = 1;
+				controls.enableZoom = false;
+				controls.update();
+			}
 		}
+          
 		
 		//
 		// STATS
@@ -305,6 +315,18 @@
 			celestialSystem.rotation.x = 15*Math.PI/180;
 		}
 		scene.add(celestialSystem);
+		
+
+
+
+		//
+		// celestialSystem
+		var carrotGeometry = new THREE.SphereGeometry(5, 16, 16);
+		carrot = new THREE.Mesh(carrotGeometry, universeMaterial);
+		carrot.position.set(0, 50, -500);
+		//universe.add(carrot);
+
+
 		
 		//
 		// TEXTURE LOADING FOR ANIMATION TARGET
@@ -384,7 +406,6 @@
 		//
 		// EVENT LISTENERS
 		window.addEventListener('resize', onWindowResize, false);
-
 		if (window.DeviceOrientationAbsoluteEvent) {
 			window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
 		} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
@@ -527,7 +548,7 @@
 			//
 			// CONSTELLATION WRAPPER
 			var constellationGeometry = new THREE.SphereGeometry(0.1, 1, 1);
-			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,side: THREE.BackSide});
+			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,side:THREE.BackSide,transparent:true,opacity:0});
 			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
 			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
 			//constellation.scale.z = 1.5;
@@ -695,10 +716,37 @@
 			camera.target.z = -500 * Math.sin( phi ) * Math.sin( theta );
 			camera.lookAt( camera.target );
         }
-	
+
+
+		
+		// 
+		// FRUSTUM
+		camera.updateMatrixWorld(); // make sure the camera matrix is updated
+		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
+		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
+		frustum.setFromMatrix( cameraViewProjectionMatrix );	
+
+
+		
 		stats.update();
 		var vec = new THREE.Vector3(0,0,0);
-		vector_camera = camera.getWorldDirection(vec);
+		
+
+		vector_camera = camera.target;
+		console.log("1", vector_camera);
+		vector_camera = camera.getWorldDirection(vector_camera);
+		console.log("2", vector_camera);
+		//var matrix4 = camera.projectionMatrix;
+		//console.log("2", matrix4);
+		
+		//carrot.position.x = vector_camera.x;
+		//carrot.position.y = vector_camera.y;
+		//carrot.position.z = vector_camera.z;
+		
+		
+
+
+		//console.log("3", vector_camera);
 		if (animation_target) {
 			vector_target = animation_target.getWorldPosition(vector_target);
 
@@ -718,23 +766,18 @@
 
 
 			//var d = Math.round(vector_camera.distanceTo(vector_target));
-			console.log(leftOrRight, upOrDown, dx, dy, dz, camera);
-			console.log("target", camera.target);
-			console.log("matrix", camera.matrix);
-			console.log("posVector1", camera.matrix.position);
-			console.log("matrixWorld", camera.matrixWorld);
-			console.log("posVector2", camera.matrixWorld.position);
-			console.log("quaternion", camera.quaternion);
+			console.log(leftOrRight, upOrDown, dx, dy, dz);
+			//console.log("target", camera.target);
+			//console.log("matrix", camera.matrix);
+			//console.log("posVector1", camera.matrix.position);
+			//console.log("matrixWorld", camera.matrixWorld);
+			//console.log("posVector2", camera.matrixWorld.position);
+			//console.log("quaternion", camera.quaternion);
 
 
 		}
 
-		// 
-		// FRUSTUM
-		camera.updateMatrixWorld(); // make sure the camera matrix is updated
-		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
-		cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
-		frustum.setFromMatrix( cameraViewProjectionMatrix );
+	
 
 		if (animation_target && animation_trigger == false) {
 			//console.log( frustum.intersectsObject( animation_target ) );
