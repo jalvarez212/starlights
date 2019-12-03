@@ -386,7 +386,7 @@
 	
 		universe.add( particleSystem );
 
-		//showConstellation(false);
+		
 		
 		window.addEventListener('resize', onWindowResize, false);
 
@@ -399,7 +399,11 @@
 		}
 
 		loadJSON('json/constellations.json',
-        	function(data) { console.log(data); db = data; },
+        	function(data) { 
+				console.log(data); 
+				db = data; 
+				showConstellation("es01");
+			},
         	function(xhr) { console.error(xhr); }
 		);
 		
@@ -551,7 +555,7 @@
 			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,side: THREE.BackSide});
 			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
 			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
-			constellation.scale.z = 1.5;
+			//constellation.scale.z = 1.0;
 			universe.add(constellation);
 			displayList.push(constellation);
 
