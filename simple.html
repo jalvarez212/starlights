@@ -109,6 +109,15 @@
 		stats.domElement.style.zIndex = 100;
 		document.body.appendChild( stats.domElement );
 
+
+
+		var geometry = new THREE.SphereGeometry( 200, 32, 32 );
+		var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+		var sphere = new THREE.Mesh( geometry, material );
+		sphere.position.set(0,0,-500)
+		scene.add( sphere );
+
+
 		//
 		// TEXTURE LOADING FOR ANIMATION TARGET
 		textureLoader = new THREE.TextureLoader();
