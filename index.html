@@ -701,7 +701,10 @@
 		if (animation_target) {
 			vector_target = animation_target.getWorldPosition(vector_target);
 
-			var dx = Math.round(vector_camera.x - vector_target.x); 
+			var my = window.innerHeight/2;
+			var mz = window.innerWidth/2;
+
+			//var dx = Math.round(vector_camera.x - vector_target.x); 
   			var dy = Math.round(vector_camera.y - vector_target.y); 
   			var dz = Math.round(vector_camera.z - vector_target.z);
 			
@@ -713,8 +716,8 @@
 			document.getElementById("RIGHT").style.display = dz<0 ? "block":"none";
 
 
-			var d = Math.round(vector_camera.distanceTo(vector_target));
-			console.log(leftOrRight, upOrDown, d, dx, dy, dz);
+			//var d = Math.round(vector_camera.distanceTo(vector_target));
+			console.log(leftOrRight, upOrDown, dy, dz, camera);
 		}
 
 		// 
