@@ -208,7 +208,7 @@
 		
 		//
 		// CAMERA
-		fov = 30;
+		fov = 70;
 		camera = new THREE.PerspectiveCamera(fov, window.innerWidth/window.innerHeight, 1, universe_radius);
 		camera.target = new THREE.Vector3( 0, 0, 0 );
 		//camera.position.x = 0;
@@ -591,7 +591,7 @@
 					
 				//
 				// BASIC STAR SPRITES
-				var map = constellationData.con ? starCampaign:starEvent;
+				var map = constellationData.e ? starEvent:starCampaign;
 				var sprite_material = new THREE.SpriteMaterial( {color:0xFBEFE4, map:map, blending: THREE.AdditiveBlending, depthTest:true, transparent:true, opacity:0 } );
 
 				var sprite = new THREE.Sprite(sprite_material);
