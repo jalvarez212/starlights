@@ -56,7 +56,7 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.06</button>
+			<button id="startButton">Start v4.07</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>
@@ -186,7 +186,7 @@
 		if (event.alpha==null && event.beta==null && event.gamma==null) {
           // null-event
 		  console.log('NULL DeviceOrientation EVENT, skipping.');
-		  document.getElementById("event").innerHTML = event.type + "NOT AVAILABLE. SKIPPING.;
+		  document.getElementById("event").innerHTML = (event.type + "NOT AVAILABLE. SKIPPING.").toString();
           return;
         }
 
