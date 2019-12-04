@@ -166,7 +166,7 @@
 	var dbIndex = 0;
 
 	var radius = 1500;	
-	var min_radius = 200;	
+	var min_radius = 300;	
 	var universe_radius = radius+min_radius;
 		
 	var compass_calibrated = false;
@@ -291,6 +291,8 @@
 				controls.dampingFactor = 0.1;
 				controls.maxDistance = 1;
 				controls.enableZoom = false;
+				controls.panSpeed = 0.2;
+				controls.rotateSpeed = 0.2;
 				controls.update();
 			}
 		}
@@ -313,7 +315,7 @@
 		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
 		//lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
 		//lights = new THREE.HemisphereLight( 0x000000, 0x132d49, 8 );
-		lights = new THREE.HemisphereLight( 0x000000, 0x214f80, 4 );
+		lights = new THREE.HemisphereLight( 0x000000, 0x214f80, 3 );
 		scene.add(lights);
 
 		//
@@ -343,9 +345,9 @@
 
 		//
 		// celestialSystem
-		var carrotGeometry = new THREE.SphereGeometry(5, 16, 16);
-		carrot = new THREE.Mesh(carrotGeometry, universeMaterial);
-		carrot.position.set(0, 50, -500);
+		//var carrotGeometry = new THREE.SphereGeometry(5, 16, 16);
+		//carrot = new THREE.Mesh(carrotGeometry, universeMaterial);
+		//carrot.position.set(0, 50, -500);
 		//universe.add(carrot);
 
 
@@ -380,7 +382,7 @@
 		var compassTextureMap = textureLoader.load( 'textures/sprites/north.svg' );
 		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
 		var compass = new THREE.Sprite( compassMaterial );
-			compass.scale.set(30, 30, 30);
+			compass.scale.set(50, 50, 50);
 			compass.position.set(0, 0, -universe_radius+50);
 		universe.add( compass );
 		
@@ -576,7 +578,7 @@
 			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,side:THREE.BackSide,transparent:true,opacity:0});
 			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
 			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
-			//constellation.scale.z = 1.5;
+			constellation.scale.z = 1.3;
 			celestialSystem.add(constellation);
 			displayList.push(constellation);
 
@@ -758,9 +760,9 @@
 		
 
 		vector_camera = camera.target;
-		console.log("1", vector_camera);
+		//console.log("1", vector_camera);
 		vector_camera = camera.getWorldDirection(vector_camera);
-		console.log("2", vector_camera);
+		//console.log("2", vector_camera);
 		//var matrix4 = camera.projectionMatrix;
 		//console.log("2", matrix4);
 		
@@ -785,9 +787,9 @@
 			var leftOrRight = dz>0 ? "LEFT":"RIGHT";
 			var upOrDown = dy>0 ? "UP":"DOWN";
 
-			document.getElementById("UP").style.display = dy>0 ? "block":"none";
-			document.getElementById("LEFT").style.display = dz>0 ? "block":"none";
-			document.getElementById("RIGHT").style.display = dz<0 ? "block":"none";
+			//document.getElementById("UP").style.display = dy>0 ? "block":"none";
+			//document.getElementById("LEFT").style.display = dz>0 ? "block":"none";
+			//document.getElementById("RIGHT").style.display = dz<0 ? "block":"none";
 
 
 			//var d = Math.round(vector_camera.distanceTo(vector_target));
