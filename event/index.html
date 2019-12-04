@@ -56,7 +56,7 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.04</button>
+			<button id="startButton">Start v4.05</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>
@@ -137,6 +137,9 @@
 	function init () {
 		logger("init");
 		if (okToUseDeviceOrientationEvents) {
+
+
+			logger("Test #1 - Marcus Code");
 			if (window.DeviceOrientationAbsoluteEvent) {
 				logger("DeviceOrientationAbsoluteEvent");
 				window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
@@ -146,6 +149,23 @@
 			} else { // Send an alert if the device isn't compatible
 				logger("Device does not support DeviceOrientation events. Please try again on a compatible device!");
 			}
+
+
+			logger("Test #2 - Google Code. Should change outcome on Android.");
+			if ('ondeviceorientationabsolute' in window) {
+				// We can listen for the new deviceorientationabsolute event.
+				logger("Wow! - DeviceOrientationAbsoluteEvent");
+				window.removeEventListener("deviceorientation");
+				window.addEventListener("deviceorientationabsolute", deviceOrientationListener);
+			} else if ('ondeviceorientation' in window) {
+				// We can still listen for deviceorientation events.
+				// The `absolute` property of the event tells us whether
+				// or not the degrees are absolute.
+				logger("Still only normal deviceorientation =(");
+			}
+
+
+
 		}		
 	} // END init()
 
