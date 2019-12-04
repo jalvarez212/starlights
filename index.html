@@ -217,6 +217,8 @@
 		document.body.classList.add("desktop");
 	}
 
+	
+
 	function init () {
 				
 		//
@@ -406,6 +408,22 @@
 		//
 		// EVENT LISTENERS
 		window.addEventListener('resize', onWindowResize, false);
+
+
+		if (typeof DeviceMotionEvent.requestPermission === 'function') {
+			window.DeviceOrientationEvent.requestPermission()
+				.then(response => {
+				if (response == 'granted') {
+					//window.addEventListener('devicemotion', (e) => {})
+					console.log("requestPermission granted");
+				} else if (response == 'cancel') {
+					console.log("requestPermission cancel");
+				}
+			})
+			.catch(console.error);
+		}
+
+
 		if (window.DeviceOrientationAbsoluteEvent) {
 			window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
 		} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
