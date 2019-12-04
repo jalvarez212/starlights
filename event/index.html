@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<title>StarLights</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		body { 
+			margin: 0; 
+			overflow: hidden;
+		}
+		h1 {
+			color:#ffffff;
+			position: absolute;
+			top:0px;
+			z-index: 500;
+			display:none;
+		}
+		#UP {
+			width:100%;
+			text-align:center;
+		}
+		#LEFT {
+			top:500px;
+			left:0px;
+		}
+		#RIGHT {
+			top:500px;
+			right:0px;
+		}
+		canvas { 
+			width: 100%; 
+			height: 100% 
+		}
+		.label {
+			color: #FBEFE4;
+			font-family: sans-serif;
+		}
+		.top {
+			margin-top: -2em;
+		}
+		.bottom {
+			margin-top: 2em;
+		}
+		.left {
+			margin-left: -2em;
+		}
+		.right {
+			margin-left: 2em;
+		}
+		
+		.mobile #overlay {
+			display: flex;
+		}
+		#overlay {
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height:100%;
+			display: none;
+			align-items: center;
+			justify-content: center;
+			opacity: 1;
+			background-color: #000000;
+			color: #ffffff;
+		}
+		#overlay > div {
+			text-align: center;
+		}
+		#overlay > div > button {
+			height:50px;
+			padding:20px;
+			background: transparent;
+			color: #ffffff;
+			outline: 1px solid #ffffff;
+			border: 0px;
+			cursor: pointer;
+		}
+		#overlay > div > p {
+			color: #777777;
+			font-size: 12px;
+		}		
+	</style>
+</head>
+<body>
+	
+	<div id="overlay">
+		<div>
+			<button id="startButton">Start v4.03</button>
+			<p>Using device orientation might require a user interaction.</p>
+		</div>
+	</div>
+	<p id="heading" style="text-align:center;color:#ffffff;background-color:#999999;">Idle</p>
+	<p id="output" style="text-align:center;"></p>
+	<p id="event" style="text-align:center;color:blue;"></p>
+	
+	<script src="https://cdn.jsdelivr.net/npm/mobile-detect@1.4.4/mobile-detect.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+<script type="text/javascript">
+
+	var okToUseDeviceOrientationEvents = false;
+	var output = "";
+
+	function logger(msg) {
+		output += msg+"<br/>";
+		document.getElementById("output").innerHTML = output;
+	}
+
+	//
+	// MODERNIZR
+	if (Modernizr.devicemotion || Modernizr.deviceorientation) {
+		// supported
+		logger("Modernizr TRUE");
+	} else {
+		// not-supported
+		logger("Modernizr FALSE");
+	}
+
+	//
+	// MOBILE DETECT
+	var md = new MobileDetect(window.navigator.userAgent);
+	logger("MD Mobile: "+md.mobile());
+	logger("MD OS: "+md.os());
+	if (md.mobile()) {
+		document.getElementById('startButton').addEventListener( 'click', function () {
+			console.log('clicking startButton');
+			if (typeof DeviceMotionEvent.requestPermission === 'function') {
+				window.DeviceOrientationEvent.requestPermission()
+					.then(response => {
+					if (response === 'granted') {
+						window.addEventListener('devicemotion', deviceOrientationListener)
+						logger("requestPermission granted");
+						okToUseDeviceOrientationEvents = true;
+						init();
+					} else {
+						logger("requestPermission denied");
+						init();
+					}
+				})
+				.catch(console.error);
+			} else {
+				//
+				// handle regular non iOS 13+ devices
+				logger("Handler for regular non iOS 13+ devices");
+				okToUseDeviceOrientationEvents = true;
+				init();
+			}
+			document.getElementById('overlay').remove();
+		}, false );
+		document.body.classList.add("mobile");
+	} else {
+		logger("Desktop");
+		init();
+		document.body.classList.add("desktop");
+	}
+
+	function init () {
+		logger("init");
+		if (okToUseDeviceOrientationEvents) {
+			if (window.DeviceOrientationAbsoluteEvent) {
+				logger("DeviceOrientationAbsoluteEvent");
+				window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
+			} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
+				logger("DeviceOrientationEvent");
+				window.addEventListener("deviceorientation", deviceOrientationListener);
+			} else { // Send an alert if the device isn't compatible
+				logger("Device does not support DeviceOrientation events. Please try again on a compatible device!");
+			}
+		}		
+	} // END init()
+
+	//
+	// deviceOrientationListener
+	function deviceOrientationListener(event) {
+		var alpha    = event.alpha; //z axis rotation [0,360)
+		var beta     = event.beta; //x axis rotation [-180, 180]
+		var gamma    = event.gamma; //y axis rotation [-90, 90]      //Check if absolute values have been sent
+		var msg = '';
+
+		if (typeof event.webkitCompassHeading !== "undefined") {
+			alpha = event.webkitCompassHeading; //iOS non-standard
+			var heading = alpha
+			msg = "webkitCompassHeading: "+heading.toFixed([0]);
+		} else {
+			//console.log("Your device is reporting relative alpha values, so this compass won't point north :(");
+			var heading = 360 - alpha; //heading [0, 360)
+			msg = '360 Relative: '+heading.toFixed([0]);
+		}
+	
+		if (heading > 359 || heading < 1) { //Allow +- 1 degree
+			document.body.style.backgroundColor = "green";
+			msg = "N"; // North
+		} else if (heading > 179 && heading < 181){ //Allow +- 1 degree
+			document.body.style.backgroundColor = "green";
+			msg = "S"; // South
+		} else { // Otherwise, use near black
+			document.body.style.backgroundColor = "#161616";
+		}
+		document.getElementById("event").innerHTML = (typeof event.webkitCompassHeading);
+		document.getElementById("heading").innerHTML = msg;
+	}
+</script>
+</body>
+</html>
