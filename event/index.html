@@ -16,40 +16,7 @@
 			top:0px;
 			z-index: 500;
 			display:none;
-		}
-		#UP {
-			width:100%;
-			text-align:center;
-		}
-		#LEFT {
-			top:500px;
-			left:0px;
-		}
-		#RIGHT {
-			top:500px;
-			right:0px;
-		}
-		canvas { 
-			width: 100%; 
-			height: 100% 
-		}
-		.label {
-			color: #FBEFE4;
-			font-family: sans-serif;
-		}
-		.top {
-			margin-top: -2em;
-		}
-		.bottom {
-			margin-top: 2em;
-		}
-		.left {
-			margin-left: -2em;
-		}
-		.right {
-			margin-left: 2em;
-		}
-		
+		}		
 		.mobile #overlay {
 			display: flex;
 		}
@@ -89,13 +56,13 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.03</button>
+			<button id="startButton">Start v4.04</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>
 	<p id="heading" style="text-align:center;color:#ffffff;background-color:#999999;">Idle</p>
-	<p id="output" style="text-align:center;"></p>
-	<p id="event" style="text-align:center;color:blue;"></p>
+	<p id="output" style="text-align:center;color:white;"></p>
+	<p id="event" style="text-align:center;color:yellow;"></p>
 	
 	<script src="https://cdn.jsdelivr.net/npm/mobile-detect@1.4.4/mobile-detect.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
@@ -135,6 +102,15 @@
 						window.addEventListener('devicemotion', deviceOrientationListener)
 						logger("requestPermission granted");
 						okToUseDeviceOrientationEvents = true;
+						//
+						// MODERNIZR
+						if (Modernizr.devicemotion || Modernizr.deviceorientation) {
+							// supported
+							logger("Modernizr2 TRUE");
+						} else {
+							// not-supported
+							logger("Modernizr2 FALSE");
+						}
 						init();
 					} else {
 						logger("requestPermission denied");
@@ -200,7 +176,7 @@
 		} else { // Otherwise, use near black
 			document.body.style.backgroundColor = "#161616";
 		}
-		document.getElementById("event").innerHTML = (typeof event.webkitCompassHeading);
+		document.getElementById("event").innerHTML = event.type;
 		document.getElementById("heading").innerHTML = msg;
 	}
 </script>
