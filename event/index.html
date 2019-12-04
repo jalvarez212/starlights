@@ -56,12 +56,12 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.05</button>
+			<button id="startButton">Start v4.06</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>
 	<p id="heading" style="text-align:center;color:#ffffff;background-color:#999999;">Idle</p>
-	<p id="output" style="text-align:center;color:white;"></p>
+	<p id="output" style="color:white;"></p>
 	<p id="event" style="text-align:center;color:yellow;"></p>
 	
 	<script src="https://cdn.jsdelivr.net/npm/mobile-detect@1.4.4/mobile-detect.min.js"></script>
@@ -76,17 +76,12 @@
 		output += msg+"<br/>";
 		document.getElementById("output").innerHTML = output;
 	}
-
 	//
 	// MODERNIZR
-	if (Modernizr.devicemotion || Modernizr.deviceorientation) {
-		// supported
-		logger("Modernizr TRUE");
-	} else {
-		// not-supported
-		logger("Modernizr FALSE");
-	}
-
+	if (Modernizr.devicemotion) { logger("Modernizr devicemotion"); } 
+	if (Modernizr.deviceorientation) { logger("Modernizr deviceorientation"); } 
+	if (Modernizr.deviceorientationabsolute) { logger("Modernizr deviceorientationabsolute"); } 
+	
 	//
 	// MOBILE DETECT
 	var md = new MobileDetect(window.navigator.userAgent);
@@ -104,13 +99,9 @@
 						okToUseDeviceOrientationEvents = true;
 						//
 						// MODERNIZR
-						if (Modernizr.devicemotion || Modernizr.deviceorientation) {
-							// supported
-							logger("Modernizr2 TRUE");
-						} else {
-							// not-supported
-							logger("Modernizr2 FALSE");
-						}
+						if (Modernizr.devicemotion) { logger("Modernizr2 devicemotion"); } 
+						if (Modernizr.deviceorientation) { logger("Modernizr2 deviceorientation"); } 
+						if (Modernizr.deviceorientationabsolute) { logger("Modernizr2 deviceorientationabsolute"); } 
 						init();
 					} else {
 						logger("requestPermission denied");
@@ -121,7 +112,7 @@
 			} else {
 				//
 				// handle regular non iOS 13+ devices
-				logger("Handler for regular non iOS 13+ devices");
+				logger("Handler: Regular non iOS 13+ device");
 				okToUseDeviceOrientationEvents = true;
 				init();
 			}
@@ -152,10 +143,10 @@
 
 
 			logger("Test #2 - Google Code. Should change outcome on Android.");
+
 			if ('ondeviceorientationabsolute' in window) {
 				// We can listen for the new deviceorientationabsolute event.
 				logger("Wow! - DeviceOrientationAbsoluteEvent");
-				window.removeEventListener("deviceorientation");
 				window.addEventListener("deviceorientationabsolute", deviceOrientationListener);
 			} else if ('ondeviceorientation' in window) {
 				// We can still listen for deviceorientation events.
@@ -169,6 +160,21 @@
 		}		
 	} // END init()
 
+
+	function onOrientationAbsolute(event) {
+        if (event.alpha==null && event.beta==null && event.gamma==null) {
+          // null-event
+          document.getElementById("orientationAbsoluteSensorsAvailable").innerHTML = "no";
+          return;
+        }
+        document.getElementById("orientationAbsoluteValues").innerHTML =
+            roundToFixedArray([event.alpha, event.beta, event.gamma]);
+        document.getElementById("orientationAbsoluteAbsolute").innerHTML = event.absolute;
+        document.getElementById("orientationAbsoluteSensorsAvailable").innerHTML = "yes";
+        ++numberOrientationAbsoluteEvents;
+      }
+
+
 	//
 	// deviceOrientationListener
 	function deviceOrientationListener(event) {
@@ -176,6 +182,14 @@
 		var beta     = event.beta; //x axis rotation [-180, 180]
 		var gamma    = event.gamma; //y axis rotation [-90, 90]      //Check if absolute values have been sent
 		var msg = '';
+
+		if (event.alpha==null && event.beta==null && event.gamma==null) {
+          // null-event
+		  console.log('NULL DeviceOrientation EVENT, skipping.');
+		  document.getElementById("event").innerHTML = event.type + "NOT AVAILABLE. SKIPPING.;
+          return;
+        }
+
 
 		if (typeof event.webkitCompassHeading !== "undefined") {
 			alpha = event.webkitCompassHeading; //iOS non-standard
