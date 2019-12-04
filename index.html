@@ -172,7 +172,7 @@
 	var compass_calibrated = false;
 	var heading_during_calibration;
 
-	var deeplinkRef = true ? "es01":null;
+	var deeplinkRef = false ? "es01":null;
 	var deeplinkInterval;
 	if(window.location.hash) {
       var hash = window.location.hash.substring(1); 
@@ -189,6 +189,7 @@
 
 	var keyboardIncDirection = 1;
 
+	var okToUseDeviceOrientationEvents = false;
 
 	var carrot;
 
@@ -205,9 +206,30 @@
 	var md = new MobileDetect(window.navigator.userAgent);
 	if (md.mobile()) {
 		document.getElementById('startButton').addEventListener( 'click', function () {
-			console.log('clicking');
-			init();
-			animate();
+			console.log('clicking startButton');
+			if (typeof DeviceMotionEvent.requestPermission === 'function') {
+				window.DeviceOrientationEvent.requestPermission()
+					.then(response => {
+					if (response === 'granted') {
+						//window.addEventListener('devicemotion', (e) => {})
+						console.log("requestPermission granted");
+						okToUseDeviceOrientationEvents = true;
+						init();
+						animate();
+					} else {
+						console.log("requestPermission denied");
+						init();
+						animate();
+					}
+				})
+				.catch(console.error);
+			} else {
+				//
+				// handle regular non iOS 13+ devices
+				okToUseDeviceOrientationEvents = true;
+				init();
+				animate();
+			}
 			document.getElementById('overlay').remove();
 		}, false );
 		document.body.classList.add("mobile");
@@ -216,8 +238,6 @@
 		animate();
 		document.body.classList.add("desktop");
 	}
-
-	
 
 	function init () {
 				
@@ -257,7 +277,7 @@
 		
 		//
 		// CONTROLS
-		if (md.mobile()) {
+		if (md.mobile() && okToUseDeviceOrientationEvents) {
 			controls = new THREE.DeviceOrientationControls(camera);
 		} else {
 			if (false) {
@@ -313,8 +333,8 @@
 		celestialSystem = new THREE.Mesh(celestialGeometry, universeMaterial);
 		//celestialSystem.rotation.x = 0*Math.PI/180;
 		if (!deeplinkRef) {
-			celestialSystem.rotation.y = -90*Math.PI/180;
-			celestialSystem.rotation.x = 15*Math.PI/180;
+			//celestialSystem.rotation.y = -90*Math.PI/180;
+			//celestialSystem.rotation.x = 15*Math.PI/180;
 		}
 		scene.add(celestialSystem);
 		
@@ -409,27 +429,14 @@
 		// EVENT LISTENERS
 		window.addEventListener('resize', onWindowResize, false);
 
-
-		if (typeof DeviceMotionEvent.requestPermission === 'function') {
-			window.DeviceOrientationEvent.requestPermission()
-				.then(response => {
-				if (response == 'granted') {
-					//window.addEventListener('devicemotion', (e) => {})
-					console.log("requestPermission granted");
-				} else if (response == 'cancel') {
-					console.log("requestPermission cancel");
-				}
-			})
-			.catch(console.error);
-		}
-
-
-		if (window.DeviceOrientationAbsoluteEvent) {
-			window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
-		} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
-			window.addEventListener("deviceorientation", deviceOrientationListener);
-		} else { // Send an alert if the device isn't compatible
-			alert("Sorry, try again on a compatible mobile device!");
+		if (okToUseDeviceOrientationEvents) {
+			if (window.DeviceOrientationAbsoluteEvent) {
+				window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
+			} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
+				window.addEventListener("deviceorientation", deviceOrientationListener);
+			} else { // Send an alert if the device isn't compatible
+				alert("Device does not support DeviceOrientation events. Please try again on a compatible device!");
+			}
 		}
 
 		//
@@ -449,7 +456,7 @@
 		);
 		
 	} // END init()
-	
+
 	//
 	// deviceOrientationListener
 	function deviceOrientationListener(event) {
