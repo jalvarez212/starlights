@@ -432,12 +432,17 @@
 		window.addEventListener('resize', onWindowResize, false);
 
 		if (okToUseDeviceOrientationEvents) {
-			if (window.DeviceOrientationAbsoluteEvent) {
-				window.addEventListener("DeviceOrientationAbsoluteEvent", deviceOrientationListener);
-			} else if(window.DeviceOrientationEvent){ // If not, check if the device sends any orientation data
+			if ('ondeviceorientationabsolute' in window) {
+				//
+				console.log("DeviceOrientationAbsoluteEvent");
+				window.addEventListener("deviceorientationabsolute", deviceOrientationListener);
+			} else if ('ondeviceorientation' in window) {
+				//			
+				console.log("Normal DeviceOrientatio Event");
 				window.addEventListener("deviceorientation", deviceOrientationListener);
-			} else { // Send an alert if the device isn't compatible
-				alert("Device does not support DeviceOrientation events. Please try again on a compatible device!");
+			} else { 
+				// 
+				console.log("No support DeviceOrientation/DeviceOrientationAbsoluteEvent events.");
 			}
 		}
 
@@ -463,28 +468,41 @@
 	// deviceOrientationListener
 	function deviceOrientationListener(event) {
 		var alpha    = event.alpha; //z axis rotation [0,360)
-		var beta     = event.beta; //x axis rotation [-180, 180]
-		var gamma    = event.gamma; //y axis rotation [-90, 90]      //Check if absolute values have been sent
-		var msg = '';
+		var msg = '';  
+
+		if (event.alpha==null && event.beta==null && event.gamma==null) {
+          // NULL Event
+		  console.log('NULL DeviceOrientation EVENT, skipping.');
+          return;
+        }
+
+		//
+		// VARIOUS TYPES OF EVENTS
 		if (typeof event.webkitCompassHeading !== "undefined") {
 			alpha = event.webkitCompassHeading; //iOS non-standard
-			var heading = alpha
-			msg = heading.toFixed([0]);
+			var heading = alpha;
+			msg = "webkitCompassHeading: "+heading.toFixed([0]);
+		} else if (event.type === "deviceorientationabsolute") {
+			var heading = alpha;
+			msg = "deviceorientationabsolute: "+heading.toFixed([0]);
+		} else if(event.absolute) {
+			var heading = alpha;
+			msg = "event.absolute: "+heading.toFixed([0]);
 		} else {
-			console.log("Your device is reporting relative alpha values, so this compass won't point north :(");
+			//console.log("Your device is reporting relative alpha values, so this compass won't point north :(");
 			var heading = 360 - alpha; //heading [0, 360)
 			msg = 'Relative: '+heading.toFixed([0]);
 		}
-	
-		// Change backgroud colour based on heading
-		// Green for North and South, black otherwise
-		if (heading > 359 || heading < 1) { //Allow +- 1 degree
+
+		//
+		// N/S & background colour
+		if (heading > 355 || heading < 5) { //Allow +- 5 degree
 			document.body.style.backgroundColor = "green";
 			msg = "N"; // North
-		} else if (heading > 179 && heading < 181){ //Allow +- 1 degree
+		} else if (heading > 175 && heading < 185) { //Allow +- 5 degree
 			document.body.style.backgroundColor = "green";
 			msg = "S"; // South
-		} else { // Otherwise, use near black
+		} else {
 			document.body.style.backgroundColor = "#161616";
 		}
 
