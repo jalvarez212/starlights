@@ -56,13 +56,14 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.08</button>
+			<button id="startButton">Start v4.09</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>
 	<p id="heading" style="text-align:center;color:#ffffff;background-color:#999999;">Idle</p>
-	<p id="output" style="color:white;"></p>
 	<p id="event" style="text-align:center;color:yellow;"></p>
+	<p id="nullornot" style="text-align:center;color:red;"></p>
+	<p id="output" style="color:white;"></p>
 	
 	<script src="https://cdn.jsdelivr.net/npm/mobile-detect@1.4.4/mobile-detect.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
@@ -143,14 +144,14 @@
 			logger("Test #2 - Google Code Only.");
 			if ('ondeviceorientationabsolute' in window) {
 				// We can listen for the new deviceorientationabsolute event.
-				logger("Wow! - DeviceOrientationAbsoluteEvent");
+				logger("DeviceOrientationAbsoluteEvent");
 				window.addEventListener("deviceorientationabsolute", deviceOrientationListener);
 			} else if ('ondeviceorientation' in window) {
 				// We can still listen for deviceorientation events.
 				// The `absolute` property of the event tells us whether
-				// or not the degrees are absolute.
+				// or not the degrees are absolute.				
+				logger("Normal deviceorientation");
 				window.addEventListener("deviceorientation", deviceOrientationListener);
-				logger("Still only normal deviceorientation =(");
 			} else { // Send an alert if the device isn't compatible
 				logger("No support DeviceOrientation/DeviceOrientationAbsoluteEvent events.");
 			}
@@ -184,7 +185,7 @@
 		if (event.alpha==null && event.beta==null && event.gamma==null) {
           // null-event
 		  console.log('NULL DeviceOrientation EVENT, skipping.');
-		  document.getElementById("event").innerHTML = (event.type + "NOT AVAILABLE. SKIPPING.").toString();
+		  document.getElementById("nullornot").innerHTML = (event.type + "NULL DETECTED. SKIPPING.").toString();
           return;
         }
 
@@ -204,10 +205,10 @@
 			msg = 'Relative: '+heading.toFixed([0]);
 		}
 
-		if (heading > 359 || heading < 1) { //Allow +- 1 degree
+		if (heading > 355 || heading < 5) { //Allow +- 1 degree
 			document.body.style.backgroundColor = "green";
 			msg = "N"; // North
-		} else if (heading > 179 && heading < 181){ //Allow +- 1 degree
+		} else if (heading > 175 && heading < 185) { //Allow +- 1 degree
 			document.body.style.backgroundColor = "green";
 			msg = "S"; // South
 		} else { // Otherwise, use near black
