@@ -493,14 +493,14 @@
 		}
 
 		var degrees = Math.round(heading);
-		if (!compass_calibrated && degrees) {
+		//if (!compass_calibrated && degrees) {
 			compass_calibrated = true;
 			offset_degrees = degrees;
 			universe.rotation.y = offset_degrees*Math.PI/180;
 			heading_during_calibration = offset_degrees;
 			console.log('degrees: '+degrees);
 			console.log('offset: '+offset_degrees);
-		}
+		//}
 		
 		document.getElementById("heading").innerHTML = (msg+" | "+universe.rotation.y.toFixed(2)+" | "+compass_calibrated+" | "+heading_during_calibration);
 
