@@ -56,7 +56,7 @@
 	
 	<div id="overlay">
 		<div>
-			<button id="startButton">Start v4.07</button>
+			<button id="startButton">Start v4.08</button>
 			<p>Using device orientation might require a user interaction.</p>
 		</div>
 	</div>
@@ -128,8 +128,7 @@
 	function init () {
 		logger("init");
 		if (okToUseDeviceOrientationEvents) {
-
-
+			/*
 			logger("Test #1 - Marcus Code");
 			if (window.DeviceOrientationAbsoluteEvent) {
 				logger("DeviceOrientationAbsoluteEvent");
@@ -140,10 +139,8 @@
 			} else { // Send an alert if the device isn't compatible
 				logger("Device does not support DeviceOrientation events. Please try again on a compatible device!");
 			}
-
-
-			logger("Test #2 - Google Code. Should change outcome on Android.");
-
+			*/
+			logger("Test #2 - Google Code Only.");
 			if ('ondeviceorientationabsolute' in window) {
 				// We can listen for the new deviceorientationabsolute event.
 				logger("Wow! - DeviceOrientationAbsoluteEvent");
@@ -152,15 +149,16 @@
 				// We can still listen for deviceorientation events.
 				// The `absolute` property of the event tells us whether
 				// or not the degrees are absolute.
+				window.addEventListener("deviceorientation", deviceOrientationListener);
 				logger("Still only normal deviceorientation =(");
+			} else { // Send an alert if the device isn't compatible
+				logger("No support DeviceOrientation/DeviceOrientationAbsoluteEvent events.");
 			}
-
-
 
 		}		
 	} // END init()
 
-
+/*
 	function onOrientationAbsolute(event) {
         if (event.alpha==null && event.beta==null && event.gamma==null) {
           // null-event
@@ -173,7 +171,7 @@
         document.getElementById("orientationAbsoluteSensorsAvailable").innerHTML = "yes";
         ++numberOrientationAbsoluteEvents;
       }
-
+*/
 
 	//
 	// deviceOrientationListener
@@ -190,17 +188,22 @@
           return;
         }
 
-
 		if (typeof event.webkitCompassHeading !== "undefined") {
 			alpha = event.webkitCompassHeading; //iOS non-standard
-			var heading = alpha
+			var heading = alpha;
 			msg = "webkitCompassHeading: "+heading.toFixed([0]);
+		} else if (event.type === "deviceorientationabsolute") {
+			var heading = alpha;
+			msg = "deviceorientationabsolute: "+heading.toFixed([0]);
+		} else if(event.absolute) {
+			var heading = alpha;
+			msg = "event.absolute: "+heading.toFixed([0]);
 		} else {
 			//console.log("Your device is reporting relative alpha values, so this compass won't point north :(");
 			var heading = 360 - alpha; //heading [0, 360)
-			msg = '360 Relative: '+heading.toFixed([0]);
+			msg = 'Relative: '+heading.toFixed([0]);
 		}
-	
+
 		if (heading > 359 || heading < 1) { //Allow +- 1 degree
 			document.body.style.backgroundColor = "green";
 			msg = "N"; // North
