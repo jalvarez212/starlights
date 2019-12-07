@@ -193,6 +193,10 @@
 	var vector_camera = new THREE.Vector3( 0, 0, 0 );
 	var vector_target = new THREE.Vector3( 0, 0, 0 );
 
+	var rotationX = 40;
+	var rotationY = -140; // Applied to celestialSystem
+	var rotationZ = 0;
+
 	//
 	// MOBILE DETECT
 	var md = new MobileDetect(window.navigator.userAgent);
@@ -316,13 +320,13 @@
 		// celestialSystem
 		var celestialGeometry = new THREE.SphereGeometry(2*universe_radius, 16, 16);
 		celestialSystem = new THREE.Mesh(celestialGeometry, universeMaterial);
-		//celestialSystem.rotation.x = 0*Math.PI/180;
-		if (!deeplinkRef) {
-			//celestialSystem.rotation.y = -90*Math.PI/180;
-			//celestialSystem.rotation.x = 90*Math.PI/180;
-			//celestialSystem.rotation.x = 40*Math.PI/180;
+		if (deeplinkRef && !md.mobile()) {
+			//
+			// El usuario encuentra el mensaje en las estrellas directamente, pero puede navegar por el cielo 3D igualmente.
+		} else {
+			celestialSystem.rotation.y = rotationY*Math.PI/180;
 		}
-		scene.add(celestialSystem);
+		universe.add(celestialSystem);
 		
 		//
 		// SENTINEL/SENSOR
@@ -342,32 +346,52 @@
 		starCampaign = textureLoader.load( 'textures/sprites/star-campaign.png' );
 		starEvent = textureLoader.load( 'textures/sprites/star-event.png' );
 		spark = textureLoader.load( 'textures/sprites/spark1.png' );
+		mapNorth = textureLoader.load( 'textures/sprites/north.svg' );
+		mapSouth = textureLoader.load( 'textures/sprites/south.svg' );
+		mapEast = textureLoader.load( 'textures/sprites/east.svg' );
+		mapWest = textureLoader.load( 'textures/sprites/west.svg' );
 
 		//
 		// Starfield Sphere
 		var starGeometry = new THREE.SphereGeometry(universe_radius, 50, 50);
 		var starMaterial = new THREE.MeshPhongMaterial({
 			//color: 0x000,
-			map: starMap,
-			side: THREE.BackSide,
-			shininess: 0
+			map:starMap,
+			side:THREE.BackSide,
+			shininess:0
 		});
 		starField = new THREE.Mesh(starGeometry, starMaterial);
 		starField.scale.set( - 1, 1, 1 );
-		//starField.rotation.x = 1.1938052083641222;
-		//starField.rotation.y = -0.9738937226128364;
-		//starField.rotation.z = 0.3141592653589793;
-		starField.rotation.y = 3.159858849314766709;
+		///////starField.rotation.x = 1.1938052083641222;
+		///////starField.rotation.y = -0.9738937226128364;
+		///////starField.rotation.z = 0.3141592653589793;
+		if (deeplinkRef && !md.mobile()) {
+			//
+		} else {
+			starField.rotation.x = rotationX*Math.PI/180;
+		}
+		///////starField.rotation.y = 3.159858849314766709;
+		starField.rotation.y = 180*Math.PI/180;
 		celestialSystem.add(starField);
 	
 		//
 		// COMPASS
-		var compassTextureMap = textureLoader.load( 'textures/sprites/north.svg' );
-		var compassMaterial = new THREE.SpriteMaterial( { map: compassTextureMap, color: 0xffffff } );
-		var compass = new THREE.Sprite( compassMaterial );
-			compass.scale.set(50, 50, 50);
-			compass.position.set(0, 0, -universe_radius+50);
-		universe.add( compass );
+		var compassNorth = new THREE.Sprite(new THREE.SpriteMaterial({map:mapNorth, color:0xffffff}));
+			compassNorth.scale.set(50, 50, 50);
+			compassNorth.position.set(0, 0, -universe_radius+50);
+			universe.add(compassNorth);
+		var compassSouth = new THREE.Sprite(new THREE.SpriteMaterial({map:mapSouth, color:0xffffff}));
+			compassSouth.scale.set(50, 50, 50);
+			compassSouth.position.set(0, 0, universe_radius-50);
+			universe.add(compassSouth);
+		var compassEast = new THREE.Sprite(new THREE.SpriteMaterial({map:mapEast, color:0xffffff}));
+			compassEast.scale.set(50, 50, 50);
+			compassEast.position.set(universe_radius-50, 0, 0);
+			universe.add(compassEast);
+		var compassWest = new THREE.Sprite(new THREE.SpriteMaterial({map:mapWest, color:0xffffff}));
+			compassWest.scale.set(50, 50, 50);
+			compassWest.position.set(-universe_radius+50, 0, 0);
+			universe.add(compassWest);
 		
 		//
 		// RANDOM PARTICLES, PULSATING
@@ -578,7 +602,12 @@
 			var constellationGeometry = new THREE.SphereGeometry(0.1, 1, 1);
 			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,transparent:true,opacity:0});
 			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
-			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
+			if (deeplinkRef && !md.mobile()) {
+				var rx = constellationData.x*Math.PI/180
+			} else {
+				var rx = (rotationX+constellationData.x)*Math.PI/180;
+			}
+			constellation.rotation.set(rx, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
 			constellation.scale.z = constellationYScaleFactor;
 			celestialSystem.add(constellation);
 			displayList.push(constellation);
@@ -818,7 +847,7 @@
 	document.addEventListener("keydown", onDocumentKeyDown, false);
 	function onDocumentKeyDown(event) {
 		var keyCode = event.which;
-		var rot = celestialSystem.rotation;
+		var rot = universe.rotation;
 		var inc = Math.PI/100*keyboardIncDirection;
 		if (keyCode == 88) {  		// x
 			rot.x += inc;
