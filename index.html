@@ -182,19 +182,16 @@
 	  console.log('deeplink via hash: '+deeplinkRef);
   	}
 
-	var vector_camera = new THREE.Vector3( 0, 0, 0 );
-	var vector_target = new THREE.Vector3( 0, 0, 0 );
-
 	var line = null;
 
 	var languange = "es";
-
 	var keyboardIncDirection = 1;
 
 	var okToUseDeviceOrientationEvents = false;
 
-	var carrot;
-	var radar;
+	var sentinel, sensor;
+	var vector_camera = new THREE.Vector3( 0, 0, 0 );
+	var vector_target = new THREE.Vector3( 0, 0, 0 );
 
 	//
 	// MOBILE DETECT
@@ -300,9 +297,6 @@
 		
 		//
 		// Lights
-		//lights = new THREE.HemisphereLight( 0xffffff, 0x080820, 4 );
-		//lights = new THREE.HemisphereLight( 0x000000, 0x3e57a3, 3 );
-		//lights = new THREE.HemisphereLight( 0x000000, 0x132d49, 8 );
 		lights = new THREE.HemisphereLight( 0x000000, 0x214f80, 5 );
 		scene.add(lights);
 
@@ -311,7 +305,8 @@
 		var universeGeometry = new THREE.SphereGeometry(2*universe_radius, 16, 16);
 		var universeMaterial = new THREE.MeshBasicMaterial({
 			color: 0xff0000,
-			side: THREE.BackSide,
+			transparent:true,
+			opacity:0
 		});
 		universe = new THREE.Mesh(universeGeometry, universeMaterial);
 		scene.add(universe);
@@ -329,24 +324,17 @@
 		}
 		scene.add(celestialSystem);
 		
-
-
-
 		//
-		// RADAR/CARROT
-		var radarGeometry = new THREE.SphereGeometry(0.1, 1, 1);
-			radar = new THREE.Mesh( radarGeometry, universeMaterial);
-			radar.position.set(0, 0, 0);
-			scene.add(radar);
+		// SENTINEL/SENSOR
+		var sentinelGeometry = new THREE.SphereGeometry(0.1, 1, 1);
+			sentinel = new THREE.Mesh( sentinelGeometry, universeMaterial);
+			scene.add(sentinel);
 
-		var carrotGeometry = new THREE.SphereGeometry(5, 16, 16);
-			carrot = new THREE.Mesh(carrotGeometry, universeMaterial);
-			carrot.position.set(0, 0, -500*constellationYScaleFactor);
-			radar.add(carrot);
+		var sensorGeometry = new THREE.SphereGeometry(1, 16, 16);
+			sensor = new THREE.Mesh(sensorGeometry, universeMaterial);
+			sensor.position.set(0, 0, -500*constellationYScaleFactor);
+			sentinel.add(sensor);
 
-
-
-		
 		//
 		// TEXTURE LOADING FOR ANIMATION TARGET
 		textureLoader = new THREE.TextureLoader();
@@ -588,7 +576,7 @@
 			//
 			// CONSTELLATION WRAPPER
 			var constellationGeometry = new THREE.SphereGeometry(0.1, 1, 1);
-			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,side:THREE.BackSide,transparent:true,opacity:0});
+			var constellationMaterial = new THREE.MeshBasicMaterial({color: 0x000000,transparent:true,opacity:0});
 			constellation = new THREE.Mesh(constellationGeometry, constellationMaterial);
 			constellation.rotation.set(constellationData.x*Math.PI/180, constellationData.y*Math.PI/180, constellationData.z*Math.PI/180);
 			constellation.scale.z = constellationYScaleFactor;
@@ -659,7 +647,7 @@
 							line_geometry.rotateX( Math.PI / 2 );
 							line_geometry.translate( 0, 0, d/2 ); // optional
 
-						var line_material = new THREE.MeshBasicMaterial( {color: 0xFBEFE4} );
+						var line_material = new THREE.MeshBasicMaterial({color: 0xFBEFE4});
 
 						var line = new THREE.Mesh( line_geometry, line_material );
 							line.position.set(obj.x, obj.y, obj.z);
@@ -744,18 +732,10 @@
 		update();
 	}
 	function update() {
-		//console.log("update");
-		if(controls) {
-			controls.update();
-		} else {
-			lat = Math.max( - 85, Math.min( 85, lat ) );
-			phi = THREE.Math.degToRad( 90 - lat );
-			theta = THREE.Math.degToRad( lon );
-			camera.target.x = -500 * Math.sin( phi ) * Math.cos( theta );
-			camera.target.y = 500 * Math.cos( phi );
-			camera.target.z = -500 * Math.sin( phi ) * Math.sin( theta );
-			camera.lookAt( camera.target );
-        }
+		
+		//
+		// CONTROLS
+		controls.update();
 
 		// 
 		// FRUSTUM
@@ -766,44 +746,39 @@
 
 		stats.update();
 	
-		radar.rotation.set(camera.rotation.x, camera.rotation.y, camera.rotation.z);
-		vector_camera = carrot.getWorldPosition(vector_camera);
 	
-		//console.log("3", vector_camera);
+		//
+		// ARROW INDICATORS
 		if (animation_target) {
 
 			if (animation_trigger) {
 
+				//
+				// HIDE ALL ARROWS ONCE ANIMATION HAS BEEN TRIGGERED
 				document.getElementById("UP").style.display = "none";
 				document.getElementById("LEFT").style.display = "none";
 				document.getElementById("RIGHT").style.display = "none";
 
 			} else {
 
+				sentinel.rotation.set(camera.rotation.x, camera.rotation.y, camera.rotation.z);
+				vector_camera = sensor.getWorldPosition(vector_camera);
 				vector_target = animation_target.getWorldPosition(vector_target);
 
-				var my = window.innerHeight/2;
-				var mz = window.innerWidth/2;
-
-				var dx = Math.round(vector_camera.x - vector_target.x); 
+				//var dx = Math.round(vector_camera.x - vector_target.x); 
 				var dy = Math.round(vector_camera.y - vector_target.y); 
 				var dz = Math.round(vector_camera.z - vector_target.z);
-				var d = Math.round(vector_camera.distanceTo(vector_target));
-
-				var leftOrRight = dz>0 ? "LEFT":"RIGHT";
-				var upOrDown = dy>0 ? "DOWN":"UP";
+				//var d = Math.round(vector_camera.distanceTo(vector_target));
 
 				document.getElementById("UP").style.display = dy<0 ? "block":"none";
 				document.getElementById("LEFT").style.display = dz>0 ? "block":"none";
 				document.getElementById("RIGHT").style.display = dz<0 ? "block":"none";
 
-				//console.log(leftOrRight, upOrDown, d, dx, dy, dz);
-
 			}
 		}
 
-	
-
+		//
+		// TRIGGER CONSTELLATION ANIMATION
 		if (animation_target && animation_trigger == false) {
 			//console.log( frustum.intersectsObject( animation_target ) );
 
