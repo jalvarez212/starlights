@@ -523,17 +523,21 @@
 				alpha = event.webkitCompassHeading; //iOS non-standard
 				var heading = alpha;
 				msg = "webkitCompassHeading: " + heading.toFixed([0]);
+				console.log(msg);
 			} else if (event.type === "deviceorientationabsolute") {
 				var heading = 270 - alpha;
 				var headingoutput = 360 - alpha;
 				msg = "deviceorientationabsolute: " + headingoutput.toFixed([0]);
+				console.log(msg);
 			} else if (event.absolute) {
 				var heading = alpha;
 				msg = "event.absolute: " + heading.toFixed([0]);
+				console.log(msg);
 			} else {
 				//console.log("Your device is reporting relative alpha values, so this compass won't point north :(");
 				var heading = 360 - alpha; //heading [0, 360)
 				msg = 'Relative: ' + heading.toFixed([0]);
+				console.log(msg);
 			}
 
 			//
