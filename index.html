@@ -398,24 +398,24 @@
 			//
 			// COMPASS
 			//var geometry = new THREE.ConeGeometry(2, 4, 18);
-			var compassNorth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapNorth, color: 0xff0000 }));
+			var compassNorth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapNorth, color: 0xffffff }));
 			//var compassNorth = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0xffffff }));
 			compassNorth.position.set(0, 0, -min_radius);
-			compassNorth.scale.set(8, 8, 8);
+			compassNorth.scale.set(15, 15, 15);
 			universe.add(compassNorth);
-			var compassSouth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapSouth, color: 0xff0000 }));
+			var compassSouth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapSouth, color: 0xffffff }));
 			//var compassSouth = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x666666 }));
-			compassSouth.scale.set(8, 8, 8);
+			compassSouth.scale.set(15, 15, 15);
 			compassSouth.position.set(0, 0, min_radius);
 			universe.add(compassSouth);
-			var compassEast = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapEast, color: 0xff0000 }));
+			var compassEast = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapEast, color: 0xffffff }));
 			//var compassEast = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x666666 }));
-			compassEast.scale.set(8, 8, 8);
+			compassEast.scale.set(15, 15, 15);
 			compassEast.position.set(min_radius, 0, 0);
 			universe.add(compassEast);
-			var compassWest = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapWest, color: 0xff0000 }));
+			var compassWest = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapWest, color: 0xffffff }));
 			//var compassWest = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x666666 }));
-			compassWest.scale.set(8, 8, 8);
+			compassWest.scale.set(15, 15, 15);
 			compassWest.position.set(-min_radius, 0, 0);
 			universe.add(compassWest);
 
