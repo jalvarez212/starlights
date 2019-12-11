@@ -214,6 +214,9 @@
 		var rotationY = -140; // Applied to celestialSystem
 		var rotationZ = 0;
 
+
+		var eventCount = 0;
+		var eventCountLimit = 100;
 		//
 		// MOBILE DETECT
 		var md = new MobileDetect(window.navigator.userAgent);
@@ -529,6 +532,10 @@
 				var headingoutput = 360 - alpha;
 				msg = "deviceorientationabsolute: " + headingoutput.toFixed([0]);
 				console.log(msg);
+				if (eventCount++ < eventCountLimit) {
+					console.log('EventCount, skipping.');
+					return;
+				}
 			} else if (event.absolute) {
 				var heading = alpha;
 				msg = "event.absolute: " + heading.toFixed([0]);
