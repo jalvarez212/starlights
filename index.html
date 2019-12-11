@@ -551,7 +551,7 @@
 			if (!compass_calibrated && degrees) {
 				compass_calibrated = true;
 				offset_degrees = degrees;
-				//universe.rotation.y = offset_degrees * Math.PI / 180;
+				universe.rotation.y = offset_degrees * Math.PI / 180;
 				heading_during_calibration = offset_degrees;
 				console.log('degrees: ' + degrees);
 				console.log('offset: ' + offset_degrees);
