@@ -371,10 +371,10 @@
 			starCampaign = textureLoader.load('textures/sprites/star-campaign.png');
 			starEvent = textureLoader.load('textures/sprites/star-event.png');
 			spark = textureLoader.load('textures/sprites/spark1.png');
-			//mapNorth = textureLoader.load('textures/sprites/north.svg');
-			//mapSouth = textureLoader.load('textures/sprites/south.svg');
-			//mapEast = textureLoader.load('textures/sprites/east.svg');
-			//mapWest = textureLoader.load('textures/sprites/west.svg');
+			mapNorth = textureLoader.load('textures/sprites/north.svg');
+			mapSouth = textureLoader.load('textures/sprites/south.svg');
+			mapEast = textureLoader.load('textures/sprites/east.svg');
+			mapWest = textureLoader.load('textures/sprites/west.svg');
 
 			//
 			// Starfield Sphere
@@ -397,26 +397,27 @@
 
 			//
 			// COMPASS
-			var geometry = new THREE.ConeGeometry(2, 4, 18);
-			//var compassNorth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapNorth, color: 0xffffff }));
-			var compassNorth = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0xffffff }));
-			compassNorth.position.set(0, -3, -min_radius);
+			//var geometry = new THREE.ConeGeometry(2, 4, 18);
+			var compassNorth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapNorth, color: 0xffffff }));
+			//var compassNorth = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0xffffff }));
+			compassNorth.position.set(0, 0, -min_radius);
+			compassNorth.scale.set(8, 8, 8);
 			universe.add(compassNorth);
-			//var compassSouth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapSouth, color: 0xffffff }));
+			var compassSouth = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapSouth, color: 0xffffff }));
 			//var compassSouth = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x666666 }));
-			//compassSouth.scale.set(8, 8, 8);
-			//compassSouth.position.set(0, -3, min_radius);
-			//universe.add(compassSouth);
-			//var compassEast = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapEast, color: 0xffffff }));
+			compassSouth.scale.set(8, 8, 8);
+			compassSouth.position.set(0, 0, min_radius);
+			universe.add(compassSouth);
+			var compassEast = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapEast, color: 0xffffff }));
 			//var compassEast = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x666666 }));
-			//compassEast.scale.set(8, 8, 8);
-			//compassEast.position.set(min_radius, -3, 0);
-			//universe.add(compassEast);
-			//var compassWest = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapWest, color: 0xffffff }));
+			compassEast.scale.set(8, 8, 8);
+			compassEast.position.set(min_radius, 0, 0);
+			universe.add(compassEast);
+			var compassWest = new THREE.Sprite(new THREE.SpriteMaterial({ map: mapWest, color: 0xffffff }));
 			//var compassWest = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x666666 }));
-			//compassWest.scale.set(8, 8, 8);
-			//compassWest.position.set(-min_radius, -3, 0);
-			//universe.add(compassWest);
+			compassWest.scale.set(8, 8, 8);
+			compassWest.position.set(-min_radius, 0, 0);
+			universe.add(compassWest);
 
 			//
 			// BLACK FLOOR
@@ -424,7 +425,7 @@
 			var material = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
 			var sphere = new THREE.Mesh(geometry, material);
 			sphere.rotation.set(90 * Math.PI / 180, 0, 0);
-			scene.add(sphere);
+			//scene.add(sphere);
 
 			//
 			// RANDOM PARTICLES, PULSATING
@@ -523,7 +524,7 @@
 				var heading = alpha;
 				msg = "webkitCompassHeading: " + heading.toFixed([0]);
 			} else if (event.type === "deviceorientationabsolute") {
-				var heading = alpha;
+				var heading = 360 - alpha;
 				msg = "deviceorientationabsolute: " + heading.toFixed([0]);
 			} else if (event.absolute) {
 				var heading = alpha;
