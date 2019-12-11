@@ -525,7 +525,8 @@
 				msg = "webkitCompassHeading: " + heading.toFixed([0]);
 			} else if (event.type === "deviceorientationabsolute") {
 				var heading = 270 - alpha;
-				msg = "deviceorientationabsolute: " + heading.toFixed([0]);
+				var headingoutput = 360 - alpha;
+				msg = "deviceorientationabsolute: " + headingoutput.toFixed([0]);
 			} else if (event.absolute) {
 				var heading = alpha;
 				msg = "event.absolute: " + heading.toFixed([0]);
